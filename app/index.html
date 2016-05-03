@@ -8,33 +8,50 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="js/controllers.js"></script>
 </head>
-<body ng-controller="MeasurementListCtrl">
+<body ng-controller="MonitorListCtrl">
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <!--Header ?? content-->
-
+      <div class="col-md-6">
+        <table>
+          <tr>
+            <th>Run ID</th>
+            <th>stdout</th>
+            <th>stderr</th>
+            <th>time</th>
+            <th>Elapsed time</th>
+          </tr>
+          <tr ng-repeat="id in runIDs">
+            <td>{{id}}</td>
+            <td><a href=../data/raw/{{id}}.stdout.txt>stdout</a></td>
+            <td><a href=../data/raw/{{id}}.stderr.txt>stderr</a></td>
+            <td><a href=../data/raw/{{id}}.time.txt>time</a></td>
+            <td>...</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
         <p>RUN ID:
           <select ng-model="currentID">
-            <option ng-repeat="id in runIDs" value={{id.name}}>{{id.name}}</option>
+            <option ng-repeat="id in runIDs" value={{id}}>{{id}}</option>
           </select>
         </p>
         <p>
           HOST:
           <select ng-model="currentHost">
-            <option ng-repeat="host in hosts" value={{host.name}}>{{host.name}}</option>
+            <option ng-repeat="host in hosts" value={{host}}>{{host}}</option>
           </select>
         </p>
-
       </div>
+    </div><!--End row-->
+    <div class="row">
       <span ng-repeat="id in runIDs | filter:currentID">
           <span ng-repeat="host in hosts | filter:currentHost">
-          <div class="chart col-md-6" ng-repeat="measurement in measurements">
-            <h3>{{measurement.name}}</h3>
-            <p>Title {{measurement.title}} - scale {{measurement.yScale}} -
-            type {{measurement.type}}</p>
-            <p>filename: data/final/{{id.name}}.{{host.name}}.{{measurement.name}}.{{measurement.ext}}
+          <div class="chart col-md-6" ng-repeat="monitor in monitors">
+            <h3>{{monitor.name}}</h3>
+            <p>Title {{monitor.title}} - scale {{monitor.yScale}} -
+            type {{monitor.type}}</p>
+            <p>filename: data/final/{{id}}.{{host}}.{{monitor.name}}.{{monitor.ext}}
           </li>
         </span>
         </ul>
@@ -42,8 +59,6 @@
       </div>
     </div>
   </div>
-
-
 
 </body>
 </html>

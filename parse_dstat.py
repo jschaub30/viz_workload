@@ -54,7 +54,7 @@ def main(dstat_fn):
 
     # Now write output csv files
     for key in header.keys():
-        out_fn = dstat_fn.replace('.csv', '.%s.csv' % key)
+        out_fn = dstat_fn.replace('.dstat.csv', '.%s.csv' % key)
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final')
         with open(out_fn, 'w') as fid:

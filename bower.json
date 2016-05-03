@@ -1,0 +1,13 @@
+{
+  "name": "workload-monitor",
+  "description": "An app to display server data during a workload",
+  "version": "0.0.0",
+  "homepage": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.4.x",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1"
+  }
+}

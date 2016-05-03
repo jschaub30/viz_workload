@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" ng-app="workloadMonitorApp">
+<head>
+  <meta charset="utf-8">
+  <title>Workload monitor</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+<body ng-controller="MeasurementListCtrl">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <!--Header ?? content-->
+
+        <p>RUN ID:
+          <select ng-model="currentID">
+            <option ng-repeat="id in runIDs" value={{id.name}}>{{id.name}}</option>
+          </select>
+        </p>
+        <p>
+          HOST:
+          <select ng-model="currentHost">
+            <option ng-repeat="host in hosts" value={{host.name}}>{{host.name}}</option>
+          </select>
+        </p>
+
+      </div>
+      <span ng-repeat="id in runIDs | filter:currentID">
+          <span ng-repeat="host in hosts | filter:currentHost">
+          <div class="chart col-md-6" ng-repeat="measurement in measurements">
+            <h3>{{measurement.name}}</h3>
+            <p>Title {{measurement.title}} - scale {{measurement.yScale}} -
+            type {{measurement.type}}</p>
+            <p>filename: data/final/{{id.name}}.{{host.name}}.{{measurement.name}}.{{measurement.ext}}
+          </li>
+        </span>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+</html>

@@ -6,7 +6,10 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/app.css">
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="js/controllers.js"></script>
+  <script src="js/charts.js"></script>
+  <script type="text/javascript" src="js/dygraph-combined.js"></script>
 </head>
 <body ng-controller="MonitorListCtrl">
 
@@ -32,32 +35,18 @@
       </div>
       <div class="col-md-6">
         <p>RUN ID:
-          <select ng-model="currentID">
-            <option ng-repeat="id in runIDs" value={{id}}>{{id}}</option>
+          <select ng-model="currentID" ng-change="drawCharts()">
+            <option ng-repeat="id in runIDs" value={{id}} >{{id}}</option>
           </select>
         </p>
         <p>
           HOST:
-          <select ng-model="currentHost">
+          <select ng-model="currentHost" ng-change="drawCharts()">
             <option ng-repeat="host in hosts" value={{host}}>{{host}}</option>
           </select>
         </p>
       </div>
     </div><!--End row-->
-    <div class="row">
-      <span ng-repeat="id in runIDs | filter:currentID">
-          <span ng-repeat="host in hosts | filter:currentHost">
-          <div class="chart col-md-6" ng-repeat="monitor in monitors">
-            <h3>{{monitor.name}}</h3>
-            <p>Title {{monitor.title}} - scale {{monitor.yScale}} -
-            type {{monitor.type}}</p>
-            <p>filename: data/final/{{id}}.{{host}}.{{monitor.name}}.{{monitor.ext}}
-          </li>
-        </span>
-        </ul>
-
-      </div>
-    </div>
   </div>
 
 </body>

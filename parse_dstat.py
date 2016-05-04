@@ -17,17 +17,18 @@ def main(dstat_fn):
     with open(dstat_fn, 'r') as fid:
         blob = fid.read()
     lines = blob.split('\n')
+    scaleGB = 1/1024/1024/1024
 
-    header = {
-        'mem': ["used", "buff", "cach", "free"],
-        'cpu': ["usr", "sys", "idl", "wai", "hiq", "siq"],
-        'io': ["read", "writ"],
-        'net': ["recv", "send"]
-    }
-    columns = {}
+    monitors = [
+        {'name': 'mem', 'columnNames': ["used", "buff", "cach", "free"], 'scale': scaleGB},
+        {'name': 'cpu', 'columnNames': ["usr", "sys", "idl", "wai", "hiq", "siq"], 'scale': 1},
+        {'name': 'io', 'columnNames': ["read", "writ"], 'scale': scaleGB},
+        {'name': 'net', 'columnNames': ["recv", "send"], 'scale': scaleGB}
+    ]
     out_string = {}
-    for key in header.keys():
-        out_string[key] = "time," + ','.join(header[key]) + '\n'
+    columns = {}
+    for monitor in monitors:
+        out_string[monitor['name']] = "time," + ','.join(monitor['columnNames']) + '\n'
     timestamp_0 = -1
 
     start = False
@@ -41,24 +42,25 @@ def main(dstat_fn):
                 timestamp_0 = timestamp
             line[0] = str((timestamp - timestamp_0).total_seconds())
             line = np.array(line)
-            for key in header.keys():
-                out_string[key] += ','.join(line[columns[key]]) + '\n'
+            for monitor in monitors:
+                out_string[monitor['name']] += ','.join(line[columns[monitor['name']]]) + '\n'
+                # TODO: scale data
         if '"new","used"' in line:
             start = True
             fields = line.replace('"', '').split(',')
-            for key in header.keys():
+            for monitor in monitors:
                 idx = [0]
-                for field in header[key]:
+                for field in monitor['columnNames']:
                     idx.append(fields.index(field))
-                columns[key] = idx
+                columns[monitor['name']] = idx
 
     # Now write output csv files
-    for key in header.keys():
-        out_fn = dstat_fn.replace('.dstat.csv', '.%s.timeseries.csv' % key)
+    for monitor in monitors:
+        out_fn = dstat_fn.replace('.dstat.csv', '.%s.timeseries.csv' % monitor['name'])
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final')
         with open(out_fn, 'w') as fid:
-            fid.write(out_string[key])
+            fid.write(out_string[monitor['name']])
 
 if __name__ == '__main__':
     main(sys.argv[1])

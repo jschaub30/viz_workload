@@ -1,8 +1,7 @@
 "use strict";
 
 var timeseries_chart = function(data, monitor) {
-        console.log('Calling timeseries_chart');
-        // console.log(monitor);
+        // console.log('Calling timeseries_chart');
         var chart = new Dygraph(
             document.getElementById('id_' + monitor.name),
             data, {
@@ -20,7 +19,6 @@ var timeseries_chart = function(data, monitor) {
     },
     load_csv = function(id, host, monitor) {
         // console.log('Calling load_csv');
-        // console.log(monitor);
         var url = 'data/final/';
 
         url += id + '.' + host + '.' + monitor.name;

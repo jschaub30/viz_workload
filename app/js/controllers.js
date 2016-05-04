@@ -6,13 +6,12 @@ var workloadMonitorApp = angular.module('workloadMonitorApp', []);
 
 workloadMonitorApp.controller('MonitorListCtrl', function($scope, $http) {
     $scope.init = function() {
-      // Create the chart divs
+        // Create the chart divs
         var monitor,
             htmlString;
 
         for (var i = 0; i < $scope.monitors.length; i++) {
             monitor = $scope.monitors[i];
-            // console.log(monitor);
             htmlString = '<div class="col-md-6 chart" id="id_';
             htmlString += $scope.monitors[i].name + '"></div>';
             console.log(htmlString);
@@ -28,10 +27,8 @@ workloadMonitorApp.controller('MonitorListCtrl', function($scope, $http) {
 
         for (var i = 0; i < $scope.monitors.length; i++) {
             monitor = $scope.monitors[i];
-            // console.log(monitor);
             switch (monitor.type) {
                 case 'timeseries':
-                    // console.log('Calling timeseries');
                     load_csv($scope.currentID, $scope.currentHost, monitor);
                     break;
                 case 'heatmap':

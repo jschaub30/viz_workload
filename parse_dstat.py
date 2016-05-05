@@ -43,6 +43,7 @@ def main(dstat_fn):
             line[0] = str((timestamp - timestamp_0).total_seconds())
             line = np.array(line)
             for monitor in monitors:
+                # TODO: replace numpy with [line[i] for i ...]
                 out_string[monitor['name']] += ','.join(line[columns[monitor['name']]]) + '\n'
                 # TODO: scale data
         if '"new","used"' in line:

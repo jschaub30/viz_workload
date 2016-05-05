@@ -24,12 +24,15 @@
             <th>time</th>
             <th>Elapsed time</th>
           </tr>
-          <tr ng-repeat="id in runIDs">
-            <td>{{id}}</td>
-            <td><a href=../data/raw/{{id}}.stdout.txt>stdout</a></td>
+          <tr ng-repeat="measurement in measurements">
+            <td>{{measurement.runId}}</td>
+            <td><a href={{measurement.monitors.stdout.rawFilename}}>stdout</a></td>
+            <td><a href={{measurement.monitors.stderr.rawFilename}}>stdout</a></td>
+            <td><a href={{measurement.monitors.time.rawFilename}}>time</a></td>
+            <!-- <td><a href=../data/raw/{{id}}.stdout.txt>stdout</a></td>
             <td><a href=../data/raw/{{id}}.stderr.txt>stderr</a></td>
             <td><a href=../data/raw/{{id}}.time.txt>time</a></td>
-            <td>...</td>
+            <td>...</td> -->
           </tr>
         </table>
       </div>

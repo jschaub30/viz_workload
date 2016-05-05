@@ -4,48 +4,37 @@
 
 var workloadMonitorApp = angular.module('workloadMonitorApp', []);
 
-workloadMonitorApp.controller('MonitorListCtrl', function($scope, $http) {
-    $scope.init = function() {
-        // Create the chart divs
-        var monitor,
-            htmlString;
-
-        for (var i = 0; i < $scope.monitors.length; i++) {
-            monitor = $scope.monitors[i];
-            htmlString = '<div class="col-md-6 chart" id="id_';
-            htmlString += $scope.monitors[i].name + '"></div>';
-            console.log(htmlString);
-            if ((i % 2) === 0) {
-                $('.container-fluid').append('<div class="row"></div>');
+workloadMonitorApp.controller('MonitorListCtrl', ['$scope', '$http',
+    function($scope, $http) {
+        $scope.init = function() {
+            $http.get('measurements/runs.json').success(function(data) {
+                $scope.measurements = data;
+                $scope.currentRunIndex = 0;
+                // $scope.drawCharts();
+                $scope.loadJSON();
+            })
+        };
+        $scope.drawCharts = function() {
+            // Load json for current run
+            // console.log($scope);
+            // console.log($scope.currentRunIndex)
+            $http.get('measurements/' + $scope.measurements[$scope.currentRunIndex].filename)
+                 .success(function(data) {
+                // console.log(data);
+                $scope.monitors = data;
+            });
+        };
+        $scope.loadJSON = function() {
+            // Load json for all runs into measurements object
+            for( var i = 0; i < $scope.measurements.length; i++){
+              $http.get('measurements/' + $scope.measurements[i].filename)
+                   .success(function(data) {
+                     $scope.measurements[$scope.currentRunIndex].monitors = data;
+                     $scope.currentRunIndex ++;
+                    });
             }
-            $('.row').last().append(htmlString);
-        }
-    };
+        };
 
-    $scope.drawCharts = function() {
-        var monitor;
-
-        for (var i = 0; i < $scope.monitors.length; i++) {
-            monitor = $scope.monitors[i];
-            switch (monitor.type) {
-                case 'timeseries':
-                    load_csv($scope.currentID, $scope.currentHost, monitor);
-                    break;
-                case 'heatmap':
-                    console.log('Calling heatmap');
-                    break;
-            }
-        }
-    };
-
-    $http.get('config.json').success(function(data) {
-        $scope.runIDs = data.runIDs;
-        $scope.hosts = data.slaves;
-        $scope.currentHost = $scope.hosts[0];
-        $scope.currentID = $scope.runIDs[0];
-        $scope.monitors = data.monitors;
         $scope.init();
-        $scope.drawCharts();
-    });
-
-});
+    }
+]);

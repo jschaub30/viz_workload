@@ -1,23 +1,23 @@
 {
   "time": {
     "monitor": "time",
-    "rawFilename": "data-test/raw/run1.time.txt",
+    "rawFilename": "data-test/raw/run2.time.txt",
     "type": "time"
   },
   "stdout": {
     "monitor": "stdout",
-    "rawFilename": "data-test/raw/run1.stdout.txt",
+    "rawFilename": "data-test/raw/run2.stdout.txt",
     "type": "stdout"
   },
   "stderr": {
     "monitor": "stderr",
-    "rawFilename": "data-test/raw/run1.stderr.txt",
+    "rawFilename": "data-test/raw/run2.stderr.txt",
     "type": "stderr"
   },
   "cpu.host1": {
     "monitor": "cpu",
-    "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-    "finalFilename": "data-test/final/run1.host1.cpu.csv",
+    "rawFilename": "data-test/raw/run2.host1.dstat.csv",
+    "finalFilename": "data-test/final/run2.host1.cpu.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "System CPU [ % ]"
@@ -25,8 +25,8 @@
   },
   "mem.host1": {
     "monitor": "mem",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.mem.csv",
+    "rawFilename": "data-test/raw/run2.host1.dsat.csv",
+    "finalFilename": "data-test/final/run2.host1.mem.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "System memory [ GB ]"
@@ -34,8 +34,8 @@
   },
   "io.host1": {
     "monitor": "io",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.io.csv",
+    "rawFilename": "data-test/raw/run2.host1.dsat.csv",
+    "finalFilename": "data-test/final/run2.host1.io.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "IO [ GB/sec ]"
@@ -43,8 +43,8 @@
   },
   "net.host1": {
     "monitor": "net",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.net.csv",
+    "rawFilename": "data-test/raw/run2.host1.dsat.csv",
+    "finalFilename": "data-test/final/run2.host1.net.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "Network [ GB/sec ]"
@@ -52,8 +52,8 @@
   },
   "cpu.host2": {
     "monitor": "cpu",
-    "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-    "finalFilename": "data-test/final/run1.host2.cpu.csv",
+    "rawFilename": "data-test/raw/run2.host2.dstat.csv",
+    "finalFilename": "data-test/final/run2.host2.cpu.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "System CPU [ % ]"
@@ -61,8 +61,8 @@
   },
   "mem.host2": {
     "monitor": "mem",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.mem.csv",
+    "rawFilename": "data-test/raw/run2.host2.dsat.csv",
+    "finalFilename": "data-test/final/run2.host2.mem.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "System memory [ GB ]"
@@ -70,8 +70,8 @@
   },
   "io.host2": {
     "monitor": "io",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.io.csv",
+    "rawFilename": "data-test/raw/run2.host2.dsat.csv",
+    "finalFilename": "data-test/final/run2.host2.io.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "IO [ GB/sec ]"
@@ -79,8 +79,8 @@
   },
   "net.host2": {
     "monitor": "net",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.net.csv",
+    "rawFilename": "data-test/raw/run2.host2.dsat.csv",
+    "finalFilename": "data-test/final/run2.host2.net.csv",
     "type": "timeseries",
     "plotOptions": {
       "title": "Network [ GB/sec ]"

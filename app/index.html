@@ -1,56 +1,24 @@
 <!doctype html>
-<html lang="en" ng-app="workloadMonitorApp">
-<head>
-  <meta charset="utf-8">
-  <title>Workload monitor</title>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="css/app.css">
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/charts.js"></script>
-  <script type="text/javascript" src="js/dygraph-combined.js"></script>
-</head>
-<body ng-controller="MonitorListCtrl">
+<html lang="en" ng-app="macroscopeApp">
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-6">
-        <table>
-          <tr>
-            <th>Run ID</th>
-            <th>stdout</th>
-            <th>stderr</th>
-            <th>time</th>
-            <th>Elapsed time</th>
-          </tr>
-          <tr ng-repeat="measurement in measurements">
-            <td>{{measurement.runId}}</td>
-            <td><a href={{measurement.monitors.stdout.rawFilename}}>stdout</a></td>
-            <td><a href={{measurement.monitors.stderr.rawFilename}}>stdout</a></td>
-            <td><a href={{measurement.monitors.time.rawFilename}}>time</a></td>
-            <!-- <td><a href=../data/raw/{{id}}.stdout.txt>stdout</a></td>
-            <td><a href=../data/raw/{{id}}.stderr.txt>stderr</a></td>
-            <td><a href=../data/raw/{{id}}.time.txt>time</a></td>
-            <td>...</td> -->
-          </tr>
-        </table>
-      </div>
-      <div class="col-md-6">
-        <p>RUN ID:
-          <select ng-model="currentID" ng-change="drawCharts()">
-            <option ng-repeat="id in runIDs" value={{id}} >{{id}}</option>
-          </select>
-        </p>
-        <p>
-          HOST:
-          <select ng-model="currentHost" ng-change="drawCharts()">
-            <option ng-repeat="host in hosts" value={{host}}>{{host}}</option>
-          </select>
-        </p>
-      </div>
-    </div><!--End row-->
-  </div>
+<head>
+    <meta charset="utf-8">
+    <title>Workload monitor</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/charts.js"></script>
+    <script type="text/javascript" src="js/dygraph-combined.js"></script>
+</head>
+
+<body>
+
+    <div ng-view></div>
 
 </body>
+
 </html>

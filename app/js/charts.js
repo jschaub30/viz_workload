@@ -3,7 +3,7 @@
 var timeseries_chart = function(data, monitor) {
         // console.log('Calling timeseries_chart');
         var chart = new Dygraph(
-            document.getElementById('id_' + monitor.name),
+            document.getElementById('id_' + monitor),
             data, {
                 // labels: labels,
                 // colors: chart_colors,
@@ -17,13 +17,10 @@ var timeseries_chart = function(data, monitor) {
         );
         return chart;
     },
-    load_csv = function(id, host, monitor) {
-        // console.log('Calling load_csv');
-        var url = 'data/final/';
+    drawMonitor = function(monitor, measurements, currentMeasurement, currentSource) {
 
-        url += id + '.' + host + '.' + monitor.name;
-        url += '.' + monitor.type + '.' + monitor.ext;
-        console.log(url);
+        var url = measurements[currentMeasurement].monitors[monitor].data[currentSource].finalFilename;
+        console.log('url is ' + url);
         $.ajax({
             type: "GET",
             url: url,

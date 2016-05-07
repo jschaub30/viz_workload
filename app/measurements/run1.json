@@ -1,89 +1,86 @@
 {
   "time": {
-    "monitor": "time",
-    "rawFilename": "data-test/raw/run1.time.txt",
-    "type": "time"
+    "type": "time",
+    "rawFilename": "data-test/raw/run1.time.txt"
   },
   "stdout": {
-    "monitor": "stdout",
-    "rawFilename": "data-test/raw/run1.stdout.txt",
-    "type": "stdout"
+    "type": "stdout",
+    "rawFilename": "data-test/raw/run1.stdout.txt"
   },
   "stderr": {
-    "monitor": "stderr",
-    "rawFilename": "data-test/raw/run1.stderr.txt",
-    "type": "stderr"
+    "type": "stderr",
+    "rawFilename": "data-test/raw/run1.stderr.txt"
   },
-  "cpu.host1": {
-    "monitor": "cpu",
-    "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-    "finalFilename": "data-test/final/run1.host1.cpu.csv",
+  "net": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System CPU [ % ]"
+      "title": "System net [ % ]"
+    },
+    "isArray": true,
+    "sources": ["host1", "host2"],
+    "data": {
+      "host1": {
+        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data-test/final/run1.host1.net.timeseries.csv"
+      },
+      "host2": {
+        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data-test/final/run1.host2.net.timeseries.csv"
+      }
     }
   },
-  "mem.host1": {
-    "monitor": "mem",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.mem.csv",
+  "mem": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System memory [ GB ]"
+      "title": "System Memory [ GB ]"
+    },
+    "isArray": true,
+    "sources": ["host1", "host2"],
+    "data": {
+      "host1": {
+        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data-test/final/run1.host1.mem.timeseries.csv"
+      },
+      "host2": {
+        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data-test/final/run1.host2.mem.timeseries.csv"
+      }
     }
   },
-  "io.host1": {
-    "monitor": "io",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.io.csv",
+  "io": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "IO [ GB/sec ]"
+      "title": "System io [ % ]"
+    },
+    "isArray": true,
+    "sources": ["host1", "host2"],
+    "data": {
+      "host1": {
+        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data-test/final/run1.host1.io.timeseries.csv"
+      },
+      "host2": {
+        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data-test/final/run1.host2.io.timeseries.csv"
+      }
     }
   },
-  "net.host1": {
-    "monitor": "net",
-    "rawFilename": "data-test/raw/run1.host1.dsat.csv",
-    "finalFilename": "data-test/final/run1.host1.net.csv",
+  "net": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "Network [ GB/sec ]"
-    }
-  },
-  "cpu.host2": {
-    "monitor": "cpu",
-    "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-    "finalFilename": "data-test/final/run1.host2.cpu.csv",
-    "type": "timeseries",
-    "plotOptions": {
-      "title": "System CPU [ % ]"
-    }
-  },
-  "mem.host2": {
-    "monitor": "mem",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.mem.csv",
-    "type": "timeseries",
-    "plotOptions": {
-      "title": "System memory [ GB ]"
-    }
-  },
-  "io.host2": {
-    "monitor": "io",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.io.csv",
-    "type": "timeseries",
-    "plotOptions": {
-      "title": "IO [ GB/sec ]"
-    }
-  },
-  "net.host2": {
-    "monitor": "net",
-    "rawFilename": "data-test/raw/run1.host2.dsat.csv",
-    "finalFilename": "data-test/final/run1.host2.net.csv",
-    "type": "timeseries",
-    "plotOptions": {
-      "title": "Network [ GB/sec ]"
+      "title": "System net [ % ]"
+    },
+    "isArray": true,
+    "sources": ["host1", "host2"],
+    "data": {
+      "host1": {
+        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data-test/final/run1.host1.net.timeseries.csv"
+      },
+      "host2": {
+        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data-test/final/run1.host2.net.timeseries.csv"
+      }
     }
   }
 }

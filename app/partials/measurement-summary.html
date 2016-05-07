@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <table>
+                <tr>
+                    <th>Run ID</th>
+                    <th>stdout</th>
+                    <th>stderr</th>
+                    <th>time</th>
+                    <th>Execution time</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="measurement in measurements">
+                    <td>{{measurement.runId}}</td>
+                    <td><a href={{measurement.scopes.stdout.rawFilename}}>stdout</a></td>
+                    <td><a href={{measurement.scopes.stderr.rawFilename}}>stderr</a></td>
+                    <td><a href={{measurement.scopes.time.rawFilename}}>time</a></td>
+                    <td>...</td>
+                    <td><span ng-repeat="scope in measurements.scopes">
+                      {{scope}}
+                    </span>
+                    </td>
+                    <td><a href=#/measurement/{{measurement.runId}}>
+                      More details</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+    <!--End row-->
+
+</div>

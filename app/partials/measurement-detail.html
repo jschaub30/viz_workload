@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <p>RUN ID:
+                <select ng-model="currentMeasurement" ng-change="drawCharts()">
+                    <option ng-repeat="measurement in allMeasurements" value={{measurement}}>
+                        {{measurement}}</option>
+                </select>
+            </p>
+            <p>
+                HOST:
+                <select ng-model="currentSource" ng-change="drawCharts()">
+                    <option ng-repeat="source in sources" value={{source}}>{{source}}</option>
+                </select>
+            </p>
+        </div>
+    </div>
+    <!--End row-->
+    <div class="row">
+        <div class="col-md-6 chart" ng-repeat="monitor in allScopes" id="id_{{monitor}}">
+            {{monitor}}
+        </div>
+    </div>
+    <!--End row-->
+
+</div>

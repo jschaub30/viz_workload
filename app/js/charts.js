@@ -1,29 +1,28 @@
-"use strict";
+'use strict';
 
 var timeseries_chart = function(data, monitor) {
-        // console.log('Calling timeseries_chart');
         var chart = new Dygraph(
-            document.getElementById('id_' + monitor),
+            document.getElementById(monitor.divId),
             data, {
                 // labels: labels,
                 // colors: chart_colors,
                 xlabel: "Elapsed time [ sec ]",
-                ylabel: monitor.units,
+                // ylabel: monitor.units,
                 strokeWidth: 2,
                 legend: 'always',
                 labelsDivWidth: 500,
-                title: monitor.title
+                title: monitor.plotOptions.title
             }
         );
         return chart;
     },
-    drawMonitor = function(monitor, measurements, currentMeasurement, currentSource) {
+    drawMonitor = function(monitor, source) {
 
-        var url = measurements[currentMeasurement].monitors[monitor].data[currentSource].finalFilename;
-        console.log('url is ' + url);
+        // var url = measurements[currentMeasurement].monitors[monitor].data[currentSource].finalFilename;
+        // console.log('url is ' + url);
         $.ajax({
             type: "GET",
-            url: url,
+            url: monitor.data[source].finalFilename,
             dataType: "text",
             success: function(data) {
                 // console.log(monitor);

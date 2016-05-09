@@ -11,48 +11,28 @@
     "type": "stderr",
     "rawFilename": "data-test/raw/run1.stderr.txt"
   },
-  "net": {
+  "cpu": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System net [ % ]"
+      "title": "System CPU [ % ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
         "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.net.timeseries.csv"
+        "finalFilename": "data-test/final/run1.host1.cpu.timeseries.csv"
       },
       "host2": {
         "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.net.timeseries.csv"
-      }
-    }
-  },
-  "mem": {
-    "type": "timeseries",
-    "plotOptions": {
-      "title": "System Memory [ GB ]"
-    },
-    "isArray": true,
-    "sources": ["host1", "host2"],
-    "data": {
-      "host1": {
-        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.mem.timeseries.csv"
-      },
-      "host2": {
-        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.mem.timeseries.csv"
+        "finalFilename": "data-test/final/run1.host2.cpu.timeseries.csv"
       }
     }
   },
   "io": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System io [ % ]"
+      "title": "IO [ GB/sec ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
@@ -65,12 +45,28 @@
       }
     }
   },
+  "mem": {
+    "type": "timeseries",
+    "plotOptions": {
+      "title": "System Memory [ GB ]"
+    },
+    "sources": ["host1", "host2"],
+    "data": {
+      "host1": {
+        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data-test/final/run1.host1.mem.timeseries.csv"
+      },
+      "host2": {
+        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data-test/final/run1.host2.mem.timeseries.csv"
+      }
+    }
+  },
   "net": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System net [ % ]"
+      "title": "Network [ GB/sec ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {

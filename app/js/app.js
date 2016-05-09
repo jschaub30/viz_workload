@@ -1,8 +1,12 @@
+'use strict';
+
+/* App Module */
+
 var macroscopeApp = angular.module('macroscopeApp', [
     'ngRoute',
-    'macroscopeControllers'
+    'macroscopeControllers',
+    'macroscopeServices'
 ]);
-
 
 macroscopeApp.config(['$routeProvider',
   function($routeProvider) {
@@ -11,9 +15,12 @@ macroscopeApp.config(['$routeProvider',
         templateUrl: 'partials/measurement-summary.html',
         controller: 'summaryCtrl'
       }).
-      when('/measurement/:runIdx', {
+      when('/measurement/:runId/:sourceIdx', {
         templateUrl: 'partials/measurement-detail.html',
         controller: 'detailCtrl'
+      }).
+      when('/measurement/:runId/', {
+        redirectTo: '/measurement/:runId/0'
       }).
       otherwise({
         redirectTo: '/summary'

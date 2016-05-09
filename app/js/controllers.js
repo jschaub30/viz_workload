@@ -4,44 +4,57 @@
 
 var macroscopeControllers = angular.module('macroscopeControllers', []);
 
-macroscopeControllers.controller('summaryCtrl', ['$scope', '$http',
-    function($scope, $http) {
-        $scope.init = function() {
-            $http.get('measurements/runs.json').success(function(data) {
-                $scope.measurements = data.measurements;
-                console.log(data.scopes);
-                $scope.sources = data.sources; // typically hostnames
-                $scope.allScopes = data.scopes;
-                $scope.allMeasurements = Object.keys(data.measurements);
-                $scope.currentMeasurement = $scope.allMeasurements[0];
-                $scope.currentSource = data.sources[0];
-                // $scope.drawCharts();
-                $scope.loadMeasurements();
-            })
-        };
-        $scope.drawCharts = function() {
-            for (var i = 0; i < $scope.allScopes.length; i++) {
-                drawScope($scope.allScopes[i], $scope.measurements,
-                    $scope.currentMeasurement, $scope.currentSource);
-            }
-        };
-        var idx = 0; // Allows scope data to be bound to measurements object
-        $scope.loadMeasurements = function() {
-            // Load json for all runs into measurements object
-            var keys = Object.keys($scope.measurements);
-            for (var i = 0; i < keys.length; i++) {
-                $http.get($scope.measurements[keys[i]].url)
-                    .success(function(data) {
-                        $scope.measurements[keys[idx]].scopes = data;
-                        idx++;
-                        if(idx == keys.length){
-                          console.log($scope.measurements);
-                          // $scope.drawCharts();
-                        }
+macroscopeControllers.controller('summaryCtrl', ['$scope', 'Measurement',
+    function($scope, Measurement) {
+        $scope.measurements = Measurement.query();
+        $scope.measurements.$promise.then(function(result) {
+            // Now read each measurement and extract filenames for table
+            for (var i = 0; i < result.length; i++) {
+                result[i]['monitors'] = Measurement.get({
+                        runId: result[i].runId
                     });
             }
-        };
+        });
+    }
+]);
 
-        $scope.init();
+macroscopeControllers.controller('detailCtrl', ['$scope', '$routeParams', 'Measurement',
+    function($scope, $routeParams, Measurement) {
+
+        $scope.runId = $routeParams.runId;
+        $scope.sourceIdx = $routeParams.sourceIdx;
+        $scope.measurement = Measurement.get({
+                runId: $routeParams.runId
+            },
+            function(measurement) {
+                // console.log(measurement);
+
+                function getMonitorsBySource(measurement) {
+                    var keys = Object.keys(measurement),
+                        allMonitors = [],
+                        obj;
+                    for (var i = 0; i < keys.length; i++) {
+                        obj = measurement[keys[i]];
+                        if (obj.sources) {
+                            obj['divId'] = 'id_' + keys[i];
+                            allMonitors.push(obj);
+                        }
+                    }
+                    return allMonitors;
+                };
+
+                $scope.allMonitors = getMonitorsBySource(measurement);
+                // console.log($scope.allMonitors);
+                $scope.sources = $scope.allMonitors[0].sources;
+                $scope.drawCharts();
+            }
+        );
+
+        $scope.drawCharts = function() {
+            for (var i = 0; i < $scope.allMonitors.length; i++) {
+                drawMonitor($scope.allMonitors[i],
+                    $scope.sources[$scope.sourceIdx]);
+            }
+        };
     }
 ]);

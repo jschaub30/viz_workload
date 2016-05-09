@@ -11,21 +11,20 @@
     "type": "stderr",
     "rawFilename": "data-test/raw/run2.stderr.txt"
   },
-  "net": {
+  "cpu": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System net [ % ]"
+      "title": "System CPU [ % ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
         "rawFilename": "data-test/raw/run2.host1.dstat.csv",
-        "finalFilename": "data-test/final/run2.host1.net.timeseries.csv"
+        "finalFilename": "data-test/final/run2.host1.cpu.timeseries.csv"
       },
       "host2": {
         "rawFilename": "data-test/raw/run2.host2.dstat.csv",
-        "finalFilename": "data-test/final/run2.host2.net.timeseries.csv"
+        "finalFilename": "data-test/final/run2.host2.cpu.timeseries.csv"
       }
     }
   },
@@ -34,7 +33,6 @@
     "plotOptions": {
       "title": "System Memory [ GB ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
@@ -50,9 +48,8 @@
   "io": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System io [ % ]"
+      "title": "IO [ GB/sec ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
@@ -68,9 +65,8 @@
   "net": {
     "type": "timeseries",
     "plotOptions": {
-      "title": "System net [ % ]"
+      "title": "Network [ GB/sec ]"
     },
-    "isArray": true,
     "sources": ["host1", "host2"],
     "data": {
       "host1": {

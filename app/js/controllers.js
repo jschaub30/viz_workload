@@ -7,14 +7,18 @@ var macroscopeControllers = angular.module('macroscopeControllers', []);
 macroscopeControllers.controller('summaryCtrl', ['$scope', 'Measurement',
     function($scope, Measurement) {
         $scope.measurements = Measurement.query();
-        $scope.measurements.$promise.then(function(result) {
-            // Now read each measurement and extract filenames for table
+        $scope.measurements.$promise.then(
+          function(result) {
+            // Now attach monitors to top level measurement objects
+            var current;
             for (var i = 0; i < result.length; i++) {
-                result[i]['monitors'] = Measurement.get({
+              current = result[i];
+                current['monitors'] = Measurement.get({
                         runId: result[i].runId
                     });
             }
-        });
+        }
+      );
     }
 ]);
 

@@ -1,15 +1,16 @@
 {
   "time": {
     "type": "time",
-    "rawFilename": "data-test/raw/run1.time.txt"
+    "rawFilename": "data/test/raw/run1.time.txt",
+    "finalFilename": "data/test/final/run1.time.json"
   },
   "stdout": {
     "type": "stdout",
-    "rawFilename": "data-test/raw/run1.stdout.txt"
+    "rawFilename": "data/test/raw/run1.stdout.txt"
   },
   "stderr": {
     "type": "stderr",
-    "rawFilename": "data-test/raw/run1.stderr.txt"
+    "rawFilename": "data/test/raw/run1.stderr.txt"
   },
   "cpu": {
     "type": "timeseries",
@@ -19,12 +20,12 @@
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
-        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.cpu.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data/test/final/run1.host1.cpu.timeseries.csv"
       },
       "host2": {
-        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.cpu.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data/test/final/run1.host2.cpu.timeseries.csv"
       }
     }
   },
@@ -36,12 +37,12 @@
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
-        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.io.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data/test/final/run1.host1.io.timeseries.csv"
       },
       "host2": {
-        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.io.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data/test/final/run1.host2.io.timeseries.csv"
       }
     }
   },
@@ -53,12 +54,12 @@
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
-        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.mem.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data/test/final/run1.host1.mem.timeseries.csv"
       },
       "host2": {
-        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.mem.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data/test/final/run1.host2.mem.timeseries.csv"
       }
     }
   },
@@ -70,12 +71,12 @@
     "sources": ["host1", "host2"],
     "data": {
       "host1": {
-        "rawFilename": "data-test/raw/run1.host1.dstat.csv",
-        "finalFilename": "data-test/final/run1.host1.net.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host1.dstat.csv",
+        "finalFilename": "data/test/final/run1.host1.net.timeseries.csv"
       },
       "host2": {
-        "rawFilename": "data-test/raw/run1.host2.dstat.csv",
-        "finalFilename": "data-test/final/run1.host2.net.timeseries.csv"
+        "rawFilename": "data/test/raw/run1.host2.dstat.csv",
+        "finalFilename": "data/test/final/run1.host2.net.timeseries.csv"
       }
     }
   }

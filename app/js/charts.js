@@ -1,18 +1,9 @@
 'use strict';
 
-var timeseries_chart = function(data, monitor) {
+var timeseries_chart = function(data, divId, plotOptions) {
         var chart = new Dygraph(
-            document.getElementById(monitor.divId),
-            data, {
-                // labels: labels,
-                // colors: chart_colors,
-                xlabel: "Elapsed time [ sec ]",
-                // ylabel: monitor.units,
-                strokeWidth: 2,
-                legend: 'always',
-                labelsDivWidth: 500,
-                title: monitor.plotOptions.title
-            }
+            document.getElementById(divId),
+            data, plotOptions
         );
         return chart;
     },
@@ -26,7 +17,10 @@ var timeseries_chart = function(data, monitor) {
             dataType: "text",
             success: function(data) {
                 // console.log(monitor);
-                timeseries_chart(data, monitor)
+                var plotOptions = new TimeseriesPlotOptions,
+                    divId = monitor.divId;
+                plotOptions.title = monitor.plotOptions.title;
+                timeseries_chart(data, divId, plotOptions)
             },
             error: function(request, status, error) {
                 console.log(status);

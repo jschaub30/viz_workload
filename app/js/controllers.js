@@ -13,9 +13,9 @@ macroscopeControllers.controller('summaryCtrl', ['$scope', 'Measurement',
             var current;
             for (var i = 0; i < result.length; i++) {
               current = result[i];
-                current['monitors'] = Measurement.get({
-                        runId: result[i].runId
-                    });
+              current['monitors'] = Measurement.get({
+                runId: result[i].runId
+              });
             }
         }
       );
@@ -40,6 +40,7 @@ macroscopeControllers.controller('detailCtrl', ['$scope', '$routeParams', 'Measu
                     for (var i = 0; i < keys.length; i++) {
                         obj = measurement[keys[i]];
                         if (obj.sources) {
+                          //Only keys that have the 'sources' field can be plotted
                             obj['divId'] = 'id_' + keys[i];
                             allMonitors.push(obj);
                         }
@@ -48,7 +49,7 @@ macroscopeControllers.controller('detailCtrl', ['$scope', '$routeParams', 'Measu
                 };
 
                 $scope.allMonitors = getMonitorsBySource(measurement);
-                // console.log($scope.allMonitors);
+                console.log($scope.allMonitors);
                 $scope.sources = $scope.allMonitors[0].sources;
                 $scope.drawCharts();
             }

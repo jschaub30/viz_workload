@@ -20,15 +20,14 @@ def main(args):
         lines = fid.readlines()
     environ = {}
     for line in lines:
-          (key, _, value) = line.partition("=")
-          environ[key] = value.split('#')[0].strip()
+        (key, _, value) = line.partition("=")
+        environ[key] = value.split('#')[0].strip()
     meas = {}
 
     try:
         meas['run_id'] = environ['RUN_ID']
     except KeyError:
         meas['run_id'] = 'run1'
-
 
     try:
         meas['workload_command'] = environ['WORKLOAD_CMD'].strip('"').strip("'")

@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 
 '''
-Input:  run id, comma separated hosts array, comma separated measurement array
-Output: json string
-
-Example:
-$ ./create_measurement.py run1 host1,host2 time,stdout,stderr,dstat
+Create json object (string) for measurement
 '''
 
 import sys
-import json
+import os
+import getopt
+import pprint
+
+def usage():
+    ''' Print usage details '''
+    print "Usage: create_measurement.py [options] "
+    print ""
+    print "Options:"
+    print "  -r  run_id # string"
+    print "  -s  servers  # comma separated"
+    print "  -d  # Add dstat measurement"
+    print "  -h  print help, then exit."
+    print ""
+    print "Example use:"
+    print "./create_measurement.py -r run1 -s host1"
+    print "./create_measurement.py -r run1 -s host1 -d"
+    return
 
 def add_simple(meas_type, run_id):
     '''
@@ -22,45 +35,63 @@ def add_simple(meas_type, run_id):
 
 def add_timeseries(meas_type, run_id, hosts):
     '''
-    Timeseries measurements add 'sources' and contain data for each source
+    Timeseries measurements add properties for 'sources' and filenames for
+    data from each source
     '''
     obj = {}
     for host in hosts:
         obj['type'] = 'timeseries'
         obj['sources'] = hosts
         obj[host] = {}
-        obj[host]['rawFilename'] = "data/raw/%s.%s.%s.txt" % (run_id,
-        host, meas_type)
-        obj[host]['finalFilename'] = "data/final/%s.%s.%s.txt" % (run_id,
-        host, meas_type)
+        obj[host]['rawFilename'] = "data/raw/%s.%s.%s.txt" % (
+            run_id, host, meas_type)
+        obj[host]['finalFilename'] = "data/final/%s.%s.%s.txt" % (
+            run_id, host, meas_type)
     return obj
-
-def add_dstat(measurement, run_id, hosts):
-    '''
-    Add timeseries for 'cpu', 'mem', 'io', and 'net' to existing measurement
-    '''
-
 
 def main(args):
     '''
     Writes a json measurement object based on measurement file
     '''
-    run_id = args[0]
-    hosts = args[1].split(',')
-    if len(args) > 2:
-        measurements = args[2].split(',')
-    else:
-        measurements = ['dstat']
-    m = {}
+    try:
+        options, _ = getopt.getopt(args, 'hdr:s:',
+                                   ['help', 'dstat', 'run_id', 'servers'])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(1)
+    if len(options) == 0:
+        usage()
+        sys.exit(1)
+
+    dstat = False
+    for opt, arg in options:
+        if opt == '-r':
+            run_id = arg
+        elif opt == '-d':
+            dstat = True
+        elif opt == '-s':
+            hosts = arg.split(',')
+        elif opt in ('-h', '--help'):
+            usage()
+            sys.exit(0)
+
+    if not 'run_id' in locals():
+        sys.stderr.write('run_id not defined')
+        usage()
+        sys.exit(1)
+
+    if not 'hosts' in locals():
+        hosts = [os.uname()[1]]
+
+    meas = {}
     for meas_type in ['time', 'stdout', 'stdin']:
-        m[meas_type] = add_simple(meas_type, run_id)
+        meas[meas_type] = add_simple(meas_type, run_id)
 
     # Now add dstat measurements
-    if 'dstat' in measurements:
+    if dstat:
         for meas_type in ['cpu', 'mem', 'io', 'net']:
-            m[meas_type] = add_timeseries(meas_type, run_id, hosts)
-    print(m)
-    json.dumps(m)
+            meas[meas_type] = add_timeseries(meas_type, run_id, hosts)
+    pprint.pprint(meas)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

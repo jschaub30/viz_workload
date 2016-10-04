@@ -15,13 +15,13 @@ def usage():
     print ""
     print "Options:"
     print "  -r  run_id # string"
-    print "  -s  servers  # comma separated"
+    print "  -s  servers  # space or comma separated"
     print "  -d  # Add dstat measurement"
     print "  -h  print help, then exit."
     print ""
     print "Example use:"
-    print "./create_measurement.py -r run1 -s host1"
-    print "./create_measurement.py -r run1 -s host1 -d"
+    print "./create_measurement.py -r run1 -s host1,host2"
+    print "./create_measurement.py -r run1 -s 'host1 host2' -d"
     return
 
 def add_simple(meas_type, run_id):
@@ -70,7 +70,7 @@ def main(args):
         elif opt == '-d':
             dstat = True
         elif opt == '-s':
-            hosts = arg.split(',')
+            hosts = arg.replace(' ', ',').split(',')
         elif opt in ('-h', '--help'):
             usage()
             sys.exit(0)
@@ -81,7 +81,7 @@ def main(args):
         sys.exit(1)
 
     if not 'hosts' in locals():
-        hosts = [os.uname()[1]]
+        hosts = [os.uname()[1].split('.')[0]]   # short hostname
 
     meas = {}
     for meas_type in ['time', 'stdout', 'stdin']:

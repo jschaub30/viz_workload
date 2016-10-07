@@ -1,14 +1,16 @@
 #!/bin/bash
 
-export WORKLOAD_NAME=EXAMPLE
-export DESCRIPTION="Example workload using dd command"
-export WORKLOAD_DIR="."             # The workload working directory
+# Required
+export WORKLOAD_NAME=SLEEP
+export DESCRIPTION="Example sleep command"
 export WORKLOAD_CMD="sleep 20"  # The workload to run
-export MEAS_DSTAT=1                 # Capture dstat traces for cpu, mem, io & network
+
+# Optional
+export WORKLOAD_DIR="."             # The workload working directory
 export MEAS_DELAY_SEC=1             # Delay between each measurement
-export RUNDIR=rundir/EXAMPLE/20161004-115026
-#export RUNDIR=$(./setup_measurement.py)
-#echo $RUNDIR
+export VERBOSE=1
+#export SOURCES="host1 host2"        # space delimited
+#export RUNDIR=rundir/EXAMPLE/20161007-162550
 
 ./run-and-measure.sh
 

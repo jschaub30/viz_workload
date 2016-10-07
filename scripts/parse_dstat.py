@@ -7,7 +7,9 @@ Output: cpu, mem, io, net csv files (data/final directory)
 
 import sys
 from datetime import datetime
-import numpy as np
+
+def scale(val, factor):
+    return str(round(float(val) / factor))
 
 def main(dstat_fn):
     '''
@@ -17,7 +19,7 @@ def main(dstat_fn):
     with open(dstat_fn, 'r') as fid:
         blob = fid.read()
     lines = blob.split('\n')
-    scaleGB = 1/1024/1024/1024
+    scaleGB = 1.0/1024/1024/1024
 
     monitors = [
         {'name': 'mem', 'columnNames': ["used", "buff", "cach", "free"], 'scale': scaleGB},
@@ -40,12 +42,12 @@ def main(dstat_fn):
             # First normalize timestamp
             if timestamp_0 == -1:
                 timestamp_0 = timestamp
-            line[0] = str((timestamp - timestamp_0).total_seconds())
-            line = np.array(line)
             for monitor in monitors:
-                # TODO: replace numpy with [line[i] for i ...]
-                out_string[monitor['name']] += ','.join(line[columns[monitor['name']]]) + '\n'
-                # TODO: scale data
+                cols = columns[monitor['name']]
+                data = [str((timestamp - timestamp_0).total_seconds())]
+                for i in range(1, len(cols)):
+                    data.append(str(round(float(line[cols[i]])*monitor['scale'], 1)))
+                out_string[monitor['name']] += ','.join(data) + '\n'
         if '"new","used"' in line:
             start = True
             fields = line.replace('"', '').split(',')
@@ -60,6 +62,7 @@ def main(dstat_fn):
         out_fn = dstat_fn.replace('.dstat.csv', '.%s.timeseries.csv' % monitor['name'])
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final')
+        print 'writing ' + out_fn
         with open(out_fn, 'w') as fid:
             fid.write(out_string[monitor['name']])
 

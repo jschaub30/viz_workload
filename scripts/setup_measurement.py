@@ -7,6 +7,7 @@ Output: json file
 
 import sys
 import os
+import shutil
 import json
 import datetime as dt
 
@@ -14,11 +15,10 @@ def create_directories(rundir):
     '''
     Setup directory structure
     '''
-    for name in ['data/raw', 'data/final', 'html', 'scripts']:
+    for name in ['data/raw', 'data/final', 'scripts']:
         directory = os.path.join(rundir, name)
         if not os.path.exists(directory):
             os.makedirs(directory)
-
 
 def main():
     '''
@@ -26,10 +26,11 @@ def main():
     '''
     meas = {}
 
+    # Required environmental variables
     try:
-        meas['run_id'] = os.environ['RUN_ID']
+        meas['workload_dir'] = os.environ['WORKLOAD_DIR']
     except KeyError:
-        meas['run_id'] = 'run1'
+        meas['workload_dir'] = os.path.dirname(os.path.realpath(__file__))
 
     for key in ['WORKLOAD_CMD', 'WORKLOAD_NAME', 'DESCRIPTION']:
         try:
@@ -38,18 +39,31 @@ def main():
             sys.stderr.write("%s not found\n" % key)
             sys.exit(1)
 
+    # Optional environmental variables
+    try:
+        meas['run_id'] = os.environ['RUN_ID']
+    except KeyError:
+        meas['run_id'] = 'run1'
+
     timestamp = dt.datetime.now().strftime('%Y%m%d-%H%M%S')
+    meas['timestamp'] = timestamp
     try:
         rundir = os.environ['RUNDIR']
     except KeyError:
         rundir = os.path.join("rundir", meas['workload_name'], timestamp)
 
     create_directories(rundir)
-    meas['timestamp'] = timestamp
+
+    try:
+        shutil.copytree(os.path.join('..', 'app'), os.path.join(rundir, 'html'))
+    except shutil.Error as e:
+        print('Directory not copied. Error: %s' % e)
+    except OSError as e:
+        print('Directory not copied. Error: %s' % e)
 
     try:
         sources = []
-        hosts = os.environ['HOSTS'].split(' ')
+        hosts = os.environ['SOURCES'].split(' ')
         for host in hosts:
             sources.append(host.strip('"').strip("'"))
     except KeyError:

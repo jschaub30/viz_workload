@@ -11,9 +11,10 @@ var timeseries_chart = function(data, divId, plotOptions) {
 
         // var url = measurements[currentMeasurement].monitors[monitor].data[currentSource].finalFilename;
         // console.log('url is ' + url);
+        console.log(monitor);
         $.ajax({
             type: "GET",
-            url: monitor.data[source].finalFilename,
+            url: monitor[source].finalFilename,
             dataType: "text",
             success: function(data) {
                 // console.log(monitor);

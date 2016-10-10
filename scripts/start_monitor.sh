@@ -30,8 +30,8 @@ ssh $HOST "which $MONITOR" > /dev/null
 [ "$?" -ne 0 ] && echo ERROR: Problem starting $MONITOR on $HOST. Exiting... \
   && exit 1
 
-# Checking to see if monitor is already running
-RC=$(ssh $HOST "ps -efa | grep $MONITOR | grep -v grep | grep -v vim | wc -l")
+# Check to see if monitor is already running
+RC=$(ssh $HOST "ps -efa | grep $MONITOR | grep -v 'grep\|vim\|start_monitor' | wc -l")
 [ $RC -ne 0 ] && echo WARNING: $MONITOR appears to be running on $HOST.
 
 # Start $MONITOR

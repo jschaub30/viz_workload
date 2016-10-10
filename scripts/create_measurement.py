@@ -30,7 +30,7 @@ def add_simple(meas_type, run_id):
     '''
     obj = {}
     obj['type'] = meas_type
-    obj['rawFilename'] = "data/raw/%s.%s.txt" % (run_id, meas_type)
+    obj['rawFilename'] = "../data/raw/%s.%s.txt" % (run_id, meas_type)
     return obj
 
 def add_timeseries(meas_type, run_id, hosts):
@@ -43,15 +43,15 @@ def add_timeseries(meas_type, run_id, hosts):
         obj['type'] = 'timeseries'
         obj['sources'] = hosts
         obj[host] = {}
-        obj[host]['rawFilename'] = "data/raw/%s.%s.%s.txt" % (
+        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.txt" % (
             run_id, host, meas_type)
-        obj[host]['finalFilename'] = "data/final/%s.%s.%s.txt" % (
+        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.txt" % (
             run_id, host, meas_type)
     return obj
 
-def main(args):
+def create_measurement(args):
     '''
-    Writes a json measurement object based on measurement file
+    Returns a dict that describes measurement attributes
     '''
     try:
         options, _ = getopt.getopt(args, 'hdr:s:',
@@ -84,13 +84,18 @@ def main(args):
         hosts = [os.uname()[1].split('.')[0]]   # short hostname
 
     meas = {}
-    for meas_type in ['time', 'stdout', 'stdin']:
+    for meas_type in ['time', 'stdout', 'stderr']:
         meas[meas_type] = add_simple(meas_type, run_id)
 
     # Now add dstat measurements
     if dstat:
         for meas_type in ['cpu', 'mem', 'io', 'net']:
             meas[meas_type] = add_timeseries(meas_type, run_id, hosts)
+    return meas
+
+
+def main(args):
+    meas = create_measurement(args)
     pprint.pprint(meas)
 
 if __name__ == '__main__':

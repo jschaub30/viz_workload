@@ -1,7 +1,0 @@
-[{
-    "runId": "run1",
-    "url": "measurements/run1.json"
-}, {
-    "runId": "run2",
-    "url": "measurements/run2.json"
-}]

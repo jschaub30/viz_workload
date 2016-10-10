@@ -14,7 +14,7 @@ macroscopeControllers.controller('summaryCtrl', ['$scope', 'Measurement',
             for (var i = 0; i < result.length; i++) {
               current = result[i];
               current['monitors'] = Measurement.get({
-                runId: result[i].runId
+                runId: result[i].run_id
               });
             }
         }

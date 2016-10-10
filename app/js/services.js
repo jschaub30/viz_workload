@@ -6,11 +6,11 @@ var macroscopeServices = angular.module('macroscopeServices', ['ngResource']);
 
 macroscopeServices.factory('Measurement', ['$resource',
     function($resource) {
-        return $resource('measurements/:runId.json', {}, {
+        return $resource(':runId.json', {}, {
             query: {
                 method: 'GET',
                 params: {
-                    runId: 'runs'
+                    runId: 'measurements'
                 },
                 isArray: true
             }

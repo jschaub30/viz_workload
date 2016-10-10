@@ -72,13 +72,13 @@ run_workload(){
   if [ "$?" -ne "0" ]; then
     echo /usr/bin/time not found.  Exiting ... && exit 1
   fi
-  WORKLOAD_STDOUT=$RUNDIR/data/raw/${RUN_ID}.workload.stdout.txt
-  WORKLOAD_STDERR=$RUNDIR/data/raw/${RUN_ID}.workload.stderr.txt
+  WORKLOAD_STDOUT=$RUNDIR/data/raw/${RUN_ID}.stdout.txt
+  WORKLOAD_STDERR=$RUNDIR/data/raw/${RUN_ID}.stderr.txt
   TIME_FN=$RUNDIR/data/raw/${RUN_ID}.time.txt
   /usr/bin/time --verbose --output=$TIME_FN \
     bash -c "$WORKLOAD_CMD 2> >(tee $WORKLOAD_STDERR) 1> >(tee $WORKLOAD_STDOUT)" &
   TIME_PID=$!
-  debug_message "Waiting for $TIME_PID to finish"
+  debug_message "Waiting for workload (pid $TIME_PID) to finish"
   wait $TIME_PID
 }
 

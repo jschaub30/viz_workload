@@ -91,7 +91,7 @@ def main():
     else:
         all_measurements = [meas]
     with open(summary_fn, 'w') as fid:
-        fid.write(json.dumps(all_measurements))
+        fid.write(json.dumps(all_measurements, sort_keys=True, indent=4))
 
     # Now create the run_id file that contains measurement details
     args = ['-r', meas['run_id'], '-s', ','.join(sources), '-d']
@@ -100,7 +100,7 @@ def main():
     detail_fn = os.path.join(rundir, 'html', meas['run_id'] 
             + '.json')
     with open(detail_fn, 'w') as fid:
-        fid.write(json.dumps(details))
+        fid.write(json.dumps(details, sort_keys=True, indent=4))
 
     print rundir  # Used by the calling shell script
 if __name__ == '__main__':

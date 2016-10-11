@@ -51,14 +51,15 @@ def add_timeseries(meas_type, run_id, monitor, hosts):
         elif meas_type == 'net':
             title = 'Network [GB/sec]'
 
+
+    obj = {
+            'type':'timeseries',
+            'sources': hosts,
+            'monitor': monitor,
+            'title': title
+            }
     for host in hosts:
-        obj = {
-                'type':'timeseries',
-                'sources': hosts,
-                'monitor': monitor,
-                'title': title,
-                host: {}
-                }
+        obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.%s.txt" % (
             run_id, host, monitor, meas_type)
         obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
@@ -96,8 +97,8 @@ def create_measurement(args):
         usage()
         sys.exit(1)
 
-    if not 'hosts' in locals():
-        hosts = [os.uname()[1].split('.')[0]]   # short hostname
+    #if not 'hosts' in locals():
+        #hosts = [os.uname()[1].split('.')[0]]   # short hostname
 
     meas = {}
     for meas_type in ['time', 'stdout', 'stderr']:

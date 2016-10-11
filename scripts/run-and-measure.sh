@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #################### FUNCTION DEFINITIONS ####################
+
+
 usage() {
   echo '# Example usage:'
   echo 'export WORKLOAD_NAME=EXAMPLE'
@@ -46,7 +48,6 @@ start_monitors() {
 	debug_message 1 "Starting monitors"
     if [ "$MEAS_DSTAT" == 1 ]; then
       debug_message 1 "Starting dstat on $SOURCE"
-      echo ./start_monitor.sh dstat $SOURCE $DSTAT_FN $MEAS_DELAY_SEC 
       ./start_monitor.sh dstat $SOURCE $DSTAT_FN $MEAS_DELAY_SEC &
       CURRPID=$!
     fi
@@ -115,6 +116,11 @@ setup_webserver() {
   debug_message 0 "Then navigate to http://${IP}:12121"
   echo
 }
+stop_all() {
+    debug_message -1 "Stopping measurement"
+    kill -9 $TIME_PID 2>> $WORKLOAD_STDERR &  # Kill main process if ctrl-c
+}
+
 #################### END OF FUNCTIONS ####################
 
 # Required
@@ -129,12 +135,16 @@ setup_webserver() {
 [ -z "$MEAS_DELAY_SEC" ] && MEAS_DELAY_SEC=1
 [ -z "$VERBOSE" ] && VERBOSE=0     # 0|1|2  Higher==more messages
 
+trap 'stop_all' SIGTERM SIGINT # Kill process monitors if killed early
+
 WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
 export MEAS_DSTAT=1  # Capture dstat traces for cpu, mem, io & network
 
 RUNDIR=`./setup_measurement.py`
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"
+
+
 #record_state
 start_monitors
 run_workload

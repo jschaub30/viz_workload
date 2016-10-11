@@ -33,20 +33,36 @@ def add_simple(meas_type, run_id):
     obj['rawFilename'] = "../data/raw/%s.%s.txt" % (run_id, meas_type)
     return obj
 
-def add_timeseries(meas_type, run_id, hosts):
+def add_timeseries(meas_type, run_id, monitor, hosts):
     '''
     Timeseries measurements add properties for 'sources' and filenames for
     data from each source
     '''
     obj = {}
+    title = ''
+
+    if monitor == 'dstat':
+        if meas_type == 'cpu':
+            title = 'System CPU [%]'
+        elif meas_type == 'mem':
+            title = 'Memory [GB]'
+        elif meas_type == 'io':
+            title = 'IO [GB/sec]'
+        elif meas_type == 'net':
+            title = 'Network [GB/sec]'
+
     for host in hosts:
-        obj['type'] = 'timeseries'
-        obj['sources'] = hosts
-        obj[host] = {}
-        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.txt" % (
-            run_id, host, meas_type)
-        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.txt" % (
-            run_id, host, meas_type)
+        obj = {
+                'type':'timeseries',
+                'sources': hosts,
+                'monitor': monitor,
+                'title': title,
+                host: {}
+                }
+        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.%s.txt" % (
+            run_id, host, monitor, meas_type)
+        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
+            run_id, host, monitor, meas_type)
     return obj
 
 def create_measurement(args):
@@ -90,7 +106,7 @@ def create_measurement(args):
     # Now add dstat measurements
     if dstat:
         for meas_type in ['cpu', 'mem', 'io', 'net']:
-            meas[meas_type] = add_timeseries(meas_type, run_id, hosts)
+            meas[meas_type] = add_timeseries(meas_type, run_id, 'dstat', hosts)
     return meas
 
 

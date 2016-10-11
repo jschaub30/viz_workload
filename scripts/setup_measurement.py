@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
 '''
-Input:  measurement file
-Output: json file
+Input:  environmental variables
+        required: 'WORKLOAD_CMD', 'WORKLOAD_NAME', 'DESCRIPTION'
+        optional: 'WORKLOAD_DIR', 'RUN_ID', 'SOURCES'
+Output: summary (json) file
 '''
 
 import sys
@@ -82,7 +84,7 @@ def main():
         sources.append(os.uname()[1].split('.')[0])   # short hostname
 
     meas['sources'] = sources
-    summary_fn = os.path.join(rundir, 'html', 'measurements.json')
+    summary_fn = os.path.join(rundir, 'html', 'summary.json')
     if os.path.exists(summary_fn):
         with open(summary_fn, 'r') as fid:
             all_measurements = json.loads(fid.read())
@@ -95,14 +97,13 @@ def main():
     with open(summary_fn, 'w') as fid:
         fid.write(json.dumps(all_measurements))
 
-    # Now create the measurement detail file
+    # Now create the run_id file that contains measurement details
     args = ['-r', meas['run_id'], '-s', ','.join(sources), '-d']
     details = create_measurement.create_measurement(args)
 
     detail_fn = os.path.join(rundir, 'html', meas['run_id'] 
             + '.json')
     with open(detail_fn, 'w') as fid:
-        #pprint.pprint(details, fid)
         fid.write(json.dumps(details))
 
     print rundir  # Used by the calling shell script

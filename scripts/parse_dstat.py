@@ -59,7 +59,7 @@ def main(dstat_fn):
 
     # Now write output csv files
     for monitor in monitors:
-        out_fn = dstat_fn.replace('.dstat.csv', '.%s.timeseries.csv' % monitor['name'])
+        out_fn = dstat_fn.replace('.dstat.csv', '.dstat.%s.csv' % monitor['name'])
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final')
         print 'writing ' + out_fn

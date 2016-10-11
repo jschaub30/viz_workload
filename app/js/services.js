@@ -10,7 +10,7 @@ macroscopeServices.factory('Measurement', ['$resource',
             query: {
                 method: 'GET',
                 params: {
-                    runId: 'measurements'
+                    runId: 'summary'
                 },
                 isArray: true
             }

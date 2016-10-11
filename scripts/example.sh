@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Required
-export WORKLOAD_NAME=SLEEP                 # A short name for this type of workload
-export DESCRIPTION="20 sec sleep command"  # A description of this particular workload
-export WORKLOAD_CMD="sleep 20"             # The workload to run
+export WORKLOAD_NAME=CPU                  # A short name for this type of workload
+export DESCRIPTION="Artificial CPU load"  # A description of this particular workload
+export WORKLOAD_CMD="./load_cpu.sh"       # The workload to run
 
 # Optional
 export WORKLOAD_DIR="."             # The workload working directory

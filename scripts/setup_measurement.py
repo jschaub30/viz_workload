@@ -62,18 +62,14 @@ def main():
         os.remove(symlink)
     except OSError:
         pass
-    os.symlink(timestamp, symlink)
+    os.symlink(os.path.basename(rundir), symlink)
 
     try:
         shutil.copytree(os.path.join('..', 'app'), os.path.join(rundir, 'html'))
         shutil.copytree(os.path.join('..', 'bower_components'), 
                 os.path.join(rundir, 'html', 'bower_components'))
-    except shutil.Error as e:
-        print('App directory not copied. Error: %s' % e)
-        sys.exit(1)
     except OSError as e:
-        print('App directory not copied. Error: %s' % e)
-        sys.exit(1)
+        pass   # Raised when a directory already exists (when re-using rundir)
 
     try:
         sources = []

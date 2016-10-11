@@ -20,5 +20,5 @@ then
   [ "$?" -eq 0 ] && ssh $HOST "$PREFIX rm $REMOTE_FN"
 fi
 
-echo Successfully stopped $MONITOR on $HOST
+#echo Successfully stopped $MONITOR on $HOST
 

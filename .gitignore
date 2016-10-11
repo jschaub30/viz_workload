@@ -4,3 +4,4 @@ tmp
 .DS_Store
 bower_components/
 *pyc
+webserver.sh

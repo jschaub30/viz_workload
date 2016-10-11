@@ -62,7 +62,7 @@ def main(dstat_fn):
         out_fn = dstat_fn.replace('.dstat.csv', '.dstat.%s.csv' % monitor['name'])
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final')
-        print 'writing ' + out_fn
+        #print 'writing ' + out_fn
         with open(out_fn, 'w') as fid:
             fid.write(out_string[monitor['name']])
 

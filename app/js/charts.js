@@ -17,7 +17,7 @@ var timeseries_chart = function(data, divId, plotOptions) {
             url: monitor[source].finalFilename,
             dataType: "text",
             success: function(data) {
-                console.log(monitor);
+                // console.log(monitor);
                 var plotOptions = new TimeseriesPlotOptions,
                     divId = monitor.divId;
                 plotOptions.title = monitor.title;

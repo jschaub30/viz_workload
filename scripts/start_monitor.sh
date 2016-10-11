@@ -42,5 +42,6 @@ $(ssh $HOST $REMOTE_CMD) 2>/dev/null &
 RC=$?
 
 [ "$RC" -ne 0 ] && echo Problem starting $MONITOR on $HOST && exit 1
-echo Successfully started $MONITOR on $HOST
+exit $RC
+#echo Successfully started $MONITOR on $HOST
 

@@ -29,7 +29,7 @@ cp example.sh your_workload.sh
 - [example-cluster.sh][example-cluster] 2 hosts at a time
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
 
-[example]: [../scripts/example.sh]
+[example]: [scripts/example.sh]
 [example-sweep]: [../blob/master/scripts/example-sweep.sh]
 [example-cluster]: [../blob/master/scripts/example-cluster.sh]
 [example-cluster-sweep]: [../blob/master/scripts/example-cluster-sweep.sh]

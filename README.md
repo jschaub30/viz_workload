@@ -29,10 +29,10 @@ cp example.sh your_workload.sh
 - [example-cluster.sh][example-cluster] 2 hosts at a time
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
 
-[example]: [https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh]
-[example-sweep]: [https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh]
-[example-cluster]: [https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster.sh]
-[example-cluster-sweep]: [https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh]
+[example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
+[example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
+[example-cluster]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster.sh
+[example-cluster-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh
 
 ## Optional.  Setup your webserver
 To permanently share all measurements, enable a web server.

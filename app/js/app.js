@@ -2,13 +2,13 @@
 
 /* App Module */
 
-var macroscopeApp = angular.module('macroscopeApp', [
+var vizWorkloadApp = angular.module('vizWorkloadApp', [
     'ngRoute',
-    'macroscopeControllers',
-    'macroscopeServices'
+    'vizWorkloadControllers',
+    'vizWorkloadServices'
 ]);
 
-macroscopeApp.config(['$routeProvider',
+vizWorkloadApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/summary', {

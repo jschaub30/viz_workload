@@ -24,8 +24,15 @@ cp example.sh your_workload.sh
 ```
 
 #Example scripts
-- [example.sh](https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh) Simple CPU load example
-- [example-sweep.sh](https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh) Sweeping a parameter
+- [example.sh][example] Simple CPU load example
+- [example-sweep.sh][example-sweep] Sweeping a parameter
+- [example-cluster.sh][example-cluster] 2 hosts at a time
+- [example-clusteri-sweep.sh][example-cluster-sweep]Sweep a parameter on 2 hosts
+
+[example]: [../blob/master/scripts/example.sh]
+[example-sweep]: [../blob/master/scripts/example-sweep.sh]
+[example-cluster]: [../blob/master/scripts/example-cluster.sh]
+[example-cluster-sweep]: [../blob/master/scripts/example-cluster-sweep.sh]
 
 ## Optional.  Setup your webserver
 To permanently share all measurements, enable a web server.
@@ -35,5 +42,6 @@ sudo apt-get install apache2
 cd /var/www/html
 sudo ln -sf [full path to viz_workload/scripts/rundir directory]
 ```
+
 
 Copyright IBM 2016

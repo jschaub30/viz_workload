@@ -2,9 +2,9 @@
 
 /* Services */
 
-var macroscopeServices = angular.module('macroscopeServices', ['ngResource']);
+var vizWorkloadServices = angular.module('vizWorkloadServices', ['ngResource']);
 
-macroscopeServices.factory('Measurement', ['$resource',
+vizWorkloadServices.factory('Measurement', ['$resource',
     function($resource) {
         return $resource(':runId.json', {}, {
             query: {
@@ -18,4 +18,4 @@ macroscopeServices.factory('Measurement', ['$resource',
     }
 ]);
 
-macroscopeServices.service('tests', 'Test');
+vizWorkloadServices.service('tests', 'Test');

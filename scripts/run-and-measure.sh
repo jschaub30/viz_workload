@@ -40,7 +40,7 @@ define_filenames() {
 }
 
 start_monitors() {
-  debug_message 0 "Starting monitors"
+  debug_message 0 "Starting monitors on $HOSTS"
   PIDS=()
   HOST_ARRAY=()
   for HOST in $HOSTS; do
@@ -58,7 +58,7 @@ start_monitors() {
 }
 
 stop_monitors() {
-  debug_message 0 "Stopping monitors"
+  debug_message 0 "Stopping monitors on $HOSTS"
   for HOST in $HOSTS; do
     define_filenames
     [ "$MEAS_DSTAT" == 1 ] && debug_message 1 "Stopping dstat on $HOST" && \
@@ -141,7 +141,7 @@ WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
 export MEAS_DSTAT=1  # Capture dstat traces for cpu, mem, io & network
 
 RUNDIR=`./setup_measurement.py`
-exit
+
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"
 

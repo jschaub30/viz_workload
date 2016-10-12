@@ -5,14 +5,16 @@
                 <button>Back to summary</button>
             </a>
                 SOURCE:
-                <span ng-repeat="source in sources">
-                  <a href=#/measurement/{{runId}}/{{sources.indexOf(source)}}><button>{{source}}</button></a>
+                <span ng-repeat="host in hosts">
+                  <a href=#/measurement/{{runId}}/{{hosts.indexOf(host)}}>
+                    <button>{{host}}</button></a>
                 </span>
         </div>
     </div>
     <!--End row-->
     <div class="row">
-        <div class="col-md-6 chart" ng-repeat="monitor in allMonitors" id="{{monitor.divId}}"></div>
+        <div class="col-md-6 chart" ng-repeat="monitor in allMonitors" 
+          id="{{monitor.divId}}"></div>
     </div>
     <!--End row-->
 

@@ -12,7 +12,8 @@
                 </tr>
                 <tr ng-repeat="measurement in measurements">
                     <td>{{measurement.runId}}</td>
-                    <td><a href={{measurement.monitors.stdout.rawFilename}}>stdout</a></td>
+                    <td><a href={{measurement.monitors.stdout.rawFilename}}>
+                        <button>stdout</button></a></td>
                     <td><a href={{measurement.monitors.stderr.rawFilename}}>stderr</a></td>
                     <td><a href={{measurement.monitors.time.rawFilename}}>time</a></td>
                     <td>...</td>

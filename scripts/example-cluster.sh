@@ -14,9 +14,9 @@ export WORKLOAD_DIR="."             # The workload working directory
 export MEAS_DELAY_SEC=1             # Delay in seconds between each measurement
 export VERBOSE=0                    # Verbosity level 0|1|2  Higher==more messages
 
-# To run on hosts other than the local node, export the "SOURCES" variable
+# To run on hosts other than the local node, export the "HOSTS" variable
 # We will simulate this by running on "localhost" and the string returned by "hostname"
-export SOURCES="localhost $(hostname)"    # space delimited
+export HOSTS="localhost $(hostname)"    # space delimited
 
 ./run-and-measure.sh
 

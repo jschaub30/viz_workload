@@ -12,96 +12,153 @@ import os
 import shutil
 import json
 import datetime as dt
-import create_measurement
 import pprint
 
-def create_directories(rundir):
+def setup_directories(summary):
     '''
     Setup directory structure
     '''
     for name in ['data/raw', 'data/final', 'scripts']:
-        directory = os.path.join(rundir, name)
+        directory = os.path.join(summary['rundir'], name)
         if not os.path.exists(directory):
             os.makedirs(directory)
+    symlink = os.path.join('rundir', summary['workload_name'], 'latest')
+    try:
+        os.remove(symlink)
+    except OSError:
+        pass
+    os.symlink(os.path.basename(summary['rundir']), symlink)
 
-def main():
-    '''
-    Create/append measurement object based based on environmental variables
-    '''
-    meas = {}
+    try:
+        shutil.copytree(os.path.join('..', 'app'), 
+            os.path.join(summary['rundir'], 'html'))
+        shutil.copytree(os.path.join('..', 'bower_components'), 
+                os.path.join(summary['rundir'], 'html', 'bower_components'))
+    except OSError as e:
+        pass   # Raised when a directory already exists (when re-using rundir)
 
+def create_simple(meas_type, run_id):
+    '''
+    Create top level object for measurement summary
+    '''
+    obj = {}
+    obj['type'] = meas_type
+    obj['filename'] = "../data/raw/%s.%s.txt" % (run_id, meas_type)
+    return obj
+
+def create_timeseries(run_id, monitor, meas_type, hosts):
+    '''
+    Create timeseries measurement object with properties for 'hosts' and filenames for
+    data from each host
+    '''
+    obj = {}
+    title = ''
+
+    if monitor == 'dstat':
+        if meas_type == 'cpu':
+            title = 'System CPU [%]'
+        elif meas_type == 'mem':
+            title = 'Memory [GB]'
+        elif meas_type == 'io':
+            title = 'IO [GB/sec]'
+        elif meas_type == 'net':
+            title = 'Network [GB/sec]'
+
+    obj = {
+            'type':'timeseries',
+            'hosts': hosts,
+            'monitor': monitor,
+            'title': title
+            }
+    for host in hosts:
+        obj[host] = {}
+        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.%s.txt" % (
+            run_id, host, monitor, meas_type)
+        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
+            run_id, host, monitor, meas_type)
+    return obj
+
+def load_environment():
+    '''
+    Create measurement object based based on environmental variables
+    '''
+    summary = {}
     # Required environmental variables
     try:
-        meas['workload_dir'] = os.environ['WORKLOAD_DIR']
+        summary['workload_dir'] = os.environ['WORKLOAD_DIR']
     except KeyError:
-        meas['workload_dir'] = os.path.dirname(os.path.realpath(__file__))
+        summary['workload_dir'] = os.path.dirname(os.path.realpath(__file__))
 
     for key in ['WORKLOAD_CMD', 'WORKLOAD_NAME', 'DESCRIPTION']:
         try:
-            meas[key.lower()] = os.environ[key].strip('"').strip("'")
+            summary[key.lower()] = os.environ[key].strip('"').strip("'")
         except KeyError:
             sys.stderr.write("%s not found\n" % key)
             sys.exit(1)
 
     # Optional environmental variables
     try:
-        meas['run_id'] = os.environ['RUN_ID']
+        summary['run_id'] = os.environ['RUN_ID']
     except KeyError:
-        meas['run_id'] = 'RUN1'
+        summary['run_id'] = 'RUN1'
 
     timestamp = dt.datetime.now().strftime('%Y%m%d-%H%M%S')
-    meas['timestamp'] = timestamp
+    summary['timestamp'] = timestamp
     try:
         rundir = os.environ['RUNDIR']
     except KeyError:
-        rundir = os.path.join("rundir", meas['workload_name'], timestamp)
-
-    create_directories(rundir)
-    symlink = os.path.join('rundir', meas['workload_name'], 'latest')
-    try:
-        os.remove(symlink)
-    except OSError:
-        pass
-    os.symlink(os.path.basename(rundir), symlink)
+        rundir = os.path.join("rundir", summary['workload_name'], timestamp)
+    summary['rundir'] = rundir
 
     try:
-        shutil.copytree(os.path.join('..', 'app'), os.path.join(rundir, 'html'))
-        shutil.copytree(os.path.join('..', 'bower_components'), 
-                os.path.join(rundir, 'html', 'bower_components'))
-    except OSError as e:
-        pass   # Raised when a directory already exists (when re-using rundir)
-
-    try:
-        sources = []
-        hosts = os.environ['SOURCES'].split(' ')
-        for host in hosts:
-            sources.append(host.strip('"').strip("'"))
+        hosts = os.environ['HOSTS'].split(' ')
+        hosts = [h.strip('"').strip("'") for h in hosts]
     except KeyError:
-        sources.append(os.uname()[1].split('.')[0])   # short hostname
+        hosts.append(os.uname()[1].split('.')[0])   # short hostname
+    summary['hosts'] = hosts
 
-    meas['sources'] = sources
-    summary_fn = os.path.join(rundir, 'html', 'summary.json')
+    return summary
+
+def main():
+    '''
+    '''
+    summary = load_environment()
+    # Create directories and copy app
+    setup_directories(summary)
+
+    # Add paths to summmary files
+    for meas_type in ['time', 'stdout', 'stderr']:
+        summary[meas_type] = create_simple(meas_type, summary['run_id'])
+
+    # Write summary.json file
+    summary_fn = os.path.join(summary['rundir'], 'html', 'summary.json')
     if os.path.exists(summary_fn):
+        # Read and append to existing summary array
         with open(summary_fn, 'r') as fid:
             all_measurements = json.loads(fid.read())
-        if meas['run_id'] in [m['run_id'] for m in all_measurements]:
-            sys.stderr.write("RUN_ID (%s) is not unique" % meas['run_id'])
+        if summary['run_id'] in [m['run_id'] for m in all_measurements]:
+            sys.stderr.write("RUN_ID (%s) is not unique" % summary['run_id'])
             sys.exit(1)
-        all_measurements.append(meas)
+        all_measurements.append(summary)
     else:
-        all_measurements = [meas]
+        all_measurements = [summary]
     with open(summary_fn, 'w') as fid:
         fid.write(json.dumps(all_measurements, sort_keys=True, indent=4))
 
-    # Now create the run_id file that contains measurement details
-    args = ['-r', meas['run_id'], '-s', ','.join(sources), '-d']
-    details = create_measurement.create_measurement(args)
 
-    detail_fn = os.path.join(rundir, 'html', meas['run_id'] 
+    # Write <run_id>.json details file
+    details = {}
+    for meas_type in ['cpu', 'mem', 'io', 'net']:
+        details[meas_type] = create_timeseries(summary['run_id'], 'dstat', 
+                meas_type, summary['hosts'])
+
+    detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
             + '.json')
     with open(detail_fn, 'w') as fid:
         fid.write(json.dumps(details, sort_keys=True, indent=4))
 
-    print rundir  # Used by the calling shell script
+
+    print summary['rundir']  # Used by the calling shell script
+
 if __name__ == '__main__':
     main()

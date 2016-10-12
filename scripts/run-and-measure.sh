@@ -24,11 +24,11 @@ debug_message(){
 check_pids() { 
   for PID2CHECK in "$@"
   do
-    CURRENT_SOURCE=${SOURCE_ARRAY[$PID2CHECK]}
+    CURRENT_HOST=${HOST_ARRAY[$PID2CHECK]}
     wait $PID2CHECK
     if [ $? -ne 0 ]
     then 
-      debug_message -1 "$CURRENT_SOURCE did not complete successfully. Exiting..."
+      debug_message -1 "$CURRENT_HOST did not complete successfully. Exiting..."
       exit 1
     fi
   done
@@ -36,22 +36,22 @@ check_pids() {
 
 define_filenames() {
   RAWDIR=${RUNDIR}/data/raw
-  DSTAT_FN=${RAWDIR}/${RUN_ID}.${SOURCE}.dstat.csv
+  DSTAT_FN=${RAWDIR}/${RUN_ID}.${HOST}.dstat.csv
 }
 
 start_monitors() {
   debug_message 0 "Starting monitors"
   PIDS=()
-  SOURCE_ARRAY=()
-  for SOURCE in $SOURCES; do
+  HOST_ARRAY=()
+  for HOST in $HOSTS; do
     define_filenames
 	debug_message 1 "Starting monitors"
     if [ "$MEAS_DSTAT" == 1 ]; then
-      debug_message 1 "Starting dstat on $SOURCE"
-      ./start_monitor.sh dstat $SOURCE $DSTAT_FN $MEAS_DELAY_SEC &
+      debug_message 1 "Starting dstat on $HOST"
+      ./start_monitor.sh dstat $HOST $DSTAT_FN $MEAS_DELAY_SEC &
       CURRPID=$!
     fi
-    SOURCE_ARRAY[$CURRPID]=$SOURCE
+    HOST_ARRAY[$CURRPID]=$HOST
     PIDS="$PIDS $CURRPID"
   done
   check_pids ${PIDS[@]}
@@ -59,10 +59,10 @@ start_monitors() {
 
 stop_monitors() {
   debug_message 0 "Stopping monitors"
-  for SOURCE in $SOURCES; do
+  for HOST in $HOSTS; do
     define_filenames
-    [ "$MEAS_DSTAT" == 1 ] && debug_message 1 "Stopping dstat on $SOURCE" && \
-      ./stop_monitor.sh dstat $SOURCE $DSTAT_FN &
+    [ "$MEAS_DSTAT" == 1 ] && debug_message 1 "Stopping dstat on $HOST" && \
+      ./stop_monitor.sh dstat $HOST $DSTAT_FN &
   done
   wait
 }
@@ -89,10 +89,10 @@ run_workload(){
 }
 
 parse_results() {
-  for SOURCE in $SOURCES; do
+  for HOST in $HOSTS; do
 	define_filenames
-    debug_message 1 "Parsing dstat data on $SOURCE"
-	[ $MEAS_DSTAT -eq 1 ] && debug_message 1 "Parsing dstat data on $SOURCE" && \
+    debug_message 1 "Parsing dstat data on $HOST"
+	[ $MEAS_DSTAT -eq 1 ] && debug_message 1 "Parsing dstat data on $HOST" && \
       ./parse_dstat.py $DSTAT_FN &
   done
   wait
@@ -131,7 +131,7 @@ stop_all() {
 # Optional
 [ -z "$WORKLOAD_DIR" ] && export WORKLOAD_DIR=`pwd`
 [ -z "$RUN_ID" ] && export RUN_ID=RUN1
-[ -z "$SOURCES" ] && export SOURCES=$(hostname -s)
+[ -z "$HOSTS" ] && export HOSTS=$(hostname -s)
 [ -z "$MEAS_DELAY_SEC" ] && MEAS_DELAY_SEC=1
 [ -z "$VERBOSE" ] && VERBOSE=0     # 0|1|2  Higher==more messages
 
@@ -141,6 +141,7 @@ WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
 export MEAS_DSTAT=1  # Capture dstat traces for cpu, mem, io & network
 
 RUNDIR=`./setup_measurement.py`
+exit
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"
 

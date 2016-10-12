@@ -27,9 +27,9 @@ cp example.sh your_workload.sh
 - [example.sh][example] Simple CPU load example
 - [example-sweep.sh][example-sweep] Sweeping a parameter
 - [example-cluster.sh][example-cluster] 2 hosts at a time
-- [example-clusteri-sweep.sh][example-cluster-sweep]Sweep a parameter on 2 hosts
+- [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
 
-[example]: [../blob/master/scripts/example.sh]
+[example]: [../scripts/example.sh]
 [example-sweep]: [../blob/master/scripts/example-sweep.sh]
 [example-cluster]: [../blob/master/scripts/example-cluster.sh]
 [example-cluster-sweep]: [../blob/master/scripts/example-cluster-sweep.sh]

@@ -1,7 +1,7 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-6">
-            <table>
+            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Run ID</th>
                     <th>stdout</th>
@@ -15,7 +15,7 @@
                     <td><a href={{measurement.stdout.filename}}>stdout</a></td>
                     <td><a href={{measurement.stderr.filename}}>stderr</a></td>
                     <td><a href={{measurement.time.filename}}>time</a></td>
-                    <td>...</td>
+                    <td>{{measurement.time.elapsed_time_sec}}</td>
                     <td><a href=#/measurement/{{measurement.run_id}}>
                       More details</a></td>
                 </tr>

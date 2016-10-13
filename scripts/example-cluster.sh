@@ -5,7 +5,7 @@
 # machines in your cluster prior to running this script.
 
 # Required variables
-export WORKLOAD_NAME=EXAMPLE-CLUSTER      # A short name for this type of workload
+export WORKLOAD_NAME=EXAMPLES             # A short name for this type of workload
 export DESCRIPTION="CPU load on 2 nodes"  # A description of this particular workload
 export WORKLOAD_CMD="./load_cpu.sh"       # The workload to run
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Required variables
-export WORKLOAD_NAME=EXAMPLE              # A short name for this type of workload
+export WORKLOAD_NAME=EXAMPLES             # A short name for this type of workload
 export DESCRIPTION="Artificial CPU load"  # A description of this particular workload
 export WORKLOAD_CMD="./load_cpu.sh"       # The workload to run
 

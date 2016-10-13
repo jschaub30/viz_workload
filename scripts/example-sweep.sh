@@ -4,7 +4,7 @@
 
 
 # Required variables
-export WORKLOAD_NAME=EXAMPLE-SWEEP        # A short name for this type of workload
+export WORKLOAD_NAME=EXAMPLES        # A short name for this type of workload
 export DESCRIPTION="Sweep CPU load"  # A description of this particular workload
 
 # Optional variables (defaults shown here)

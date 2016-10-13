@@ -1,21 +1,31 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <a href="#/summary">
-                <button>Back to summary</button>
-            </a>
-                SOURCE:
-                <span ng-repeat="host in hosts">
-                  <a href=#/measurement/{{runId}}/{{hosts.indexOf(host)}}>
-                    <button>{{host}}</button></a>
-                </span>
-        </div>
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/summary">Summary</a>
     </div>
-    <!--End row-->
-    <div class="row">
-        <div class="col-md-6 chart" ng-repeat="monitor in allMonitors" 
-          id="{{monitor.divId}}"></div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <a ng-repeat="thisId in runIds" href="#/measurement/{{thisId}}/{{sourceIdx}}">
+        <button type="button" class="btn btn-xs"
+                              ng-class="thisId == runId && 'btn-primary'">
+          {{thisId}}</button> </a>
+
+      <span class="nav navbar-nav navbar-right">
+        <a ng-repeat="host in hosts" 
+           href=#/measurement/{{runId}}/{{hosts.indexOf(host)}}>
+          <button type="button" class="btn btn-xs"
+                                ng-class="sourceIdx == hosts.indexOf(host) && 'btn-primary'">
+            {{host}}</button></a>
+      </span>
     </div>
-    <!--End row-->
+  </nav>
+</div>
+
+<div class="container-fluid">
+  <h2> {{description}}</h2>
+  <div class="row">
+    <div class="col-md-6 chart" ng-repeat="monitor in allMonitors" 
+                                id="{{monitor.divId}}"></div>
+  </div>
+  <!--End row-->
 
 </div>

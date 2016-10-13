@@ -50,7 +50,8 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', '$htt
       data.forEach(function(meas){
         runIds.push(meas.run_id);
         if (meas.run_id == $routeParams.runId) {
-            $scope.description = meas.description;
+          $scope.description = meas.description;
+          $scope.timestamp = meas.timestamp;
           console.log($scope.description);
         }
       });

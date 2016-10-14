@@ -4,8 +4,25 @@
 
 var vizWorkloadControllers = angular.module('vizWorkloadControllers', []);
 
-vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', '$http', 'Measurement',
-  function($scope, $routeParams, $http, Measurement) {
+vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location',
+  function($http, $location) {
+    // Read the summary file, and redirect to the first measurement
+    $http.get('summary.json').success(function(data){
+      var runId = data[0].run_id,
+        host = data[0].hosts[0],
+        url = '/measurement/' + runId + '/' + host;
+      $location.path(url);
+    }
+    )
+  }
+])
+
+vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', 
+  '$http', '$location',
+  function($scope, $routeParams, $http, $location) {
+    $scope.runId = $routeParams.runId;
+    $scope.host = $routeParams.host;
+
     function parseTimeFile(measurement){
       $http.get(measurement.time.filename).success(function(data){
         var hr=0,
@@ -22,32 +39,17 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', '$htt
         measurement.time.exit_status = data.split('Exit status:')[1].split('\n')[0];
       })
     }
-    // Add all measurements to scope
-    $http.get('summary.json').success(function(data){
-      $scope.measurements = data;
-      $scope.measurements.forEach(parseTimeFile);
-      $scope.measurements.forEach(function(meas){
-        if (meas.run_id == $routeParams.runId) {
-          $scope.description = meas.description;
-          $scope.timestamp = meas.timestamp;
-          $scope.hosts = meas.hosts;
-        }
-      });
-    });
 
-    $scope.runId = $routeParams.runId;
-    $scope.host = $routeParams.host;
-    $scope.measurement = Measurement.get({
-      runId: $routeParams.runId
-    },
-      function(measurement) {
+    function loadChartData(runId){
+      $http.get(runId + '.json').success(function(chartdata){
+        $scope.measurement = chartdata;
         // Create "allCharts"--an array of measurement detail objects 
         // add allCharts to scope so that divs can be created prior to plotting
-        var keys = Object.keys(measurement),
+        var keys = Object.keys(chartdata),
           allCharts = [],
           obj;
         for (var i = 0; i < keys.length; i++) {
-          obj = measurement[keys[i]];
+          obj = $scope.measurement[keys[i]];
           if (obj.hosts) {
             //Only keys that have the 'hosts' field can be plotted
             obj['divId'] = 'id_' + keys[i];
@@ -58,13 +60,35 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', '$htt
         $scope.allCharts = allCharts;
         $scope.drawCharts();
       }
-    );
+      );
 
-    $scope.drawCharts = function() {
-      for (var i = 0; i < $scope.allCharts.length; i++) {
-        drawMonitor($scope.allCharts[i],
-          $scope.host);
+      $scope.drawCharts = function() {
+        for (var i = 0; i < $scope.allCharts.length; i++) {
+          drawMonitor($scope.allCharts[i],
+            $scope.host);
+        }
+      };
+    }
+    // Add summary measurements to scope
+    $http.get('summary.json').success(function(data){
+      $scope.measurements = data;
+      $scope.measurements.forEach(parseTimeFile);
+      $scope.measurements.forEach(function(meas){
+        if (meas.run_id == $scope.runId) {
+          $scope.description = meas.description;
+          $scope.timestamp = meas.timestamp;
+          $scope.hosts = meas.hosts;
+        }
+      });
+      if ($scope.hosts.indexOf($scope.host) == -1){
+        // Redirect to valid host
+        $scope.host = $scope.hosts[0];
+        var url = '/measurement/' + $scope.runId + '/' + $scope.hosts[0];
+        $location.path(url);
+        console.log('Redirect to ' + url);
       }
-    };
+      loadChartData($scope.runId);
+    });
+
   }
 ]);

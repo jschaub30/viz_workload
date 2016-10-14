@@ -4,8 +4,7 @@
 
 var vizWorkloadApp = angular.module('vizWorkloadApp', [
     'ngRoute',
-    'vizWorkloadControllers',
-    'vizWorkloadServices'
+    'vizWorkloadControllers'
 ]);
 
 vizWorkloadApp.config(['$routeProvider',

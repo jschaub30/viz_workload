@@ -31,28 +31,37 @@ vizWorkloadControllers.controller('summaryCtrl', ['$scope', '$http',
 
     $http.get('summary.json').success(function(data){
       $scope.measurements = data;
-      var fn;
-      for (var i = 0; i < data.length; i++){
-        fn = data[i].time.filename;
-        //$scope.measurements[i].time.elapsed_time = parseTimeFile($scope.measurements[i]);
-        parseTimeFile($scope.measurements[i]);
-      }
+      data.forEach(parseTimeFile);
     })
   }
 ]);
 
 vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', '$http', 'Measurement',
   function($scope, $routeParams, $http, Measurement) {
-
+    function parseTimeFile(measurement){
+      $http.get(measurement.time.filename).success(function(data){
+        var hr=0,
+          min,
+          sec,
+          arr,
+          len;
+        arr = data.match(/([0-9]:)+[0-9]+\.+[0-9]+/)[0].split(':');
+        len = arr.length;
+        if (len === 3) {hr = parseInt(arr[0]);}
+        min = parseInt(arr[len-2]);
+        sec = parseFloat(arr[len-1]);
+        measurement.time.elapsed_time_sec = (hr*60*60 + min*60 + sec).toString();
+        measurement.time.exit_status = data.split('Exit status:')[1].split('\n')[0];
+      })
+    }
     // Add run_ids to scope
     $http.get('summary.json').success(function(data){
-      var runIds = [];
-      data.forEach(function(meas){
-        runIds.push(meas.run_id);
+      $scope.measurements = data;
+      $scope.measurements.forEach(parseTimeFile);
+      $scope.measurements.forEach(function(meas){
         if (meas.run_id == $routeParams.runId) {
           $scope.description = meas.description;
           $scope.timestamp = meas.timestamp;
-          console.log($scope.description);
         }
       });
       $scope.runIds = runIds;

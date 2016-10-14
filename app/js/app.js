@@ -16,7 +16,7 @@ vizWorkloadApp.config(['$routeProvider',
         controller: 'summaryCtrl'
       }).
       when('/measurement/:runId/:sourceIdx', {
-        templateUrl: 'partials/measurement-detail.html',
+        templateUrl: 'partials/measurement-combined.html',
         controller: 'detailCtrl'
       }).
       when('/measurement/:runId/', {

@@ -1,0 +1,77 @@
+[
+    {
+        "description": "Sweep CPU load on 2 hosts", 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "run_id": "NUM_CPU=1", 
+        "rundir": "rundir/EXAMPLES/20161014-141130", 
+        "stderr": {
+            "filename": "data/raw/NUM_CPU=1.stderr.txt", 
+            "type": "stderr"
+        }, 
+        "stdout": {
+            "filename": "data/raw/NUM_CPU=1.stdout.txt", 
+            "type": "stdout"
+        }, 
+        "time": {
+            "filename": "data/raw/NUM_CPU=1.time.txt", 
+            "type": "time"
+        }, 
+        "timestamp": "20161014-141130", 
+        "workload_cmd": "./load_cpu.sh 1", 
+        "workload_dir": ".", 
+        "workload_name": "EXAMPLES"
+    }, 
+    {
+        "description": "Sweep CPU load on 2 hosts", 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "run_id": "NUM_CPU=2", 
+        "rundir": "rundir/EXAMPLES/20161014-141130", 
+        "stderr": {
+            "filename": "data/raw/NUM_CPU=2.stderr.txt", 
+            "type": "stderr"
+        }, 
+        "stdout": {
+            "filename": "data/raw/NUM_CPU=2.stdout.txt", 
+            "type": "stdout"
+        }, 
+        "time": {
+            "filename": "data/raw/NUM_CPU=2.time.txt", 
+            "type": "time"
+        }, 
+        "timestamp": "20161014-141142", 
+        "workload_cmd": "./load_cpu.sh 2", 
+        "workload_dir": ".", 
+        "workload_name": "EXAMPLES"
+    }, 
+    {
+        "description": "Sweep CPU load on 2 hosts", 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "run_id": "NUM_CPU=4", 
+        "rundir": "rundir/EXAMPLES/20161014-141130", 
+        "stderr": {
+            "filename": "data/raw/NUM_CPU=4.stderr.txt", 
+            "type": "stderr"
+        }, 
+        "stdout": {
+            "filename": "data/raw/NUM_CPU=4.stdout.txt", 
+            "type": "stdout"
+        }, 
+        "time": {
+            "filename": "data/raw/NUM_CPU=4.time.txt", 
+            "type": "time"
+        }, 
+        "timestamp": "20161014-141153", 
+        "workload_cmd": "./load_cpu.sh 4", 
+        "workload_dir": ".", 
+        "workload_name": "EXAMPLES"
+    }
+]

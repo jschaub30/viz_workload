@@ -1,0 +1,70 @@
+{
+    "cpu": {
+        "host1": {
+            "finalFilename": "data/final/NUM_CPU=1.host1.dstat.cpu.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host1.dstat.cpu.txt"
+        }, 
+        "host2": {
+            "finalFilename": "data/final/NUM_CPU=1.host2.dstat.cpu.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host2.dstat.cpu.txt"
+        }, 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "monitor": "dstat", 
+        "title": "System CPU [%]", 
+        "type": "timeseries"
+    }, 
+    "io": {
+        "host1": {
+            "finalFilename": "data/final/NUM_CPU=1.host1.dstat.io.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host1.dstat.io.txt"
+        }, 
+        "host2": {
+            "finalFilename": "data/final/NUM_CPU=1.host2.dstat.io.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host2.dstat.io.txt"
+        }, 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "monitor": "dstat", 
+        "title": "IO [GB/sec]", 
+        "type": "timeseries"
+    }, 
+    "mem": {
+        "host1": {
+            "finalFilename": "data/final/NUM_CPU=1.host1.dstat.mem.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host1.dstat.mem.txt"
+        }, 
+        "host2": {
+            "finalFilename": "data/final/NUM_CPU=1.host2.dstat.mem.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host2.dstat.mem.txt"
+        }, 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "monitor": "dstat", 
+        "title": "Memory [GB]", 
+        "type": "timeseries"
+    }, 
+    "net": {
+        "host1": {
+            "finalFilename": "data/final/NUM_CPU=1.host1.dstat.net.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host1.dstat.net.txt"
+        }, 
+        "host2": {
+            "finalFilename": "data/final/NUM_CPU=1.host2.dstat.net.csv", 
+            "rawFilename": "data/raw/NUM_CPU=1.host2.dstat.net.txt"
+        }, 
+        "hosts": [
+            "host1", 
+            "host2"
+        ], 
+        "monitor": "dstat", 
+        "title": "Network [GB/sec]", 
+        "type": "timeseries"
+    }
+}

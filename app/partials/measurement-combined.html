@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
-      <table class="table table-bordered table-hover">
+      <table class="table table-bordered table-hover table-sm">
         <tr>
           <th>Run ID</th>
           <th>Exit status</th>
@@ -9,7 +9,6 @@
           <th>stderr</th>
           <th>time</th>
           <th>Execution time</th>
-          <th></th>
         </tr>
         <tr ng-repeat="measurement in measurements"
             ng-class="measurement.run_id == runId && 'info'">
@@ -20,8 +19,6 @@
           <td><a href={{measurement.stderr.filename}}>stderr</a></td>
           <td><a href={{measurement.time.filename}}>time</a></td>
           <td>{{measurement.time.elapsed_time_sec}}</td>
-          <td><a href=#/measurement/{{measurement.run_id}}>
-              More details</a></td>
         </tr>
       </table>
     </div>
@@ -31,28 +28,25 @@
   </div>
   <!--End row-->
 
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#/summary">Summary</a>
-      <a ng-repeat="measurement in measurements" href="#/measurement/{{measurement.run_id}}/{{sourceIdx}}">
-        <button type="button" class="btn btn-xs"
-                              ng-class="measurement.run_id == runId && 'btn-primary'">
-          {{measurement.run_id}}</button> </a>
+  <a ng-repeat="measurement in measurements" href="#/measurement/{{measurement.run_id}}/{{host}}">
+    <button type="button" class="btn btn-xs"
+                          ng-class="measurement.run_id == runId && 'btn-primary'">
+      {{measurement.run_id}}</button> </a>
 
-      <a ng-repeat="host in hosts" 
-         href=#/measurement/{{runId}}/{{hosts.indexOf(host)}}>
-        <button type="button" class="btn btn-xs"
-                              ng-class="sourceIdx == hosts.indexOf(host) && 'btn-primary'">
-          {{host}}</button></a>
+  <a ng-repeat="thisHost in hosts" 
+     href=#/measurement/{{runId}}/{{thisHost}}>
+    <button type="button" class="btn btn-xs"
+                          ng-class="host == thisHost && 'btn-primary'">
+      {{thisHost}}</button></a>
+</div>
+
+<div class="container-fluid">
+  <h2> {{description}}</h2>
+  <h5> {{timestamp}}</h5>
+  <div class="row">
+    <div ng-repeat="chart in allCharts" class="col-md-6 chart {{chart.type}}"
+                                id="{{chart.divId}}"></div>
   </div>
+  <!--End row-->
 
-  <div class="container-fluid">
-    <h2> {{description}}</h2>
-    <h5> {{timestamp}}</h5>
-    <div class="row">
-      <div class="col-md-6 chart" ng-repeat="monitor in allMonitors" 
-                                  id="{{monitor.divId}}"></div>
-    </div>
-    <!--End row-->
-
-  </div>
 </div>

@@ -84,7 +84,7 @@ def create_timeseries(run_id, monitor, meas_type, hosts):
                 run_id, host, monitor, meas_type)
         obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
                 run_id, host, monitor, meas_type)
-        return obj
+    return obj
 
 def load_environment():
     '''

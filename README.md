@@ -10,7 +10,7 @@ only running on 1 host.  To avoid having to type a password each time, setup
 password-less ssh.  Here are simple instructions for 1 host:
 ```
 ssh-keygen -t rsa  # Press enter at the prompts
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys'
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 ```
 

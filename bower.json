@@ -1,13 +1,12 @@
 {
   "name": "viz_workload",
   "description": "An app to display server data during a workload",
-  "version": "0.0.0",
+  "version": "0.8",
   "homepage": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "angular": "1.4.x",
-    "jquery": "~2.1.1",
     "bootstrap": "~3.1.1",
     "angular-route": "1.4.x",
     "angular-resource": "1.4.x"

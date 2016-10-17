@@ -12,3 +12,7 @@ td {
   min-width: 80px;
 }
 
+.summary {
+    min-height: 300px;
+    max-height: 500px;
+}

@@ -23,7 +23,8 @@ def setup_directories(summary):
         shutil.copytree(os.path.join('..', 'app'), 
                 os.path.join(summary['rundir'], 'html'))
     except OSError as e: # Raised when a directory already exists
-        sys.stderr.write(str(e) + '\n')
+        #sys.stderr.write(str(e) + '\n')
+        pass
     
     # Create data directories
     for name in ['data/raw', 'data/final', 'scripts']:

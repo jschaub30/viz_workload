@@ -6,9 +6,8 @@
 # machines in your cluster prior to running this script.
 
 
-# Required variables
+# Required variables are WORKLOAD_NAME, DESCRIPTION, & WORKLOAD_CMD
 export WORKLOAD_NAME=EXAMPLES                   # A short name for this type of workload
-export DESCRIPTION="Sweep CPU load on 2 hosts"  # A description of this particular workload
 
 # Optional variables (defaults shown here)
 export WORKLOAD_DIR="."             # The workload working directory
@@ -29,6 +28,8 @@ export RUNDIR=`./create-rundir.sh`
 for CPU in 1 2 4; do
   export WORKLOAD_CMD="./load_cpu.sh $CPU"   # The workload to run
   export RUN_ID="NUM_CPU=$CPU"               # Unique for this run
+  # A description of this particular workload
+  export DESCRIPTION="CPU load using $CPU CPUs on 2 hosts"
   ./run-and-measure.sh
 done
 

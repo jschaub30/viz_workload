@@ -18,24 +18,28 @@ def setup_directories(summary):
     '''
     Setup directory structure
     '''
+    # Copy app
+    try:
+        shutil.copytree(os.path.join('..', 'app'), 
+                os.path.join(summary['rundir'], 'html'))
+    except OSError as e: # Raised when a directory already exists
+        sys.stderr.write(str(e) + '\n')
+    
+    # Create data directories
     for name in ['data/raw', 'data/final', 'scripts']:
         directory = os.path.join(summary['rundir'], name)
         if not os.path.exists(directory):
             os.makedirs(directory)
-    symlink = os.path.join('rundir', summary['workload_name'], 'latest')
-    try:
-        os.remove(symlink)
-    except OSError:
-        pass
-    os.symlink(os.path.basename(summary['rundir']), symlink)
 
-    try:
-        shutil.copytree(os.path.join('..', 'app'), 
-            os.path.join(summary['rundir'], 'html'))
-        shutil.copytree(os.path.join('..', 'bower_components'), 
-                os.path.join(summary['rundir'], 'html', 'bower_components'))
-    except OSError as e: # Raised when a directory already exists
-        sys.stderr.write(str(e) + '\n')
+    # Create 'data' symlink
+    symlink = os.path.join(summary['rundir'], 'html', 'data')
+    if not os.path.exists(symlink):
+        os.symlink('../data', symlink)
+
+    # Create 'latest' symlink
+    symlink = os.path.join('rundir', summary['workload_name'], 'latest')
+    if not os.path.exists(symlink):
+        os.symlink(os.path.basename(summary['rundir']), symlink)
 
 def create_simple(meas_type, run_id):
     '''
@@ -73,10 +77,10 @@ def create_timeseries(run_id, monitor, meas_type, hosts):
     for host in hosts:
         obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.%s.txt" % (
-            run_id, host, monitor, meas_type)
+                run_id, host, monitor, meas_type)
         obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
-            run_id, host, monitor, meas_type)
-    return obj
+                run_id, host, monitor, meas_type)
+        return obj
 
 def load_environment():
     '''
@@ -152,10 +156,10 @@ def main():
         details[meas_type] = create_timeseries(summary['run_id'], 'dstat', 
                 meas_type, summary['hosts'])
 
-    detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
-            + '.json')
-    with open(detail_fn, 'w') as fid:
-        fid.write(json.dumps(details, sort_keys=True, indent=4))
+        detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
+                + '.json')
+        with open(detail_fn, 'w') as fid:
+            fid.write(json.dumps(details, sort_keys=True, indent=4))
 
 
     print summary['rundir']  # Used by the calling shell script

@@ -13,7 +13,7 @@
                 </tr>
                 <tr ng-repeat="measurement in measurements">
                     <td>{{measurement.run_id}}</td>
-                    <td ng-class="measurement.time.exit_status && 'success' || 'danger'">
+                    <td ng-class="measurement.time.exit_clean && 'success' || 'danger'">
                       {{measurement.time.exit_status}}</td>
                     <td><a href={{measurement.stdout.filename}}>stdout</a></td>
                     <td><a href={{measurement.stderr.filename}}>stderr</a></td>

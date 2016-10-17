@@ -13,8 +13,8 @@
         <tr ng-repeat="measurement in measurements"
             ng-class="measurement.run_id == runId && 'info'">
           <td><a href="#/measurement/{{measurement.run_id}}/{{host}}">{{measurement.run_id}}</td>
-          <td>
-            <span ng-class="measurement.time.exit_status && 'text-success' || 'bg-danger'">{{measurement.time.exit_status}}</span></td>
+          <td ng-class="measurement.time.exit_clean || 'danger'">
+            <span ng-class="measurement.time.exit_clean && 'success' || 'bg-danger'">{{measurement.time.exit_status}}</span></td>
           <td><a href={{measurement.stdout.filename}}>stdout</a></td>
           <td><a href={{measurement.stderr.filename}}>stderr</a></td>
           <td><a href={{measurement.time.filename}}>time</a></td>

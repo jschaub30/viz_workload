@@ -36,8 +36,8 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
         min = parseInt(arr[len-2]);
         sec = parseFloat(arr[len-1]);
         measurement.time.elapsed_time_sec = (hr*60*60 + min*60 + sec).toString();
-        measurement.time.exit_status = data.split('Exit status:')[1].split('\n')[0];
-        // TODO--fix exit status
+        measurement.time.exit_status = data.split('Exit status: ')[1].split('\n')[0];
+        measurement.time.exit_clean = measurement.time.exit_status === '0';
       })
     }
 

@@ -16,6 +16,16 @@ TARGET_FN=/tmp/${USER}/pid_monitor/$(basename $3)
 [ "$MONITOR" == "nmon" ] && \
   RUN_CMD="nmon -f -c 10000 -F $TARGET_FN -s $DELAY_SEC"
 
+if [ "$MONITOR" == "cpu_heatmap" ]
+then
+  NUM_CPU=`cat /proc/cpuinfo | grep processor | wc -l`
+  CPU_LIST=`seq 0 $((NUM_CPU-1))`
+  CPU_LIST=`echo $CPU_LIST | tr ' ' ','`
+  RUN_CMD="dstat --time --cpu -C $CPU_LIST --output $TARGET_FN $DELAY_SEC"
+  # redefine MONITOR for test below
+  MONITOR="dstat"
+fi
+
 if [ "$MONITOR" == "gpu" ]
 then
   MONITOR="nvidia-smi"

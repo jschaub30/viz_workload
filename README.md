@@ -17,6 +17,7 @@ chmod 600 ~/.ssh/authorized_keys
 #Try it out
 ```
 sudo apt-get install -y dstat time
+sudo apt-get install -y nmon # optional
 git clone https://github.com/jschaub30/viz_workload
 cd viz_monitor/scripts
 cp example.sh your_workload.sh

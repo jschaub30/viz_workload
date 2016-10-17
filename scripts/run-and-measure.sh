@@ -37,6 +37,7 @@ check_pids() {
 define_filenames() {
   RAWDIR=${RUNDIR}/data/raw
   DSTAT_FN=${RAWDIR}/${RUN_ID}.${HOST}.dstat.csv
+  CPU_HEATMAP_FN=${RAWDIR}/${RUN_ID}.${HOST}.cpu_heatmap.csv
 }
 
 start_monitors() {
@@ -50,9 +51,16 @@ start_monitors() {
       debug_message 1 "Starting dstat on $HOST"
       ./start_monitor.sh dstat $HOST $DSTAT_FN $MEAS_DELAY_SEC &
       CURRPID=$!
+      HOST_ARRAY[$CURRPID]=$HOST
+      PIDS="$PIDS $CURRPID"
     fi
-    HOST_ARRAY[$CURRPID]=$HOST
-    PIDS="$PIDS $CURRPID"
+    if [ "$MEAS_CPU_HEATMAP" == 1 ]; then
+      debug_message 1 "Starting dstat (for CPU detail) on $HOST"
+      ./start_monitor.sh cpu_heatmap $HOST $CPU_HEATMAP_FN $MEAS_DELAY_SEC &
+      CURRPID=$!
+      HOST_ARRAY[$CURRPID]=$HOST
+      PIDS="$PIDS $CURRPID"
+    fi
   done
   check_pids ${PIDS[@]}
 }
@@ -63,6 +71,8 @@ stop_monitors() {
     define_filenames
     [ "$MEAS_DSTAT" == 1 ] && debug_message 1 "Stopping dstat on $HOST" && \
       ./stop_monitor.sh dstat $HOST $DSTAT_FN &
+    [ "$MEAS_CPU_HEATMAP" == 1 ] && debug_message 1 "Stopping dstat (cpu_heatmap) on $HOST" && \
+      ./stop_monitor.sh dstat $HOST $CPU_HEATMAP_FN &
   done
   wait
 }
@@ -94,6 +104,8 @@ parse_results() {
     debug_message 1 "Parsing dstat data on $HOST"
 	[ $MEAS_DSTAT -eq 1 ] && debug_message 1 "Parsing dstat data on $HOST" && \
       ./parse_dstat.py $DSTAT_FN &
+	[ $MEAS_CPU_HEATMAP -eq 1 ] && debug_message 1 "Parsing cpu heatmap data on $HOST" && \
+      ./parse_cpu_heatmap.py $CPU_HEATMAP_FN &
   done
   wait
 }

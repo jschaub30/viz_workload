@@ -2,24 +2,28 @@
   <div class="row">
     <div class="col-md-6 summary">
       <table class="table table-bordered table-hover table-sm">
-        <tr>
-          <th>Run ID</th>
-          <th>Exit status</th>
-          <th>stdout</th>
-          <th>stderr</th>
-          <th>time</th>
-          <th>Execution time</th>
-        </tr>
-        <tr ng-repeat="measurement in measurements"
-            ng-class="measurement.run_id == runId && 'info'">
-          <td><a href="#/measurement/{{measurement.run_id}}/{{host}}">{{measurement.run_id}}</td>
-          <td ng-class="measurement.time.exit_clean || 'danger'">
-            <span ng-class="measurement.time.exit_clean && 'success' || 'bg-danger'">{{measurement.time.exit_status}}</span></td>
-          <td><a href={{measurement.stdout.filename}}>stdout</a></td>
-          <td><a href={{measurement.stderr.filename}}>stderr</a></td>
-          <td><a href={{measurement.time.filename}}>time</a></td>
-          <td>{{measurement.time.elapsed_time_sec}}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Run ID</th>
+            <th>Exit status</th>
+            <th>stdout</th>
+            <th>stderr</th>
+            <th>time</th>
+            <th>Execution time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="measurement in measurements"
+              ng-class="measurement.run_id == runId && 'info'">
+            <td><a href="#/measurement/{{measurement.run_id}}/{{host}}">{{measurement.run_id}}</td>
+            <td ng-class="measurement.time.exit_clean || 'danger'">
+              <span ng-class="measurement.time.exit_clean && 'success' || 'bg-danger'">{{measurement.time.exit_status}}</span></td>
+            <td><a href={{measurement.stdout.filename}}>stdout</a></td>
+            <td><a href={{measurement.stderr.filename}}>stderr</a></td>
+            <td><a href={{measurement.time.filename}}>time</a></td>
+            <td>{{measurement.time.elapsed_time_sec}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div class="summary col-md-6" id="id_summary">
@@ -45,7 +49,7 @@
   <p class="muted"> {{timestamp}}</p>
   <div class="row">
     <div ng-repeat="chart in allCharts" class="col-md-6 chart {{chart.type}}"
-                                id="{{chart.divId}}"></div>
+                                        id="{{chart.divId}}"></div>
   </div>
   <!--End row-->
 

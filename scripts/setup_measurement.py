@@ -34,8 +34,8 @@ def setup_directories(summary):
             os.path.join(summary['rundir'], 'html'))
         shutil.copytree(os.path.join('..', 'bower_components'), 
                 os.path.join(summary['rundir'], 'html', 'bower_components'))
-    except OSError as e:
-        pass   # Raised when a directory already exists (when re-using rundir)
+    except OSError as e: # Raised when a directory already exists
+        sys.stderr.write(str(e) + '\n')
 
 def create_simple(meas_type, run_id):
     '''

@@ -1,5 +1,5 @@
 {
-  "name": "workload-monitor",
+  "name": "viz_workload",
   "description": "An app to display server data during a workload",
   "version": "0.0.0",
   "homepage": "",

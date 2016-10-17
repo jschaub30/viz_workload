@@ -38,8 +38,11 @@ def setup_directories(summary):
 
     # Create 'latest' symlink
     symlink = os.path.join('rundir', summary['workload_name'], 'latest')
-    if not os.path.exists(symlink):
-        os.symlink(os.path.basename(summary['rundir']), symlink)
+    try:
+        os.remove(symlink)  # remove link from last run
+    except OSError:
+        pass
+    os.symlink(os.path.basename(summary['rundir']), symlink)
 
 def create_simple(meas_type, run_id):
     '''

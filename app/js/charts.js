@@ -21,13 +21,11 @@ var timeseries_chart = function(data, divId, plotOptions) {
     });
   },
   drawHeatmap = function(divId, chartData, host) {
-    console.log(chartData);
     $.ajax({
       type: "GET",
       url: chartData[host].finalFilename,
       dataType: "json",
       success: function(data) {
-        console.log(data);
         var ctx = document.getElementById(divId).getContext("2d");
         var sampleChart = new Chart(ctx).HeatMap(data, {
           responsive: true,

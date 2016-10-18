@@ -18,16 +18,16 @@ vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location',
 ])
 
 vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', 
-  '$http', '$location',
-  function($scope, $routeParams, $http, $location) {
-    var counter = 0,
+    '$http', '$location',
+    function($scope, $routeParams, $http, $location) {
+      var counter = 0,
       parseTimeFile = function(measurement){
         $http.get(measurement.time.filename).success(function(data){
           var hr=0,
-            min,
-            sec,
-            arr,
-            len;
+          min,
+          sec,
+          arr,
+          len;
           arr = data.match(/([0-9]:)+[0-9]+\.+[0-9]+/)[0].split(':');
           len = arr.length;
           if (len === 3) {hr = parseInt(arr[0]);}
@@ -69,36 +69,36 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
             drawHeatmap('id_' + chart, $scope.measurement[chart],
                 $scope.host);
           });
+        });
+      },
+      checkURL = function(){
+        if ($scope.hosts.indexOf($scope.host) == -1){
+          // Bad URL.  Redirect to valid host
+          $scope.host = $scope.hosts[0];
+          var url = '/measurement/' + $scope.runId + '/' + $scope.hosts[0];
+          $location.path(url);
+          console.log('Redirect to ' + url);
+          return null;
+        }
+        return true;
+      },
+      updatePage = function(){
+        if (counter === $scope.measurements.length){
+          updateDescription();
+          if (checkURL()){
+            summaryChart($scope.measurements);
+            drawCharts($scope.runId);
+          }
+        }
+      };
+
+      $scope.runId = $routeParams.runId;
+      $scope.host = $routeParams.host;
+
+      // Add summary measurements to scope
+      $http.get('summary.json').success(function(data){
+        $scope.measurements = data;
+        $scope.measurements.forEach(parseTimeFile);
       });
-  },
-  checkURL = function(){
-    if ($scope.hosts.indexOf($scope.host) == -1){
-      // Bad URL.  Redirect to valid host
-      $scope.host = $scope.hosts[0];
-      var url = '/measurement/' + $scope.runId + '/' + $scope.hosts[0];
-      $location.path(url);
-      console.log('Redirect to ' + url);
-      return null;
     }
-    return true;
-  },
-  updatePage = function(){
-    if (counter === $scope.measurements.length){
-      updateDescription();
-      if (checkURL()){
-        summaryChart($scope.measurements);
-        drawCharts($scope.runId);
-      }
-    }
-  };
-
-$scope.runId = $routeParams.runId;
-$scope.host = $routeParams.host;
-
-// Add summary measurements to scope
-$http.get('summary.json').success(function(data){
-  $scope.measurements = data;
-  $scope.measurements.forEach(parseTimeFile);
-});
-}
 ]);

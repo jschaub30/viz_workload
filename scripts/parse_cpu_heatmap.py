@@ -7,6 +7,7 @@ Output: csv file
 
 import sys
 import os
+import json
 from datetime import datetime
 
 def main(dstat_fn):
@@ -37,21 +38,18 @@ def main(dstat_fn):
             cpu_sys = float(vals[cpu*6 + 2])
             val = cpu_usr + cpu_sys
             val_array[cpu].append(val)
-    # TODO  Make object and write using json.dumps
-            #js_string += '[%d,%d,%0.1f],' % (int(td), cpu, val)
-    js_string = '{\n  "labels": [' + ','.join(['"%.0f' % i + '"' for i in td_array]) + '],\n'
-    js_string += '  "datasets": [\n'
+    obj = {"labels": td_array}
+    obj["datasets"] = []
+
     for cpu in range(num_cpu - 1, -1, -1):
-        js_string += '  {\n    "label": "%d",\n' % cpu
-        js_string += '    "data": [' + ','.join([str(i) for i in val_array[cpu]]) + ']\n  }'
-        if cpu == 0:
-            js_string += ']\n}'
-        else:
-            js_string += ' ,'
+        data = map(lambda(x): round(x, 1), val_array[cpu])
+        obj["datasets"].append({"label": str(cpu), "data": data})
     out_fn = dstat_fn.replace('data/raw', 'data/final')
     with open(out_fn, 'w') as fid:
-        #fid.write(json.dumps(js_string))
-        fid.write(js_string)
+        fid.write(json.dumps(obj))
 
 if __name__ == '__main__':
+    if (len(sys.argv) < 2):
+        sys.stderr.write("USAGE: ./parse_cpu_heatmap.py <fn>\n")
+        sys.exit(1)
     main(sys.argv[1])

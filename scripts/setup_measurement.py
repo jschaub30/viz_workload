@@ -54,36 +54,40 @@ def create_simple(meas_type, run_id):
     obj['filename'] = "../data/raw/%s.%s.txt" % (run_id, meas_type)
     return obj
 
-def create_timeseries(run_id, monitor, meas_type, hosts):
+def create_chartdata(run_id, meas_type, hosts):
     '''
     Create timeseries measurement object with properties for 'hosts' and filenames for
     data from each host
     '''
     obj = {}
     title = ''
+    chart_type = 'timeseries'  # default
+    monitor = 'dstat'  # default
 
-    if monitor == 'dstat':
-        if meas_type == 'cpu':
-            title = 'System CPU [%]'
-        elif meas_type == 'mem':
-            title = 'Memory [GB]'
-        elif meas_type == 'io':
-            title = 'IO [GB/sec]'
-        elif meas_type == 'net':
-            title = 'Network [GB/sec]'
+    if meas_type == 'cpu':
+        title = 'System CPU [%]'
+    elif meas_type == 'mem':
+        title = 'Memory [GB]'
+    elif meas_type == 'io':
+        title = 'IO [GB/sec]'
+    elif meas_type == 'net':
+        title = 'Network [GB/sec]'
+    elif meas_type == 'cpu_heatmap':
+        monitor = meas_type
+        title = 'CPU Heatmap'
+        chart_type = 'heatmap'
 
     obj = {
-            'type':'timeseries',
+            'type': chart_type,
             'hosts': hosts,
-            'monitor': monitor,
             'title': title
             }
     for host in hosts:
         obj[host] = {}
-        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.%s.txt" % (
-                run_id, host, monitor, meas_type)
-        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s.csv" % (
-                run_id, host, monitor, meas_type)
+        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.csv" % (
+                run_id, host, monitor)
+        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.csv" % (
+                run_id, host, meas_type)
     return obj
 
 def load_environment():
@@ -157,13 +161,21 @@ def main():
     # Write <run_id>.json details file
     details = {}
     for meas_type in ['cpu', 'mem', 'io', 'net']:
-        details[meas_type] = create_timeseries(summary['run_id'], 'dstat', 
-                meas_type, summary['hosts'])
+        details[meas_type] = create_chartdata(summary['run_id'], meas_type,
+                summary['hosts'])
 
-        detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
-                + '.json')
-        with open(detail_fn, 'w') as fid:
-            fid.write(json.dumps(details, sort_keys=True, indent=4))
+    try:
+        if int(os.environ['MEAS_CPU_HEATMAP']) == 1:
+            meas_type = 'cpu_heatmap'
+            details[meas_type] = create_chartdata(summary['run_id'], meas_type,
+                summary['hosts'])
+    except KeyError:
+        pass
+
+    detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
+            + '.json')
+    with open(detail_fn, 'w') as fid:
+        fid.write(json.dumps(details, sort_keys=True, indent=4))
 
 
     print summary['rundir']  # Used by the calling shell script

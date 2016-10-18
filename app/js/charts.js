@@ -1,40 +1,61 @@
 'use strict';
 
 var timeseries_chart = function(data, divId, plotOptions) {
-  var chart = new Dygraph(
-	document.getElementById(divId),
-	data, plotOptions
-  );
+  var chart = new Dygraph(document.getElementById(divId), data, plotOptions);
   return chart;
 },
-  drawTimeseries = function(monitor, source) {
-	$.ajax({
-	  type: "GET",
-	  url: monitor[source].finalFilename,
-	  dataType: "text",
-	  success: function(data) {
-		var plotOptions = new TimeseriesPlotOptions,
-		  divId = monitor.divId;
-		plotOptions.title = monitor.title;
-		timeseries_chart(data, divId, plotOptions)
-	  },
-	  error: function(request, status, error) {
-		console.log(status);
-		console.log(error);
-	  }
-	});
+  drawTimeseries = function(divId, chartData, host) {
+    $.ajax({
+      type: "GET",
+      url: chartData[host].finalFilename,
+      dataType: "text",
+      success: function(data) {
+        var plotOptions = new TimeseriesPlotOptions;
+        plotOptions.title = chartData.title;
+        timeseries_chart(data, divId, plotOptions)
+      },
+      error: function(request, status, error) {
+        console.log(status);
+        console.log(error);
+      }
+    });
+  },
+  drawHeatmap = function(divId, chartData, host) {
+    console.log(chartData);
+    $.ajax({
+      type: "GET",
+      url: chartData[host].finalFilename,
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        var ctx = document.getElementById(divId).getContext("2d");
+        var sampleChart = new Chart(ctx).HeatMap(data, {
+          responsive: true,
+          maintainAspectRatio: false,
+          rounded: false,
+          paddingScale: 0.0,
+          showLabels: false,
+          tooltipTemplate: "t: <%= xLabel %> | cpu: <%= yLabel %> | value: <%= value %>%",
+          colorInterpolation: 'gradient',
+          colors: ['rgb(220,220,220)', 'red']
+        });
+      },
+      error: function(request, status, error) {
+        console.log(error);
+      }
+    });
   },
   calc_cumsum = function(data) {
-	var new_array = [],
-	  dt;
-	for (var i = 0; i < data.length; i++) {
-	  new_array.push(data[i].slice(0));
-	}
-	for (i = 1; i < new_array.length; i++) {
-	  dt = new_array[i][0] - new_array[i - 1][0];
-	  for (var j = 1; j < new_array[0].length; j++) {
-		new_array[i][j] = new_array[i - 1][j] + dt * new_array[i][j];
-	  }
+    var new_array = [],
+    dt;
+    for (var i = 0; i < data.length; i++) {
+      new_array.push(data[i].slice(0));
+    }
+    for (i = 1; i < new_array.length; i++) {
+      dt = new_array[i][0] - new_array[i - 1][0];
+      for (var j = 1; j < new_array[0].length; j++) {
+        new_array[i][j] = new_array[i - 1][j] + dt * new_array[i][j];
+      }
     }
     return new_array;
   },
@@ -48,7 +69,7 @@ var timeseries_chart = function(data, divId, plotOptions) {
     var chart = c3.generate({
       bindto: '#id_summary',
       //size: {
-        //height: 600
+      //height: 600
       //},
       data: {
         json: data,

@@ -11,6 +11,7 @@
     "angular-route": "1.4.x",
     "angular-resource": "1.4.x",
     "d3": "3.5.x",
-    "c3": "0.4.11"
+    "c3": "0.4.11",
+    "Chart.HeatMap.js": "0.0.x"
   }
 }

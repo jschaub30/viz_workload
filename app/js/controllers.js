@@ -50,60 +50,55 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
           }
         });
       },
-      loadChartData = function(runId){
+      drawCharts = function(runId){
         $http.get(runId + '.json').success(function(chartdata){
           $scope.measurement = chartdata;
-          // Create "allCharts"--an array of measurement detail objects 
-          // add allCharts to scope so that divs can be created prior to plotting
-          var keys = Object.keys(chartdata),
-            allCharts = [],
-            obj;
-          for (var i = 0; i < keys.length; i++) {
-            obj = $scope.measurement[keys[i]];
-            if (obj.hosts) {
-              //Only keys that have the 'hosts' field can be plotted
-              obj['divId'] = 'id_' + keys[i];
-              allCharts.push(obj);
-            }
-          }
-          $scope.allCharts = allCharts;
-          drawCharts();
-        })
-      },
-      drawCharts = function() {
-        for (var i = 0; i < $scope.allCharts.length; i++) {
-          drawTimeseries($scope.allCharts[i],
-            $scope.host);
-        }
-      },
-      checkURL = function(){
-        if ($scope.hosts.indexOf($scope.host) == -1){
-          // Bad URL.  Redirect to valid host
-          $scope.host = $scope.hosts[0];
-          var url = '/measurement/' + $scope.runId + '/' + $scope.hosts[0];
-          $location.path(url);
-          console.log('Redirect to ' + url);
-          return null;
-        }
-        return true;
-      },
-      updatePage = function(){
-        if (counter === $scope.measurements.length){
-          updateDescription();
-          if (checkURL()){
-            summaryChart($scope.measurements);
-            loadChartData($scope.runId);
-          }
-        }
-      };
+          $scope.allTimeCharts = Object.keys($scope.measurement).filter(
+              function(key){
+                return $scope.measurement[key].type == "timeseries";
+              });
+          $scope.allHeatmaps = Object.keys($scope.measurement).filter(
+              function(key){
+                return $scope.measurement[key].type == "heatmap";
+              });
+          $scope.allTimeCharts.forEach(function(chart){
+            drawTimeseries('id_' + chart, $scope.measurement[chart],
+                $scope.host);
+          });
+          $scope.allHeatmaps.forEach(function(chart){
+            drawHeatmap('id_' + chart, $scope.measurement[chart],
+                $scope.host);
+          });
+      });
+  },
+  checkURL = function(){
+    if ($scope.hosts.indexOf($scope.host) == -1){
+      // Bad URL.  Redirect to valid host
+      $scope.host = $scope.hosts[0];
+      var url = '/measurement/' + $scope.runId + '/' + $scope.hosts[0];
+      $location.path(url);
+      console.log('Redirect to ' + url);
+      return null;
+    }
+    return true;
+  },
+  updatePage = function(){
+    if (counter === $scope.measurements.length){
+      updateDescription();
+      if (checkURL()){
+        summaryChart($scope.measurements);
+        drawCharts($scope.runId);
+      }
+    }
+  };
 
-    $scope.runId = $routeParams.runId;
-    $scope.host = $routeParams.host;
+$scope.runId = $routeParams.runId;
+$scope.host = $routeParams.host;
 
-    // Add summary measurements to scope
-    $http.get('summary.json').success(function(data){
-      $scope.measurements = data;
-      $scope.measurements.forEach(parseTimeFile);
-    });
-  }
+// Add summary measurements to scope
+$http.get('summary.json').success(function(data){
+  $scope.measurements = data;
+  $scope.measurements.forEach(parseTimeFile);
+});
+}
 ]);

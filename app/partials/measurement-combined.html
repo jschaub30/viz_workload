@@ -32,38 +32,45 @@
   </div>
   <!--End summary row-->
 
-  <a ng-repeat="measurement in measurements" href="#/measurement/{{measurement.run_id}}/{{host}}">
-    <button type="button" class="btn btn-xs"
-                          ng-class="measurement.run_id == runId && 'btn-primary'">
-      {{measurement.run_id}}</button> </a>
-
-  <a ng-repeat="thisHost in hosts" 
-     href=#/measurement/{{runId}}/{{thisHost}}>
-    <button type="button" class="btn btn-xs"
-                          ng-class="host == thisHost && 'btn-primary'">
-      {{thisHost}}</button></a>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" id="wrapper">
   <h2> {{description}}</h2>
   <p class="muted"> {{timestamp}}</p>
   <div class="row">
     <div ng-repeat="chart in allTimeCharts" class="col-md-6 text-right">
       <a href={{measurement[chart][host].finalFilename}}>
-      <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
       </a>
       <div class="col-md-12 chart {{measurement[chart].type}}" id="id_{{chart}}">
+      </div>
     </div>
-    </div>
+  </div>
+  <div class="row">
     <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart text-right">
       <a href={{measurement[chart][host].finalFilename}}>
-      <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
       </a>
       <h3 class="text-center">{{measurement[chart].title}}</h3>
       <canvas class="" id="id_{{chart}}">
       </canvas>
     </div>
   </div>
-  <!--End row-->
+</div>
+<div class="footer">
+  <div id="run_id_buttons">
+    <a ng-repeat="measurement in measurements" href="#/measurement/{{measurement.run_id}}/{{host}}">
+      <button type="button" class="btn btn-xs"
+                            ng-class="measurement.run_id == runId && 'btn-primary'">
+        {{measurement.run_id}}</button></a>
+  </div>
+  <div id="cluster_buttons">
+    <a ng-repeat="thisHost in hosts" 
+       href=#/measurement/{{runId}}/{{thisHost}}>
+      <button type="button" class="btn btn-xs"
+                            ng-class="host == thisHost && 'btn-primary'">
+        {{thisHost}}</button></a>
+  </div>
+  <div id="sum_buttons"></div>
 
 </div>

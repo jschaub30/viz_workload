@@ -3,13 +3,14 @@
 [ "$#" -lt "2" ] && echo Usage: "$0 MONITOR HOSTNAME [TARGET_PATH]" && exit 1
 MONITOR=`echo $1 | tr '[:upper:]' '[:lower:]'`
 HOST=$2
+SCRIPT=start-${MONITOR}.sh
 
 [ $MONITOR == "ocount" ] && PREFIX="sudo"
 [ $MONITOR == "perf" ] && PREFIX="sudo"
 [ $MONITOR == "operf" ] && PREFIX="sudo"
 [ $MONITOR == "gpu" ] && MONITOR="nvidia-smi"
 
-ssh $HOST "$PREFIX pkill $MONITOR"
+ssh $HOST "$PREFIX pkill $SCRIPT"
 if [ "$#" -eq "3" ]
 then
   TARGET_FN=$3

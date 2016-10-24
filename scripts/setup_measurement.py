@@ -129,6 +129,12 @@ def load_environment():
         hosts.append(os.uname()[1].split('.')[0])   # short hostname
     summary['hosts'] = hosts
 
+    try:
+        summary['all_monitors'] = os.environ['MEASUREMENTS'].strip().split(' ')
+    except KeyError:
+        sys.stderr.write('MEASUREMENTS not set in environment. Exiting...\n')
+        sys.exit(1)
+
     return summary
 
 def main():
@@ -157,20 +163,17 @@ def main():
     with open(summary_fn, 'w') as fid:
         fid.write(json.dumps(all_measurements, sort_keys=True, indent=4))
 
-
     # Write <run_id>.json details file
     details = {}
-    for meas_type in ['cpu', 'mem', 'io', 'net']:
-        details[meas_type] = create_chartdata(summary['run_id'], meas_type,
-                summary['hosts'])
 
-    try:
-        if int(os.environ['MEAS_CPU_HEATMAP']) == 1:
-            meas_type = 'cpu_heatmap'
+    for meas_type in summary['all_monitors']:
+        if meas_type == 'dstat':
+            for meas_type in ['cpu', 'mem', 'io', 'net']:
+                details[meas_type] = create_chartdata(summary['run_id'], 
+                        meas_type, summary['hosts'])
+        else:
             details[meas_type] = create_chartdata(summary['run_id'], meas_type,
                 summary['hosts'])
-    except KeyError:
-        pass
 
     detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
             + '.json')

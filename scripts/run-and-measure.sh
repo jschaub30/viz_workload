@@ -9,8 +9,25 @@ usage() {
   echo 'export DESCRIPTION="Example 10sec sleep command"'
   echo 'export WORKLOAD_CMD="sleep 10"'
   echo $0
+  echo
+  echo See example*.sh
   exit 1
 }
+
+# Required
+[ -z "$WORKLOAD_CMD" ] && usage
+[ -z "$WORKLOAD_NAME" ] && usage
+[ -z "$DESCRIPTION" ] && usage
+
+# Optional
+[ -z "$MEASUREMENTS" ] && export MEASUREMENTS=`dstat`
+[ -z "$WORKLOAD_DIR" ] && export WORKLOAD_DIR=`pwd`
+[ -z "$RUN_ID" ] && export RUN_ID=RUN1
+[ -z "$HOSTS" ] && export HOSTS=$(hostname -s)
+[ -z "$MEAS_DELAY_SEC" ] && MEAS_DELAY_SEC=1
+[ -z "$VERBOSE" ] && VERBOSE=0     # 0|1|2  Higher==more messages
+
+WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
 
 debug_message(){
   LEVEL=$1
@@ -24,57 +41,65 @@ debug_message(){
 check_pids() { 
   for PID2CHECK in "$@"
   do
-    CURRENT_HOST=${HOST_ARRAY[$PID2CHECK]}
+    CURRENT_MSG=${MSG_ARRAY[$PID2CHECK]}
     wait $PID2CHECK
     if [ $? -ne 0 ]
     then 
-      debug_message -1 "$CURRENT_HOST did not complete successfully. Exiting..."
+      debug_message -1 "$CURRENT_MSG did not complete successfully. Exiting..."
       exit 1
     fi
   done
 }
 
-define_filenames() {
-  RAWDIR=${RUNDIR}/data/raw
-  DSTAT_FN=${RAWDIR}/${RUN_ID}.${HOST}.dstat.csv
-  CPU_HEATMAP_FN=${RAWDIR}/${RUN_ID}.${HOST}.cpu_heatmap.csv
-}
-
 start_monitors() {
   debug_message 0 "Starting monitors on $HOSTS"
   PIDS=()
-  HOST_ARRAY=()
+  MSG_ARRAY=()
   for HOST in $HOSTS; do
-    define_filenames
-	debug_message 1 "Starting monitors"
-    if [ "$MEAS_DSTAT" == 1 ]; then
-      debug_message 1 "Starting dstat on $HOST"
-      ./start_monitor.sh dstat $HOST $DSTAT_FN $MEAS_DELAY_SEC &
+    for MEAS in $MEASUREMENTS; do
+      MSG="Starting $MEAS on host $HOST"
+      debug_message 1 $MSG
+      ./start-monitor.sh $MEAS $HOST $RUN_ID $MEAS_DELAY_SEC &
       CURRPID=$!
-      HOST_ARRAY[$CURRPID]=$HOST
+      MSG_ARRAY[$CURRPID]="$MSG"
       PIDS="$PIDS $CURRPID"
-    fi
-    if [ "$MEAS_CPU_HEATMAP" == 1 ]; then
-      debug_message 1 "Starting dstat (for CPU detail) on $HOST"
-      ./start_monitor.sh cpu_heatmap $HOST $CPU_HEATMAP_FN $MEAS_DELAY_SEC &
-      CURRPID=$!
-      HOST_ARRAY[$CURRPID]=$HOST
-      PIDS="$PIDS $CURRPID"
-    fi
+    done
   done
-  check_pids ${PIDS[@]}
+  check_pids ${PIDS}
 }
 
 stop_monitors() {
   debug_message 0 "Stopping monitors on $HOSTS"
+  PIDS=()
+  MSG_ARRAY=()
   for HOST in $HOSTS; do
-    define_filenames
-    [ "$MEAS_DSTAT" == 1 ] && debug_message 1 "Stopping dstat on $HOST" && \
-      ./stop_monitor.sh dstat $HOST $DSTAT_FN &
-    [ "$MEAS_CPU_HEATMAP" == 1 ] && debug_message 1 "Stopping dstat (cpu_heatmap) on $HOST" && \
-      ./stop_monitor.sh dstat $HOST $CPU_HEATMAP_FN &
+    for MEAS in $MEASUREMENTS; do
+      MSG="Starting $MEAS on host $HOST"
+      debug_message 1 $MSG
+      ./stop-monitor.sh $MEAS $HOST ${RUNDIR}/data/raw &
+      CURRPID=$!
+      MSG_ARRAY[$CURRPID]="$MSG"
+      PIDS="$PIDS $CURRPID"
+    done
   done
-  wait
+  check_pids ${PIDS}
+}
+
+parse_results() {
+  debug_message 0 "Parsing results on $HOSTS"
+  PIDS=()
+  MSG_ARRAY=()
+  for HOST in $HOSTS; do
+    for MEAS in $MEASUREMENTS; do
+      MSG="Parsing $MEAS on host $HOST"
+      debug_message 1 $MSG
+      ./parse-monitor.sh $MEAS $HOST ${RUNDIR}/data/raw
+      CURRPID=$!
+      MSG_ARRAY[$CURRPID]="$MSG"
+      PIDS="$PIDS $CURRPID"
+    done
+  done
+  check_pids ${PIDS}
 }
 
 run_workload(){
@@ -98,18 +123,6 @@ run_workload(){
   wait $TIME_PID
 }
 
-parse_results() {
-  for HOST in $HOSTS; do
-	define_filenames
-    debug_message 1 "Parsing dstat data on $HOST"
-	[ $MEAS_DSTAT -eq 1 ] && debug_message 1 "Parsing dstat data on $HOST" && \
-      ./parse_dstat.py $DSTAT_FN &
-	[ $MEAS_CPU_HEATMAP -eq 1 ] && debug_message 1 "Parsing cpu heatmap data on $HOST" && \
-      ./parse_cpu_heatmap.py $CPU_HEATMAP_FN &
-  done
-  wait
-}
-
 setup_webserver() {
   echo "cd $RUNDIR/html; python -m SimpleHTTPServer 12121" > webserver.sh
   chmod u+x webserver.sh
@@ -129,34 +142,16 @@ setup_webserver() {
   echo
 }
 stop_all() {
-    debug_message -1 "Stopping measurement"
-    kill -9 $TIME_PID 2>> $WORKLOAD_STDERR &  # Kill main process if ctrl-c
+  debug_message -1 "Stopping measurement"
+  kill -9 $TIME_PID 2>> $WORKLOAD_STDERR &  # Kill main process if ctrl-c
 }
 
 #################### END OF FUNCTIONS ####################
-
-# Required
-[ -z "$WORKLOAD_CMD" ] && usage
-[ -z "$WORKLOAD_NAME" ] && usage
-[ -z "$DESCRIPTION" ] && usage
-
-# Optional
-[ -z "$WORKLOAD_DIR" ] && export WORKLOAD_DIR=`pwd`
-[ -z "$RUN_ID" ] && export RUN_ID=RUN1
-[ -z "$HOSTS" ] && export HOSTS=$(hostname -s)
-[ -z "$MEAS_DELAY_SEC" ] && MEAS_DELAY_SEC=1
-[ -z "$VERBOSE" ] && VERBOSE=0     # 0|1|2  Higher==more messages
-
 trap 'stop_all' SIGTERM SIGINT # Kill process monitors if killed early
 
-WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
-export MEAS_DSTAT=1  # Capture dstat traces for cpu, mem, io & network
-
 RUNDIR=`./setup_measurement.py`
-
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"
-
 
 #record_state
 start_monitors

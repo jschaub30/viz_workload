@@ -1,14 +1,13 @@
 #!/bin/bash
 
-[ "$#" -ne "4" ] && echo Usage: $0 MONITOR HOSTNAME TARGET_FN DELAY_SEC && exit 1
+[ "$#" -ne "4" ] && echo Usage: $0 MONITOR HOST RUN_ID DELAY_SEC && exit 1
 
-MONITOR=$1
+MONITOR=`echo $1 | tr '[:upper:]' '[:lower:]'`
 HOST=$2
 DELAY_SEC=$4
 [ "$DELAY_SEC" -lt "1" ] && echo Setting DELAY_SEC to 1 instead of $DELAY_SEC \
   && DELAY_SEC=1
-
-TARGET_FN=/tmp/${USER}/pid_monitor/$(basename $3)
+TARGET_FN=/tmp/${USER}/pid_monitor/${RUN_ID}.${HOST}.${MONITOR}.csv
 
 [ "$MONITOR" == "dstat" ] && \
   RUN_CMD="dstat --time -v --net --output $TARGET_FN $DELAY_SEC"
@@ -28,13 +27,12 @@ fi
 
 if [ "$MONITOR" == "gpu" ]
 then
-  MONITOR="nvidia-smi"
   RUN_CMD="nvidia-smi \
     --query-gpu=timestamp,index,name,utilization.gpu,utilization.memory,power.draw \
     --format=csv --filename=$TARGET_FN --loop=$DELAY_SEC"
+  MONITOR="nvidia-smi"
 fi
 
-# Collect data over ssh.  Store in /tmp directory
 # Check if monitor is installed
 ssh $HOST "which $MONITOR" > /dev/null
 [ "$?" -ne 0 ] && echo ERROR: Problem starting $MONITOR on $HOST. Exiting... \
@@ -53,5 +51,4 @@ RC=$?
 
 [ "$RC" -ne 0 ] && echo Problem starting $MONITOR on $HOST && exit 1
 exit $RC
-#echo Successfully started $MONITOR on $HOST
 

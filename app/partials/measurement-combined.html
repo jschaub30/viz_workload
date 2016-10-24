@@ -48,10 +48,13 @@
   <h2> {{description}}</h2>
   <p class="muted"> {{timestamp}}</p>
   <div class="row">
-    <div ng-repeat="chart in allTimeCharts" class="col-md-6 chart {{measurement.chart.type}}"
-                                                       id="id_{{chart}}"></div>
-    <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart {{measurement.chart.type}}">
-      <canvas id="id_{{chart}}"></canvas></div>
+    <div ng-repeat="chart in allTimeCharts" class="col-md-6 chart {{measurement[chart].type}}"
+                                            id="id_{{chart}}"></div>
+    <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart {{measurement[chart].type}}">
+      <h3 class="text-center">{{measurement[chart].title}}</h3>
+      <canvas id="id_{{chart}}">
+      </canvas>
+    </div>
   </div>
   <!--End row-->
 

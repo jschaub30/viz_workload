@@ -9,6 +9,7 @@ Output: summary (json) file
 
 import sys
 import os
+import glob
 import shutil
 import json
 import datetime as dt
@@ -31,6 +32,11 @@ def setup_directories(summary):
         directory = os.path.join(summary['rundir'], name)
         if not os.path.exists(directory):
             os.makedirs(directory)
+
+    # Copy script files
+    directory = os.path.join(summary['rundir'], 'scripts')
+    for filename in glob.glob('*.*'):
+        shutil.copy(filename, directory)
 
     # Create 'data' symlink
     symlink = os.path.join(summary['rundir'], 'html', 'data')
@@ -63,6 +69,7 @@ def create_chartdata(run_id, meas_type, hosts):
     title = ''
     chart_type = 'timeseries'  # default
     monitor = 'dstat'  # default
+    ext = 'csv'
 
     if meas_type == 'cpu':
         title = 'System CPU [%]'
@@ -74,6 +81,7 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'Network [GB/sec]'
     elif meas_type == 'cpu_heatmap':
         monitor = meas_type
+        ext = 'json'
         title = 'CPU Heatmap'
         chart_type = 'heatmap'
 
@@ -86,8 +94,8 @@ def create_chartdata(run_id, meas_type, hosts):
         obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.csv" % (
                 run_id, host, monitor)
-        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.csv" % (
-                run_id, host, meas_type)
+        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s" % (
+                run_id, host, meas_type, ext)
     return obj
 
 def load_environment():

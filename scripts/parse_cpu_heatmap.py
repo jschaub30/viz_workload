@@ -44,7 +44,8 @@ def main(dstat_fn):
     for cpu in range(num_cpu - 1, -1, -1):
         data = map(lambda(x): round(x, 1), val_array[cpu])
         obj["datasets"].append({"label": str(cpu), "data": data})
-    out_fn = dstat_fn.replace('data/raw', 'data/final')
+    out_fn = dstat_fn.replace('data/raw', 'data/final').replace('.csv', '')
+    out_fn += '.json'
     with open(out_fn, 'w') as fid:
         fid.write(json.dumps(obj))
 

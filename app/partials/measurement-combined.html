@@ -48,11 +48,19 @@
   <h2> {{description}}</h2>
   <p class="muted"> {{timestamp}}</p>
   <div class="row">
-    <div ng-repeat="chart in allTimeCharts" class="col-md-6 chart {{measurement[chart].type}}"
-                                            id="id_{{chart}}"></div>
-    <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart {{measurement[chart].type}}">
+    <div ng-repeat="chart in allTimeCharts" class="col-md-6 text-right">
+      <a href={{measurement[chart][host].finalFilename}}>
+      <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+      </a>
+      <div class="col-md-12 chart {{measurement[chart].type}}" id="id_{{chart}}">
+    </div>
+    </div>
+    <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart text-right">
+      <a href={{measurement[chart][host].finalFilename}}>
+      <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+      </a>
       <h3 class="text-center">{{measurement[chart].title}}</h3>
-      <canvas id="id_{{chart}}">
+      <canvas class="" id="id_{{chart}}">
       </canvas>
     </div>
   </div>

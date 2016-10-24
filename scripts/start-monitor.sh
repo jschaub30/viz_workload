@@ -39,7 +39,7 @@ ssh $HOST "which $MONITOR" > /dev/null
   && exit 1
 
 # Check to see if monitor is already running
-RC=$(ssh $HOST "ps -efa | grep $MONITOR | grep -v 'grep\|vim\|start_monitor' | wc -l")
+RC=$(ssh $HOST "ps -efa | grep $MONITOR | grep -v 'grep\|vim\|start-monitor' | wc -l")
 [ $RC -ne 0 ] && echo WARNING: $MONITOR appears to be running on $HOST.
 
 # Start $MONITOR

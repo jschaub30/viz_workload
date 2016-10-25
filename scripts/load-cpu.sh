@@ -1,22 +1,34 @@
 #!/bin/bash
+# Create artificial CPU load for 10 seconds
+# 1 copy takes 100% of 1 thread (typically)
+#
+# USAGE: ./load-cpu.sh NUM_COPIES [HOSTS]
+# Examples: 
+# ./load-cpu.sh 2 # load 2 threads on localhost
+# ./load-cpu.sh 1 host1 host2  # load 1 thread each on host1 and host2
 
-NUM_COPIES=1
-[ $# -gt 0 ] && NUM_COPIES=$1
+[ $# -eq 0 ] && echo "USAGE: ./load-cpu.sh NUM_COPIES [HOSTS]" && exit 1
+NUM_COPIES=$1
+if [ $# -eq 1 ]; then 
+  HOSTS="localhost"
+else
+  HOSTS=`echo $@ | cut -d' ' -f2-`
+fi
 
-load_cpu() {
-    while true
-    do
-      true
-    done
+kill_pids(){
+    echo Stopping CPU loading
+    kill ${PIDS[@]}
 }
-
 PIDS=()
-for N in `seq $NUM_COPIES`; do
-  echo Loading CPU for 10 seconds
-  load_cpu &
-  PIDS+=( $! )
-done
-sleep 10
-echo Stopping CPU load
-kill ${PIDS[@]}
+trap "kill_pids" SIGTERM SIGINT # Kill loads if stopped early
 
+for N in `seq $NUM_COPIES`; do
+  for HOST in $HOSTS; do
+    echo Loading CPU for 10 seconds on $HOST
+    ssh -t -t $HOST "while true; do true; done" &
+    PIDS+=( $! )
+  done
+done
+
+sleep 10
+kill_pids

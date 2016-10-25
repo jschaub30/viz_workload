@@ -144,9 +144,10 @@ setup_webserver() {
   debug_message 0 "Then navigate to http://${IP}:12121"
   echo
 }
+
 stop_all() {
-  debug_message -1 "Stopping measurement"
-  kill -9 $TIME_PID 2>> $WORKLOAD_STDERR &  # Kill main process if ctrl-c
+  debug_message -1 "Stopping workload"
+  pkill -TERM -P $TIME_PID 2>> $WORKLOAD_STDERR & # Kill main process if ctrl-c
 }
 
 #################### END OF FUNCTIONS ####################

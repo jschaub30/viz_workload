@@ -34,7 +34,6 @@ cp example.sh your_workload.sh
 
 [example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
 [example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
-[example-cluster]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster.sh
 [example-cluster-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh
 
 ## Optional.  Setup your webserver

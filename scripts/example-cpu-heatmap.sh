@@ -16,7 +16,7 @@ export MEASUREMENTS="dstat cpu-heatmap"
 # For sweeps, create a run directory where all files will be saved
 # Specify it directly, like this:
 #export RUNDIR=path/to/your/directory
-# or use this python script to create one automatically (recommended)
+# or use this script to create one automatically (recommended)
 export RUNDIR=`./create-rundir.sh`
 
 for CPU in 1 2 4; do

@@ -1,4 +1,6 @@
 <div class="container-fluid">
+  <h1> {{description}}</h1>
+  <p class="muted"> {{timestamp}}</p>
   <div class="row">
     <div class="col-md-6 summary">
       <table class="table table-bordered table-hover table-sm">
@@ -35,8 +37,6 @@
 </div>
 
 <div class="container-fluid" id="wrapper">
-  <h2> {{description}}</h2>
-  <p class="muted"> {{timestamp}}</p>
   <div class="row">
     <div ng-repeat="chart in allTimeCharts" class="col-md-6 text-right">
       <a href={{measurement[chart][host].finalFilename}}>
@@ -59,17 +59,16 @@
 </div>
 <div class="footer">
   <div id="run_id_buttons">
-    <a ng-repeat="measurement in measurements" href="#/measurement/{{measurement.run_id}}/{{host}}">
-      <button type="button" class="btn btn-xs"
-                            ng-class="measurement.run_id == runId && 'btn-primary'">
-        {{measurement.run_id}}</button></a>
+    <a ng-repeat="measurement in measurements" 
+       href="#/measurement/{{measurement.run_id}}/{{host}}"
+       class="btn btn-xs" ng-class="measurement.run_id == runId && 'btn-primary'">
+      {{measurement.run_id}}</a>
   </div>
   <div id="cluster_buttons">
     <a ng-repeat="thisHost in hosts" 
-       href=#/measurement/{{runId}}/{{thisHost}}>
-      <button type="button" class="btn btn-xs"
-                            ng-class="host == thisHost && 'btn-primary'">
-        {{thisHost}}</button></a>
+       href=#/measurement/{{runId}}/{{thisHost}}
+       class="btn btn-xs" ng-class="host == thisHost && 'btn-primary'">
+      {{thisHost}}</a>
   </div>
   <div id="sum_buttons"></div>
 

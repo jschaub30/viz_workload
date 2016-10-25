@@ -4,14 +4,16 @@
 
 var vizWorkloadControllers = angular.module('vizWorkloadControllers', []);
 
-vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location',
-  function($http, $location) {
+vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeout',
+  function($http, $location, $timeout) {
     // Read the summary file, and redirect to the first measurement
     $http.get('summary.json').success(function(data){
       var runId = data[0].run_id,
         host = data[0].hosts[0],
         url = '/measurement/' + runId + '/' + host;
-      $location.path(url);
+        $timeout(function() {
+          $location.path(url);
+        }, 400);
     }
     )
   }

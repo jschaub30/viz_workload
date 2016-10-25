@@ -79,7 +79,7 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'IO [GB/sec]'
     elif meas_type == 'net':
         title = 'Network [GB/sec]'
-    elif meas_type == 'cpu_heatmap':
+    elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'
         title = 'CPU Heatmap'

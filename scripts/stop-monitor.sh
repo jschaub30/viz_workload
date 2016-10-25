@@ -1,22 +1,40 @@
 #!/bin/bash
+# USAGE: ./stop-monitor.sh MONITOR HOST [RUN_ID TARGET_DIR]
+# This script uses ssh to:
+# 1. kill the start-${MONITOR}.sh script on $HOST
+# 2. (optional) copy the file to $TARGET_DIR on the local host
 
-[ "$#" -lt "2" ] && echo Usage: "$0 MONITOR HOSTNAME [TARGET_PATH]" && exit 1
-MONITOR=`echo $1 | tr '[:upper:]' '[:lower:]'`
+[ $# -lt 2 ] && echo Usage: "$0 MONITOR HOST [RUN_ID TARGET_PATH]" && exit 1
+
+MONITOR=`echo $1 | tr '[:upper:]' '[:lower:]' | tr '_' '-'`
 HOST=$2
+
+# Kill the ssh process attached to the start script on $HOST
+PREFIX=""
 SCRIPT=start-${MONITOR}.sh
+DIR=/tmp/${USER}/viz_workload
+# Could also grep for RUN_ID here
+PID=`ps -efa | grep ${DIR}/${SCRIPT} | grep ".*ssh.*$HOST" | awk '{print $2}'`
+kill $PID 2>/dev/null
+RC=$?
+[ $RC -ne 0 ] && echo Problem killing $SCRIPT on ${HOST}. RC=$RC. Exiting... \
+  && exit 1
 
-[ $MONITOR == "ocount" ] && PREFIX="sudo"
-[ $MONITOR == "perf" ] && PREFIX="sudo"
-[ $MONITOR == "operf" ] && PREFIX="sudo"
-[ $MONITOR == "gpu" ] && MONITOR="nvidia-smi"
-
-ssh $HOST "$PREFIX pkill $SCRIPT"
-if [ "$#" -eq "3" ]
-then
-  TARGET_FN=$3
-  REMOTE_FN=/tmp/${USER}/pid_monitor/${RUN_ID}.${HOST}.${MONITOR}.csv
-  echo Copying $MONITOR data from $HOST:$REMOTE_FN to $TARGET_FN
-  scp -r $HOST:$REMOTE_FN $TARGET_FN
-  [ "$?" -eq 0 ] && ssh $HOST "$PREFIX rm $REMOTE_FN"
+# Copy the file from remote host to local target directory
+if [ $# -eq 4 ]; then
+  RUN_ID=$3
+  TARGET_DIR=$4
+  DIR=/tmp/${USER}/viz_workload
+  REMOTE_FN=${DIR}/${RUN_ID}.${HOST}.${MONITOR}.csv
+  echo Copying $MONITOR data from ${HOST}:${REMOTE_FN} to $TARGET_DIR
+  scp $HOST:$REMOTE_FN $TARGET_DIR >/dev/null
+  RC=$?
+  if [ $RC -eq 0 ]; then
+    # remove remote file
+    ssh $HOST "$PREFIX rm $REMOTE_FN"
+  else
+    echo Problem copying ${HOST}:${REMOTE_FN} to $TARGET_DIR Exiting...
+    exit 1
+  fi
 fi
 

@@ -1,33 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <table class="table table-bordered table-hover">
-                <tr>
-                    <th>Run ID</th>
-                    <th>Exit status</th>
-                    <th>stdout</th>
-                    <th>stderr</th>
-                    <th>time</th>
-                    <th>Execution time</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="measurement in measurements">
-                    <td>{{measurement.run_id}}</td>
-                    <td ng-class="measurement.time.exit_clean && 'success' || 'danger'">
-                      {{measurement.time.exit_status}}</td>
-                    <td><a href={{measurement.stdout.filename}}>stdout</a></td>
-                    <td><a href={{measurement.stderr.filename}}>stderr</a></td>
-                    <td><a href={{measurement.time.filename}}>time</a></td>
-                    <td>{{measurement.time.elapsed_time_sec}}</td>
-                    <td><a href=#/measurement/{{measurement.run_id}}>
-                      More details</a></td>
-                </tr>
-            </table>
+          <h2>Redirecting...</h2>
         </div>
-        <div class="col-md-6">
-        </div>
-    </div>
-    <!--End row-->
-
+    </div> <!--End row-->
 </div>
 

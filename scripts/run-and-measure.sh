@@ -14,12 +14,12 @@ usage() {
   exit 1
 }
 
-# Required
+# Required parameters
 [ -z "$WORKLOAD_CMD" ] && usage
 [ -z "$WORKLOAD_NAME" ] && usage
 [ -z "$DESCRIPTION" ] && usage
 
-# Optional
+# Optional parameters.  Define default values
 [ -z "$MEASUREMENTS" ] && export MEASUREMENTS=`dstat`
 [ -z "$WORKLOAD_DIR" ] && export WORKLOAD_DIR=`pwd`
 [ -z "$RUN_ID" ] && export RUN_ID=RUN1
@@ -29,6 +29,7 @@ usage() {
 
 WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
 
+######## Functions ########
 debug_message(){
   LEVEL=$1
   MESSAGE=`echo "$@" | cut -d' ' -f2-`
@@ -43,9 +44,11 @@ check_pids() {
   do
     CURRENT_MSG=${MSG_ARRAY[$PID2CHECK]}
     wait $PID2CHECK
-    if [ $? -ne 0 ]
+    RC=$?
+    if [ $RC -ne 0 ]
     then 
-      debug_message -1 "$CURRENT_MSG did not complete successfully. Exiting..."
+      debug_message -1 "$CURRENT_MSG did not complete successfully."
+      debug_message -1 "Return code=$RC   Exiting..."
       exit 1
     fi
   done
@@ -56,10 +59,10 @@ start_monitors() {
   PIDS=()
   MSG_ARRAY=()
   for HOST in $HOSTS; do
-    for MEAS in $MEASUREMENTS; do
-      MSG="Starting $MEAS on host $HOST"
+    for MONITOR in $MEASUREMENTS; do
+      MSG="Starting $MONITOR on host $HOST"
       debug_message 1 $MSG
-      ./start-monitor.sh $MEAS $HOST $RUN_ID $MEAS_DELAY_SEC &
+      ./start-monitor.sh $MONITOR $HOST $RUN_ID $MEAS_DELAY_SEC &
       CURRPID=$!
       MSG_ARRAY[$CURRPID]="$MSG"
       PIDS="$PIDS $CURRPID"
@@ -73,10 +76,10 @@ stop_monitors() {
   PIDS=()
   MSG_ARRAY=()
   for HOST in $HOSTS; do
-    for MEAS in $MEASUREMENTS; do
-      MSG="Starting $MEAS on host $HOST"
+    for MONITOR in $MEASUREMENTS; do
+      MSG="Starting $MONITOR on host $HOST"
       debug_message 1 $MSG
-      ./stop-monitor.sh $MEAS $HOST ${RUNDIR}/data/raw &
+      ./stop-monitor.sh $MONITOR $HOST $RUN_ID ${RUNDIR}/data/raw &
       CURRPID=$!
       MSG_ARRAY[$CURRPID]="$MSG"
       PIDS="$PIDS $CURRPID"
@@ -90,10 +93,10 @@ parse_results() {
   PIDS=()
   MSG_ARRAY=()
   for HOST in $HOSTS; do
-    for MEAS in $MEASUREMENTS; do
-      MSG="Parsing $MEAS on host $HOST"
+    for MONITOR in $MEASUREMENTS; do
+      MSG="Parsing $MONITOR on host $HOST"
       debug_message 1 $MSG
-      ./parse-monitor.sh $MEAS $HOST ${RUNDIR}/data/raw
+      ./parse-monitor.sh $MONITOR $HOST ${RUNDIR}/data/raw
       CURRPID=$!
       MSG_ARRAY[$CURRPID]="$MSG"
       PIDS="$PIDS $CURRPID"

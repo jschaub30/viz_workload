@@ -1,8 +1,8 @@
 # Current list of all available measurements
-dstat       # System averages for cpu, memory, io, and network
+sys-summary # System averages for cpu, memory, io, and network
 cpu-heatmap # Heatmap of all cpu threads vs. time
 
-# Only 'dstat' is enabled by default
+# Only 'sys-summary' is enabled by default
 # To enable more measurements in your script, export the MEASUREMENTS variable
 # as shown below (space delimited).
-export MEASUREMENTS="dstat cpu-heatmap"
+export MEASUREMENTS="sys-summary cpu-heatmap"

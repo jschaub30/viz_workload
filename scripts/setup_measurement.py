@@ -66,9 +66,10 @@ def create_chartdata(run_id, meas_type, hosts):
     data from each host
     '''
     obj = {}
+    # Defaults
     title = ''
-    chart_type = 'timeseries'  # default
-    monitor = 'dstat'  # default
+    chart_type = 'timeseries'
+    monitor = 'dstat'  # the program that originally records the data
     ext = 'csv'
 
     if meas_type == 'cpu':
@@ -175,7 +176,7 @@ def main():
     details = {}
 
     for meas_type in summary['all_monitors']:
-        if meas_type == 'dstat':
+        if meas_type == 'sys-summary':
             for meas_type in ['cpu', 'mem', 'io', 'net']:
                 details[meas_type] = create_chartdata(summary['run_id'], 
                         meas_type, summary['hosts'])

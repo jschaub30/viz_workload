@@ -20,7 +20,7 @@ usage() {
 [ -z "$DESCRIPTION" ] && usage
 
 # Optional parameters.  Define default values
-[ -z "$MEASUREMENTS" ] && export MEASUREMENTS=`dstat`
+[ -z "$MEASUREMENTS" ] && export MEASUREMENTS=`sys-summary`
 [ -z "$WORKLOAD_DIR" ] && export WORKLOAD_DIR=`pwd`
 [ -z "$RUN_ID" ] && export RUN_ID=RUN1
 [ -z "$HOSTS" ] && export HOSTS=$(hostname -s)

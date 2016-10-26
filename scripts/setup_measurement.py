@@ -83,7 +83,12 @@ def create_chartdata(run_id, meas_type, hosts):
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'
-        title = 'CPU Heatmap'
+        title = 'CPU Usage Heatmap'
+        chart_type = 'heatmap'
+    elif meas_type == 'interrupts':
+        monitor = meas_type
+        ext = 'json'
+        title = 'CPU Interrupt Heatmap'
         chart_type = 'heatmap'
 
     obj = {
@@ -93,7 +98,7 @@ def create_chartdata(run_id, meas_type, hosts):
             }
     for host in hosts:
         obj[host] = {}
-        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s.csv" % (
+        obj[host]['rawFilename'] = "../data/raw/%s.%s.%s" % (
                 run_id, host, monitor)
         obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s" % (
                 run_id, host, meas_type, ext)

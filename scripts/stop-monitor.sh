@@ -25,7 +25,7 @@ if [ $# -eq 4 ]; then
   RUN_ID=$3
   TARGET_DIR=$4
   DIR=/tmp/${USER}/viz_workload
-  REMOTE_FN=${DIR}/${RUN_ID}.${HOST}.${MONITOR}.csv
+  REMOTE_FN=${DIR}/${RUN_ID}.${HOST}.${MONITOR}
   echo Copying $MONITOR data from ${HOST}:${REMOTE_FN} to $TARGET_DIR
   scp $HOST:$REMOTE_FN $TARGET_DIR >/dev/null
   RC=$?

@@ -6,9 +6,9 @@ DELAY_SEC=$2
 
 rm -f $TARGET_FN
 
-while [ 1 -eq 1 ]
+while true
 do 
-    echo "~~##DELIM##~~ $HOSTNAME $(date +"%Y%m%d-%H%M%S")" >> $TARGET_FN
+    echo "##TIMESTAMP## $(date +"%Y%m%d-%H%M%S")" >> $TARGET_FN
     cat /proc/interrupts >> $TARGET_FN
     sleep $DELAY_SEC
 done

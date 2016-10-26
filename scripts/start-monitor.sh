@@ -28,7 +28,7 @@ scp $SCRIPT ${HOST}:${DIR} > /dev/null
 # Start $MONITOR
 [ $DELAY_SEC -lt 1 ] && echo Setting DELAY_SEC to 1 instead of $DELAY_SEC \
   && DELAY_SEC=1
-TARGET_FN=${DIR}/${RUN_ID}.${HOST}.${MONITOR}.csv
+TARGET_FN=${DIR}/${RUN_ID}.${HOST}.${MONITOR}
 CMD="${DIR}/${SCRIPT} $TARGET_FN $DELAY_SEC"
 ssh -t -t $HOST $CMD &
 # Using -t -t option from http://bit.ly/2eGy8iE

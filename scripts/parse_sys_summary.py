@@ -59,9 +59,9 @@ def main(dstat_fn):
 
     # Now write output csv files
     for monitor in monitors:
-        out_fn = dstat_fn.replace('.dstat.csv', '.%s.csv' % monitor['name'])
+        out_fn = dstat_fn.replace('sys-summary', monitor['name'])
         # write data to data/final directory
-        out_fn = out_fn.replace('data/raw', 'data/final')
+        out_fn = out_fn.replace('data/raw', 'data/final') + '.csv'
         #print 'writing ' + out_fn
         with open(out_fn, 'w') as fid:
             fid.write(out_string[monitor['name']])

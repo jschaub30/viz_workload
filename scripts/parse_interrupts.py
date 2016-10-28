@@ -2,7 +2,7 @@
 
 '''
 Input:  raw data from /proc/interrupts
-Output: json file
+Output: json timeseries file with total interrupts per cpu thread
 '''
 
 import sys
@@ -25,7 +25,8 @@ def format_line(lines, prev_interrupts):
 
     # Parse raw interrupt count for each IRQ. Sum all together for each core
     for line in lines[2:]:
-        m = re.match('\s*(\w+):\s+(\d+)\s+(\d+)\s+(.*)', line)
+        regex_str = '\s*(\w+):' + num_cpu*'\s+(\d+)' + '\s+.*'
+        m = re.match(regex_str, line)
         if m:
             # Raw interrupt count for this IRQ at this time
             vals = map(int, m.groups()[1:num_cpu + 1])

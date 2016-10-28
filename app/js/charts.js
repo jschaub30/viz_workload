@@ -33,7 +33,7 @@ var timeseries_chart = function(data, divId, plotOptions) {
           rounded: false,
           paddingScale: 0.0,
           showLabels: false,
-          tooltipTemplate: "t: <%= xLabel %> | cpu: <%= yLabel %> | value: <%= value %>%",
+          tooltipTemplate: "t: <%= xLabel %> | cpu: <%= yLabel %> | value: <%= value %>",
           colorInterpolation: 'gradient',
           colors: ['rgb(220,220,220)', 'red']
         });

@@ -37,19 +37,22 @@ def format_line(lines, prev_interrupts):
                 interrupts = [i + j for i, j in zip(vals, interrupts)]
 
     if prev_interrupts:
+        # Calculate the difference between current and previous interrupts
         data = ([i - j for i, j in zip(interrupts, prev_interrupts)])
         csv_line = '%g,%s\n' % (t_sec, ",".join([str(i) for i in data]))
         return (csv_line, interrupts)
     else:
-        t0 = -1  # Reset once since we start on 2nd timestamp
+        #t0 = -1  # Reset once since we start on 2nd timestamp
         return ('', interrupts)
 
 def csv_to_json(csv_str):
     '''
-    Parses a csv string with format:
-        t1,interrupts1a,interrupts2a,interrupts3a
-        t2,interrupts1b,interrupts2b,interrupts3b
-        t3,interrupts1c,interrupts2c,interrupts3c
+    Parses a csv string into json object formatted for heatmap cart
+
+    Input format:
+       'time1,val1a,val2a,val3a\n
+        time2,val1b,val2b,val3b\n
+        time3,val1c,val2c,val3c\n'
     
     Returns object with 2 keys:
         "labels" as first column (time data)
@@ -57,36 +60,36 @@ def csv_to_json(csv_str):
     obj = {
         "labels": [t1, t2, t3],
         datasets = [
-            {"label": cpu1, "data":[interrupts1a, interrupts1b, interrupts1c]},
-            {"label": cpu2, "data":[interrupts2a, interrupts2b, interrupts2c]},
-            {"label": cpu3, "data":[interrupts3a, interrupts3b, interrupts3c]}
+            {"label": cpu1, "data":[val1a, val1b, val1c]},
+            {"label": cpu2, "data":[val2a, val2b, val2c]},
+            {"label": cpu3, "data":[val3a, val3b, val3c]}
             ]
         }
     '''
     lines = csv_str.strip().split('\n')
     field_names = lines[0].split(',')
     num_cols = len(lines[0].split(',')) - 1  # Subtract first column (time data)
-    times = []
-    # Create a list of lists of data
-    datasets = [[int(i)] for i in lines[0].split(',')[1:]]
-    for line in lines[1:]:
+    line = lines.pop(0).split(',')
+    # Initialize lists
+    times = [int(line.pop(0))]
+    # Create a list of lists for datasets
+    datasets = [[int(i)] for i in line]
+    for line in lines:
         fields = line.split(',')
-        times.append(int(fields[0]))
-        col = 0
-        for field in fields[1:]:
-            datasets[col].append(int(field))
-            col += 1
+        times.append(int(fields.pop(0)))
+        for col in range(num_cols):
+            datasets[col].append(int(fields[col]))
+    datasets.reverse()  # Start cpu0 at bottom of heatmap
 
     # Now construct json object
-    cpu = 0
+    cpu = num_cols - 1
     all_datasets = []
     for dataset in datasets:
         all_datasets.append({"label": "cpu%g" % cpu,
                 "data": dataset})
-        cpu += 1
+        cpu -= 1
     obj = {"labels": times, "datasets": all_datasets}
     return obj
-
 
 def main(fn):
     '''
@@ -107,7 +110,6 @@ def main(fn):
             err_str += "Error is %s\nEntry is %s\n" % (str(e), blob)
             sys.stderr.write(err_str)
             sys.exit(1)
-
     obj = csv_to_json(csv_str)
     out_fn = fn.replace('data/raw', 'data/final') + '.json'
     with open(out_fn, 'w') as fid:

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 '''
-Input:  dstat cpu data (e.g. "dstat -t --cpu -C 0,1 --output dstat_fn 1"
+Input:  dstat cpu csv data (e.g. "dstat -t --cpu -C 0,1 --output dstat_fn 1"
 Output: json file
 '''
 

@@ -83,12 +83,12 @@ def create_chartdata(run_id, meas_type, hosts):
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'
-        title = 'CPU Usage Heatmap'
+        title = 'CPU Usage [%] Heatmap'
         chart_type = 'heatmap'
     elif meas_type == 'interrupts':
         monitor = meas_type
         ext = 'json'
-        title = 'CPU Interrupt Heatmap'
+        title = 'CPU Interrupts [#] Heatmap'
         chart_type = 'heatmap'
 
     obj = {

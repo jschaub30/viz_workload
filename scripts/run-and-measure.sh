@@ -2,7 +2,6 @@
 
 #################### FUNCTION DEFINITIONS ####################
 
-
 usage() {
   echo '# Example usage:'
   echo 'export WORKLOAD_NAME=EXAMPLE'
@@ -124,6 +123,8 @@ run_workload(){
   TIME_PID=$!
   debug_message 0 "Waiting for workload (pid $TIME_PID) to finish"
   wait $TIME_PID
+  RC=$?
+  [ $RC -ne 0 ] && debug_message 0 "WARNING: Non-zero exit status (=$RC) from workload"
 }
 
 setup_webserver() {

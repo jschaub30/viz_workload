@@ -80,6 +80,10 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'IO [GB/sec]'
     elif meas_type == 'net':
         title = 'Network [GB/sec]'
+    elif meas_type == 'gpu.gpu':
+        title = 'GPU Summary [%]'
+    elif meas_type == 'gpu.mem':
+        title = 'GPU Memory [%]'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'
@@ -183,6 +187,10 @@ def main():
     for meas_type in summary['all_monitors']:
         if meas_type == 'sys-summary':
             for meas_type in ['cpu', 'mem', 'io', 'net']:
+                details[meas_type] = create_chartdata(summary['run_id'], 
+                        meas_type, summary['hosts'])
+        elif meas_type == 'gpu':
+            for meas_type in ['gpu.gpu', 'gpu.mem']:
                 details[meas_type] = create_chartdata(summary['run_id'], 
                         meas_type, summary['hosts'])
         else:

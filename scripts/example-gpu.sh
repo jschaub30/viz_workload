@@ -7,9 +7,13 @@ export DESCRIPTION="Nvidia host-to-device bandwidthTest example"
 # Find the 'bandwidthTest' binary installed on local system
 FILES=`find /usr/local/cuda/ -name bandwidthTest`
 for FN in $FILES; do
-    # check if file is executable
-    [ `ls -l $FN | perl -pe "s/[rwx-]+([rwx-]) .*/\1/"` == 'x' ] && \
-        FOUND=1 && break
+    COUNT=`ls -l $FN | perl -pe "s/[rwx-]+([rwx-]) .*/\1/" | wc -l`
+    # directories return COUNT > 1
+    if [ $COUNT -eq 1 ]; then
+        # check if file is executable
+        [ `ls -l $FN | perl -pe "s/[rwx-]+([rwx-]) .*/\1/"` == 'x' ] && \
+            FOUND=1 && break
+    fi
 done
 
 if [ -z $FOUND ]; then

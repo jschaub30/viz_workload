@@ -14,6 +14,7 @@ import shutil
 import json
 import datetime as dt
 import pprint
+import collections
 
 def setup_directories(summary):
     '''
@@ -82,8 +83,10 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'Network [GB/sec]'
     elif meas_type == 'gpu.gpu':
         title = 'GPU Summary [%]'
+        monitor = 'gpu'
     elif meas_type == 'gpu.mem':
-        title = 'GPU Memory [GB]'
+        title = 'GPU Memory [%]'
+        monitor = 'gpu'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'
@@ -182,7 +185,7 @@ def main():
         fid.write(json.dumps(all_measurements, sort_keys=True, indent=4))
 
     # Write <run_id>.json details file
-    details = {}
+    details = collections.OrderedDict()
 
     for meas_type in summary['all_monitors']:
         if meas_type == 'sys-summary':
@@ -200,7 +203,7 @@ def main():
     detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
             + '.json')
     with open(detail_fn, 'w') as fid:
-        fid.write(json.dumps(details, sort_keys=True, indent=4))
+        fid.write(json.dumps(details, indent=4))
 
 
     print summary['rundir']  # Used by the calling shell script

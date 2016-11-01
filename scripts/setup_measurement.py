@@ -83,7 +83,7 @@ def create_chartdata(run_id, meas_type, hosts):
     elif meas_type == 'gpu.gpu':
         title = 'GPU Summary [%]'
     elif meas_type == 'gpu.mem':
-        title = 'GPU Memory [%]'
+        title = 'GPU Memory [GB]'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         ext = 'json'

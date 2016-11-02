@@ -37,15 +37,15 @@ def csv_to_json(csv_str):
     num_cols = len(lines[0].split(',')) - 1  # Subtract first column (time data)
     line = lines.pop(0).split(',')
     # Initialize lists
-    times = [int(line.pop(0))]
+    times = [float(line.pop(0))]
     # Create a list of lists for datasets
-    datasets = [[int(i)] for i in line]
+    datasets = [[float(i)] for i in line]
     for line in lines:
         fields = line.split(',')
-        times.append(int(fields.pop(0)))
+        times.append(float(fields.pop(0)))
         for col in range(num_cols):
-            datasets[col].append(int(fields[col]))
-    datasets.reverse()  # Start cpu0 at bottom of heatmap
+            datasets[col].append(float(fields[col]))
+    datasets.reverse()  # Start gpu0 at bottom of heatmap
 
     # Now construct json object
     cpu = num_cols - 1
@@ -106,23 +106,27 @@ def main(fn):
                 t0 = t
                 gpu_str = '0'
                 mem_str = '0'
+                pow_str = '0'
             elif int(idx) == 0:
-                t_sec = round((t - t0).total_seconds(), 0)
+                t_sec = round((t - t0).total_seconds(), 1)
                 gpu_str += '\n%g' % t_sec 
                 mem_str += '\n%g' % t_sec 
+                pow_str += '\n%g' % t_sec 
             gpu_str += ',' + util_gpu
             mem_str += ',' + util_mem
+            pow_str += ',' + power_gpu
         except Exception as e:
             pass
     # Often the last set of data is incomplete. Clean the csv records
     gpu_str = validate(gpu_str)
     mem_str = validate(mem_str)
-    ext = ['.gpu', '.mem']
+    pow_str = validate(pow_str)
+    ext = ['.gpu', '.mem', '.pow']
     num_gpu = len(gpu_str.split('\n')[0].split(',')) - 1
     header = 'time_sec,' + ','.join(['gpu' + str(i) for i in range(num_gpu)]) 
     header += '\n'
     # Save data for all individual gpu traces
-    for csv_str in [gpu_str, mem_str]:
+    for csv_str in [gpu_str, mem_str, pow_str]:
         ext_str = ext.pop(0)
         out_fn = fn.replace('data/raw', 'data/final') + ext_str + '.csv'
         with open(out_fn, 'w') as fid:

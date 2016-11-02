@@ -87,6 +87,9 @@ def create_chartdata(run_id, meas_type, hosts):
     elif meas_type == 'gpu.mem':
         title = 'GPU Memory Utilization [%]'
         monitor = 'gpu'
+    elif meas_type == 'gpu.pow':
+        title = 'GPU Power [W]'
+        monitor = 'gpu'
     elif meas_type == 'gpu.avg':
         title = 'Average GPU Utilization [%]'
         monitor = 'gpu'
@@ -196,7 +199,7 @@ def main():
                 details[meas_type] = create_chartdata(summary['run_id'], 
                         meas_type, summary['hosts'])
         elif meas_type == 'gpu':
-            for meas_type in ['gpu.avg', 'gpu.gpu', 'gpu.mem']:
+            for meas_type in ['gpu.avg', 'gpu.pow', 'gpu.gpu', 'gpu.mem']:
                 details[meas_type] = create_chartdata(summary['run_id'], 
                         meas_type, summary['hosts'])
         else:

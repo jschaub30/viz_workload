@@ -2,7 +2,7 @@
 Quickly measure, view and share your single- or multi-node linux workload 
 in data-rich, interactive charts
 
-Verson 0.9
+Verson 0.91
 
 #Setup
 These scripts use ssh to start/stop monitors and run the workload, even when
@@ -17,7 +17,6 @@ chmod 600 ~/.ssh/authorized_keys
 #Try it out
 ```
 sudo apt-get install -y dstat time
-sudo apt-get install -y nmon # optional
 git clone https://github.com/jschaub30/viz_workload
 cd viz_monitor/scripts
 cp example.sh your_workload.sh
@@ -29,12 +28,13 @@ cp example.sh your_workload.sh
 #Example scripts
 - [example.sh][example] Simple CPU load example
 - [example-sweep.sh][example-sweep] Sweeping a parameter
-- [example-cluster.sh][example-cluster] 2 hosts at a time
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
+- [example-gpu.sh][example-gpu] Collect data from Nvidia GPU with CUDA installed
 
 [example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
 [example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
 [example-cluster-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh
+[example-gpu]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-gpu.sh
 
 ## Optional.  Setup your webserver
 To permanently share all measurements, enable a web server.

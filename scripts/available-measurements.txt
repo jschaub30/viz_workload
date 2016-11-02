@@ -1,8 +1,23 @@
 # Current list of all available measurements
-sys-summary # System averages for cpu, memory, io, and network
+sys-summary # Summarizes system behavior in 4 charts
+            # 1. System CPU [%]
+            # 2. System memory usage
+            # 3. System IO usage
+            # 4. System network usage
+
 cpu-heatmap # Heatmap of all cpu threads vs. time
+
+interrupts  # Heatmap of interrupts summed for each cpu thread vs. time
+
+gpu         # Create 4 charts:
+            # 1. Avg GPU/MEMORY utilization
+            # 2. Power of each GPU
+            # 3. Detail GPU utilization (heatmap)
+            # 4. Detail GPU memory utilization (heatmap)
+
 
 # Only 'sys-summary' is enabled by default
 # To enable more measurements in your script, export the MEASUREMENTS variable
-# as shown below (space delimited).
-export MEASUREMENTS="sys-summary cpu-heatmap"
+# Examples:
+export MEASUREMENTS="sys-summary cpu-heatmap interrupts"
+export MEASUREMENTS="sys-summary gpu"

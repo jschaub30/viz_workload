@@ -10,6 +10,7 @@ import os
 import json
 import re
 from datetime import datetime
+from common import csv_to_json
 
 t0 = -1
 def format_line(lines, prev_interrupts):
@@ -22,15 +23,18 @@ def format_line(lines, prev_interrupts):
     # Read number of cpus
     num_cpu = len(lines[1].split('CPU')) - 1
     interrupts = False
+    irqs = []  # IRQ number in each row
 
     # Parse raw interrupt count for each IRQ. Sum all together for each core
     for line in lines[2:]:
-        regex_str = '\s*(\w+):' + num_cpu*'\s+(\d+)' + '\s+.*'
+        regex_str = '\s*(\w+):\s+(.*)'
         m = re.match(regex_str, line)
         if m:
             # Raw interrupt count for this IRQ at this time
-            vals = map(int, m.groups()[1:num_cpu + 1])
+            vals = map(int, m.groups()[1].split()[:num_cpu])
             if not interrupts:
+                # First line
+                irqs.append(m.groups()[0])
                 interrupts = vals
             else:
                 # Sum interrupts generated on each core
@@ -44,52 +48,6 @@ def format_line(lines, prev_interrupts):
     else:
         #t0 = -1  # Reset once since we start on 2nd timestamp
         return ('', interrupts)
-
-def csv_to_json(csv_str):
-    '''
-    Parses a csv string into json object formatted for heatmap cart
-
-    Input format:
-       'time1,val1a,val2a,val3a\n
-        time2,val1b,val2b,val3b\n
-        time3,val1c,val2c,val3c\n'
-    
-    Returns object with 2 keys:
-        "labels" as first column (time data)
-        "datasets" as list of nested objects, one for each remaining column
-    obj = {
-        "labels": [t1, t2, t3],
-        datasets = [
-            {"label": cpu1, "data":[val1a, val1b, val1c]},
-            {"label": cpu2, "data":[val2a, val2b, val2c]},
-            {"label": cpu3, "data":[val3a, val3b, val3c]}
-            ]
-        }
-    '''
-    lines = csv_str.strip().split('\n')
-    field_names = lines[0].split(',')
-    num_cols = len(lines[0].split(',')) - 1  # Subtract first column (time data)
-    line = lines.pop(0).split(',')
-    # Initialize lists
-    times = [int(line.pop(0))]
-    # Create a list of lists for datasets
-    datasets = [[int(i)] for i in line]
-    for line in lines:
-        fields = line.split(',')
-        times.append(int(fields.pop(0)))
-        for col in range(num_cols):
-            datasets[col].append(int(fields[col]))
-    datasets.reverse()  # Start cpu0 at bottom of heatmap
-
-    # Now construct json object
-    cpu = num_cols - 1
-    all_datasets = []
-    for dataset in datasets:
-        all_datasets.append({"label": "cpu%g" % cpu,
-                "data": dataset})
-        cpu -= 1
-    obj = {"labels": times, "datasets": all_datasets}
-    return obj
 
 def main(fn):
     '''
@@ -107,10 +65,10 @@ def main(fn):
            csv_str += csv_line
         except Exception as e:
             err_str = "Problem extracting entry from %s\n" % fn
-            err_str += "Error is %s\nEntry is %s\n" % (str(e), blob)
+            err_str += "Error is %s\nEntry is %s\n" % (str(e), blob[:400])
             sys.stderr.write(err_str)
             sys.exit(1)
-    obj = csv_to_json(csv_str)
+    obj = csv_to_json(csv_str, 'cpu')
     out_fn = fn.replace('data/raw', 'data/final') + '.json'
     with open(out_fn, 'w') as fid:
         fid.write(json.dumps(obj))

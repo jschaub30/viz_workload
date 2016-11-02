@@ -67,42 +67,55 @@ def create_chartdata(run_id, meas_type, hosts):
     data from each host
     '''
     obj = {}
-    # Defaults
-    title = ''
-    chart_type = 'timeseries'
-    monitor = 'dstat'  # the program that originally records the data
-    ext = 'csv'
 
     if meas_type == 'cpu':
         title = 'System CPU [%]'
+        monitor = 'dstat'  # the program that originally records the data
+        chart_type = 'timeseries'
     elif meas_type == 'mem':
         title = 'Memory [GB]'
+        monitor = 'dstat'
+        chart_type = 'timeseries'
     elif meas_type == 'io':
         title = 'IO [GB/sec]'
+        monitor = 'dstat'
+        chart_type = 'timeseries'
     elif meas_type == 'net':
         title = 'Network [GB/sec]'
-    elif meas_type == 'gpu.gpu':
-        title = 'GPU Utilization [%]'
-        monitor = 'gpu'
-    elif meas_type == 'gpu.mem':
-        title = 'GPU Memory Utilization [%]'
-        monitor = 'gpu'
-    elif meas_type == 'gpu.pow':
-        title = 'GPU Power [W]'
-        monitor = 'gpu'
+        monitor = 'dstat'
+        chart_type = 'timeseries'
     elif meas_type == 'gpu.avg':
         title = 'Average GPU Utilization [%]'
         monitor = 'gpu'
+        chart_type = 'timeseries'
+    elif meas_type == 'gpu.pow':
+        title = 'GPU Power [W]'
+        monitor = 'gpu'
+        chart_type = 'timeseries'
+    elif meas_type == 'gpu.gpu':
+        title = 'GPU Utilization [%]'
+        monitor = 'gpu'
+        chart_type = 'heatmap'
+    elif meas_type == 'gpu.mem':
+        title = 'GPU Memory Utilization [%]'
+        monitor = 'gpu'
+        chart_type = 'heatmap'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
-        ext = 'json'
         title = 'CPU Usage [%] Heatmap'
         chart_type = 'heatmap'
     elif meas_type == 'interrupts':
         monitor = meas_type
-        ext = 'json'
         title = 'CPU Interrupts [#] Heatmap'
         chart_type = 'heatmap'
+
+    if chart_type == 'timeseries':
+        ext = 'csv'
+    elif chart_type == 'heatmap':
+        ext = 'json'
+    else:
+        sys.stderr.write('Unknown chart type %s\n' % chart_type)
+        sys.exit(1)
 
     obj = {
             'type': chart_type,

@@ -29,8 +29,8 @@ Creates 4 charts:
 4. Detail GPU memory utilization (heatmap)
 
 #How to enable measurements
-Only 'sys-summary' is enabled by default
-To enable more measurements in your script, export the MEASUREMENTS variable
+Only 'sys-summary' is enabled by default. To enable more measurements in your 
+script, export the MEASUREMENTS variable as shown below.
 
 Examples:
 ```

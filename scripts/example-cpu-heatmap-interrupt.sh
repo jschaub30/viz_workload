@@ -1,6 +1,6 @@
 #!/bin/bash
-# This script demonstrates how to sweep a parameter
-# and access/view all resulting data from the same web page
+# Same as the "example-sweep.sh" script, but adding new measurements for
+# cpu-heatmap and interrupts
 
 # Required variables are WORKLOAD_NAME, DESCRIPTION, & WORKLOAD_CMD
 export WORKLOAD_NAME=EXAMPLES        # A short name for this type of workload
@@ -10,8 +10,7 @@ export WORKLOAD_DIR="."             # The workload working directory
 export MEAS_DELAY_SEC=1             # Delay in seconds between each measurement
 export VERBOSE=0                    # Verbosity level 0|1|2  Higher==more messages
 # What measurements to collect (space delimited). See 'available-measurements.txt'
-export MEASUREMENTS="sys-summary cpu-heatmap"
-
+export MEASUREMENTS="sys-summary cpu-heatmap interrupts"
 
 # For sweeps, create a run directory where all files will be saved
 # Specify it directly, like this:

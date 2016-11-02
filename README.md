@@ -29,10 +29,12 @@ cp example.sh your_workload.sh
 - [example.sh][example] Simple CPU load example
 - [example-sweep.sh][example-sweep] Sweeping a parameter
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
+- [example-cpu-heatmap-interrupt.sh][example-cpu-heatmap-interrupt] CPU and interrupt heatmaps
 - [example-gpu.sh][example-gpu] Collect data from Nvidia GPU with CUDA installed
 
 [example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
 [example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
+[example-cpu-heatmap-interrupt]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cpu-heatmap-interrupt.sh
 [example-cluster-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh
 [example-gpu]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-gpu.sh
 

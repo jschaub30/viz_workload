@@ -159,7 +159,8 @@ def load_environment():
     try:
         rundir = os.environ['RUNDIR']
     except KeyError:
-        rundir = os.path.join("rundir", summary['workload_name'], timestamp)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        rundir = os.path.join(script_dir, "rundir", summary['workload_name'], timestamp)
     summary['rundir'] = rundir
 
     try:

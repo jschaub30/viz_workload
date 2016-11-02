@@ -27,6 +27,7 @@ usage() {
 [ -z "$VERBOSE" ] && VERBOSE=0     # 0|1|2  Higher==more messages
 
 WORKLOAD_NAME=`echo "$WORKLOAD_NAME" | perl -pe "s/ /_/g"` # remove whitespace
+CWD=`pwd`
 
 ######## Functions ########
 debug_message(){
@@ -88,6 +89,7 @@ stop_monitors() {
 }
 
 parse_results() {
+  cd $CWD
   debug_message 0 "Parsing results on $HOSTS"
   PIDS=()
   MSG_ARRAY=()
@@ -125,6 +127,7 @@ run_workload(){
   wait $TIME_PID
   RC=$?
   [ $RC -ne 0 ] && debug_message 0 "WARNING: Non-zero exit status (=$RC) from workload"
+  cd $CWD
 }
 
 setup_webserver() {
@@ -132,7 +135,6 @@ setup_webserver() {
   chmod u+x webserver.sh
 
   # For python simple webserver to work, need soft link to data directory
-  CWD=`pwd`
   cd $RUNDIR
   [ ! -e data ] && ln -sf ../data 
   cd $CWD

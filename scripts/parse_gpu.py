@@ -60,6 +60,7 @@ def csv_to_json(csv_str):
 def validate(csv_str):
     '''
     Verify a consistent number of columns in the csv string
+    Strip last record if incomplete
     '''
     lines = csv_str.split('\n')
     len0 = len(lines[0].split(','))
@@ -68,6 +69,22 @@ def validate(csv_str):
         lines.pop()
         len1 = len(lines[-1].split(','))
     return '\n'.join(lines)
+
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
+
+def calc_avg(gpu_str, mem_str):
+    avg_str = ''
+    gpu_lines = gpu_str.split('\n')
+    mem_lines = mem_str.split('\n')
+    while gpu_lines:
+        line = gpu_lines.pop(0)
+        fields = line.split(',')
+        avg_str += '%s,%.1f,' % (fields[0], mean(map(float, fields[1:])))
+        line = mem_lines.pop(0)
+        fields = line.split(',')
+        avg_str += '%.1f\n' % (mean(map(float, fields[1:])))
+    return avg_str
 
 
 def main(fn):
@@ -96,13 +113,15 @@ def main(fn):
             gpu_str += ',' + util_gpu
             mem_str += ',' + util_mem
         except Exception as e:
-            # Often the last set of data is incomplete. Clean the csvs
-            gpu_str = validate(gpu_str)
-            mem_str = validate(mem_str)
+            pass
+    # Often the last set of data is incomplete. Clean the csv records
+    gpu_str = validate(gpu_str)
+    mem_str = validate(mem_str)
     ext = ['.gpu', '.mem']
     num_gpu = len(gpu_str.split('\n')[0].split(',')) - 1
     header = 'time_sec,' + ','.join(['gpu' + str(i) for i in range(num_gpu)]) 
     header += '\n'
+    # Save data for all individual gpu traces
     for csv_str in [gpu_str, mem_str]:
         ext_str = ext.pop(0)
         out_fn = fn.replace('data/raw', 'data/final') + ext_str + '.csv'
@@ -112,6 +131,12 @@ def main(fn):
         out_fn = fn.replace('data/raw', 'data/final') + ext_str + '.json'
         with open(out_fn, 'w') as fid:
             fid.write(json.dumps(obj))
+    # Now calculate average GPU & Memory usage for all traces
+    header = 'time_sec,GPU,MEMORY\n'
+    avg_str = calc_avg(gpu_str, mem_str)
+    out_fn = fn.replace('data/raw', 'data/final') + '.avg.csv'
+    with open(out_fn, 'w') as fid:
+        fid.write(header + avg_str)
 
 if __name__ == '__main__':
     if (len(sys.argv) < 2):

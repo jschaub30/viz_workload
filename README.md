@@ -24,6 +24,10 @@ cp example.sh your_workload.sh
 ./your_workload.sh
 ./webserver.sh  # To view/share this measurement
 ```
+#Different measurement types
+The current list of available measurements are described [here][available]
+
+[available]: https://github.com/jschaub30/viz_workload/blob/master/scripts/available-measurements.md
 
 #Example scripts
 - [example.sh][example] Simple CPU load example

@@ -1,11 +1,32 @@
 /* app css stylesheet */
 body {
-    padding-bottom: 100px;
+    padding-bottom: 120px;
 }
 
 .chart {
   height: 380px;
   margin-bottom: 2em;
+}
+
+.heatmap{
+  height: 380px;
+  margin-left: 0em;
+  margin-bottom: 0em;
+}
+
+.axis-y{
+  height: 405px;
+}
+.axis-y1{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.axis-y0{
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 td {

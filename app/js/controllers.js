@@ -52,9 +52,18 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
           }
         });
       },
+      readMetadata = function(measurement, chart){
+        measurement.y0 = "cpu0";
+        console.log(chart.indexOf('gpu'));
+        if (chart.indexOf('gpu') >= 0){
+          measurement.y0 = "gpu0";
+        }
+        measurement.x0 = 'x0';
+      },
       drawCharts = function(runId){
         $http.get(runId + '.json').success(function(chartdata){
           $scope.measurement = chartdata;
+          $scope.allCharts = Object.keys($scope.measurement);
           $scope.allTimeCharts = Object.keys($scope.measurement).filter(
               function(key){
                 return $scope.measurement[key].type == "timeseries";
@@ -68,6 +77,7 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
                 $scope.host);
           });
           $scope.allHeatmaps.forEach(function(chart){
+            readMetadata($scope.measurement[chart], chart);
             drawHeatmap('id_' + chart, $scope.measurement[chart],
                 $scope.host);
           });

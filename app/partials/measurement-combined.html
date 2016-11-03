@@ -41,24 +41,24 @@
 
 <div class="container-fluid" id="wrapper">
   <div class="row">
-    <div ng-repeat="chart in allTimeCharts" class="col-md-6 text-right">
+    <div ng-repeat="chart in allCharts" class="col-md-6 text-right">
       <a href={{measurement[chart][host].finalFilename}}>
         <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
       </a>
-      <div class="col-md-12 chart {{measurement[chart].type}}" id="id_{{chart}}">
+      <div ng-if="measurement[chart].type == 'timeseries'" class="col-md-12 chart timeseries" id="id_{{chart}}"> 
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div ng-repeat="chart in allHeatmaps" class="col-md-6 chart text-right">
-      <a href={{measurement[chart][host].finalFilename}}>
-        <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
-      </a>
-      <h3 class="text-center">{{measurement[chart].title}}</h3>
-      <div class="chart"><canvas class="" id="id_{{chart}}"></canvas>
-      <span class="pull-left">0</span>
-      <span class="pull-right">1</span>
-    </div>
+      <div ng-if="measurement[chart].type == 'heatmap'" class="col-md-12">
+        <h4 class="text-center">{{measurement[chart].title}}</h4>
+        <div class="col-md-1 axis-y">
+            <div class="axis-y1"></div>
+            <div class="axis-y0">{{measurement[chart].y0}}</div>
+        </div>
+        <div class="col-md-11">
+          <canvas class="heatmap" id="id_{{chart}}"></canvas>
+          <span class="pull-left">t0</span>
+          <span class="pull-right"></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

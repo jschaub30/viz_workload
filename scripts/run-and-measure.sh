@@ -54,6 +54,23 @@ check_pids() {
   done
 }
 
+system_snapshot() {
+  debug_message 0 "Collecting system snapshot of $HOSTS"
+  PIDS=()
+  MSG_ARRAY=()
+  for HOST in $HOSTS; do
+    if [ ! -z $RUNDIR/html/${HOST}.html ]; then
+      MSG="Collecting system snapshot of $HOST"
+      debug_message 1 $MSG
+      ./start-snapshot.sh $HOST $RUNDIR/html &
+      CURRPID=$!
+      MSG_ARRAY[$CURRPID]="$MSG"
+      PIDS="$PIDS $CURRPID"
+    fi
+  done
+  check_pids ${PIDS}
+}
+
 start_monitors() {
   debug_message 0 "Starting monitors on $HOSTS"
   PIDS=()
@@ -160,7 +177,7 @@ RUNDIR=`./setup_measurement.py`
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"
 
-#record_state
+system_snapshot
 start_monitors
 run_workload
 stop_monitors

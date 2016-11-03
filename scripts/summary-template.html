@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>System snapshot</title>
+  <style>
+  button {
+    width: 200px;
+  }
+
+  </style>
+</head>
+
+<body>
+  <a href="https://github.com/jschaub30/linux_summary.git" target="_blank">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+  <h2>System snapshot for TAG_HOSTNAME (TAG_IPADDR) on TAG_DATETIME</h2>
+  <div><button id="button_lscpu">CPU summary (lscpu)</button></div>
+  <div><button id="button_cpuinfo">CPU info (/proc/cpuinfo)</button></div>
+  <div><button id="button_meminfo">Memory (/proc/meminfo)</button></div>
+  <div><button id="button_linux">Linux version (uname -a)</button></div>
+  <div><button id="button_os">OS release (/etc/issue)</button></div>
+  <div><button id="button_lsblk">Block devices (lsblk)</button></div>
+  <div><button id="button_ifconfig">Ethernet summary (ifconfig -a)</button></div>
+  <div><button id="button_lspci">PCI devices (lspci)</button></div>
+  <div><button id="button_df">Disk usage (df -h)</button></div>
+  <div><button id="button_gpu">GPU (nvidia-smi)</button></div>
+  <div><button id="button_lstopo">NUMA topology (lstopo)</button></div>
+
+  <script src="jquery.min.js"></script>
+  <script>
+    if(typeof jQuery === 'undefined'){
+        document.write(unescape("%3Cscript src='http://code.jquery.com/jquery-latest.min.js' type='text/javascript'%3E%3C/script%3E"));
+        }
+  </script>
+
+  <script>
+    (function() {
+      var lscpu = $('<p></p>', {
+        html: '<pre>TAG_LSCPU</pre>',
+        class: 'info',
+      }).insertAfter('#button_lscpu').toggle(),
+      cpuinfo = $('<p></p>', {
+        html: '<pre>TAG_CPUINFO</pre>',
+        class: 'info',
+      }).insertAfter('#button_cpuinfo').toggle(),
+      meminfo = $('<p></p>', {
+        html: '<pre>TAG_MEMINFO</pre>',
+        class: 'info',
+      }).insertAfter('#button_meminfo').toggle(),
+      linux = $('<p></p>', {
+        html: '<pre>TAG_LINUX</pre>',
+        class: 'info',
+      }).insertAfter('#button_linux').toggle(),
+      os = $('<p></p>', {
+        html: '<pre>TAG_OS</pre>',
+        class: 'info',
+      }).insertAfter('#button_os').toggle();
+      lsblk = $('<p></p>', {
+        html: '<pre>TAG_LSBLK</pre>',
+        class: 'info',
+      }).insertAfter('#button_lsblk').toggle(),
+      ifconfig = $('<p></p>', {
+        html: '<pre>TAG_IFCONFIG</pre>',
+        class: 'info',
+      }).insertAfter('#button_ifconfig').toggle(),
+      lspci = $('<p></p>', {
+        html: '<pre>TAG_LSPCI</pre>',
+        class: 'info',
+      }).insertAfter('#button_lspci').toggle(),
+      df = $('<p></p>', {
+        html: '<pre>TAG_DF</pre>',
+        class: 'info',
+      }).insertAfter('#button_df').toggle(),
+      gpu = $('<p></p>', {
+        html: '<pre>TAG_GPU</pre>',
+        class: 'info',
+      }).insertAfter('#button_gpu').toggle(),
+      lstopo = $('<p></p>', {
+        html: '<pre>TAG_LSTOPO</pre>',
+        class: 'info',
+      }).insertAfter('#button_lstopo').toggle();
+
+      $('#button_lscpu').on('click', function() {
+        lscpu.toggle();
+      });
+      $('#button_cpuinfo').on('click', function() {
+        cpuinfo.toggle();
+      });
+      $('#button_meminfo').on('click', function() {
+        meminfo.toggle();
+      });
+      $('#button_linux').on('click', function() {
+        linux.toggle();
+      });
+      $('#button_lsblk').on('click', function() {
+        lsblk.toggle();
+      });
+      $('#button_lspci').on('click', function() {
+        lspci.toggle();
+      });
+      $('#button_ifconfig').on('click', function() {
+        ifconfig.toggle();
+      });
+      $('#button_df').on('click', function() {
+        df.toggle();
+      });
+      $('#button_gpu').on('click', function() {
+        gpu.toggle();
+      });
+      $('#button_lstopo').on('click', function() {
+        lstopo.toggle();
+      });
+      $('#button_os').on('click', function() {
+        os.toggle();
+      });
+    })();
+  </script>
+</body>
+
+</html>

@@ -49,13 +49,8 @@ def csv_to_json(csv_str, label):
     # Now construct json object
     cpu = num_cols - 1
     all_datasets = []
-    max_labels = 20  # Too many labels become unreadable in heatmaps
-    skip = max(int(len(datasets)/max_labels), 1)
     for dataset in datasets:
-        if (cpu % skip) == 0:
-            label_str = "%s%g" % (label, cpu)
-        else:
-            label_str = ''
+        label_str = "%s%g" % (label, cpu)
         all_datasets.append({"label": label_str,
                 "data": dataset})
         cpu -= 1

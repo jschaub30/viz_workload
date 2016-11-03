@@ -40,13 +40,8 @@ def main(dstat_fn):
             val_array[cpu].append(val)
     obj = {"labels": td_array}
     obj["datasets"] = []
-    max_labels = 20  # Too many labels become unreadable in heatmaps
-    skip = max(int(num_cpu / max_labels), 1)
     for cpu in range(num_cpu - 1, -1, -1):
-        if (cpu % skip) == 0:
-            label_str = "cpu%g" % (cpu)
-        else:
-            label_str = ''
+        label_str = "cpu%g" % (cpu)
         data = map(lambda(x): round(x, 1), val_array[cpu])
         obj["datasets"].append({"label": label_str, "data": data})
     out_fn = dstat_fn.replace('data/raw', 'data/final')

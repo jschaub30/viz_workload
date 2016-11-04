@@ -28,10 +28,12 @@ cp example.sh your_workload.sh
 
 Each measurement group enables collection and display of 1 or more charts
 
-- sys-summary   enabled by default. CPU, memory, IO and network
-- cpu-heatmap   heatmap of CPU usage on each thread
-- interrupts    heatmap of interrupts on each CPU
-- gpu           For systems with Nvidia GPU's and [CUDA][cuda] installed
+| Group name   | Description                                              |
+| ------------ | ---------------------------------------------------------|
+| sys-summary  | enabled by default. CPU, memory, IO and network          |
+| cpu-heatmap  | heatmap of CPU usage on each thread                      |
+| interrupts   | heatmap of interrupts on each CPU                        |
+| gpu          | for systems with Nvidia GPU's and [CUDA][cuda] installed |
 
 
 More details described [here][available].

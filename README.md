@@ -1,6 +1,6 @@
 # viz_workload
 Easily measure, view and share data-rich, interactive timeseries charts that
-show system performance while running your single- or multi-node linux workload 
+show system performance while running a single- or multi-node linux workload 
 
 Verson 0.92
 

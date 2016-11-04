@@ -28,5 +28,10 @@ export WORKLOAD_CMD="$FN --mode=shmoo"
 # Optional variables
 export MEASUREMENTS="sys-summary gpu"
 
-./run-and-measure.sh
+export RUNDIR=`./create-rundir.sh`
+
+for ITER in `seq 4`; do
+  export RUN_ID="ITER${ITER}"
+  ./run-and-measure.sh
+done
 

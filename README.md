@@ -2,7 +2,7 @@
 Quickly measure, view and share your single- or multi-node linux workload 
 in data-rich, interactive charts
 
-Verson 0.91
+Verson 0.92
 
 #Setup
 These scripts use ssh to start/stop monitors and run the workload, even when

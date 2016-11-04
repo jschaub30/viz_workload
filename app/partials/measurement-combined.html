@@ -4,6 +4,16 @@
 <div class="container-fluid">
   <h1> {{description}}</h1>
   <p class="muted"> {{timestamp}}</p>
+  <div class="col-md-12">
+  <div class="row">
+    System snapshots:
+    <ul class="list-inline">
+      <li ng-repeat="host in hosts">
+        <a href={{host}}.html>{{host}}</a>
+      </li>
+    </ul>
+  </div>
+  </div>
   <div class="row">
     <div class="col-md-6 summary">
       <table class="table table-bordered table-hover table-sm">

@@ -82,11 +82,12 @@ def main(fn):
     header += '\n'
     # Save data for all individual gpu traces
     for csv_str in [gpu_str, mem_str, pow_str]:
+        csv_str = header + csv_str
         ext_str = ext.pop(0)
         out_fn = fn.replace('data/raw', 'data/final') + ext_str + '.csv'
         with open(out_fn, 'w') as fid:
-            fid.write(header + csv_str)
-        obj = csv_to_json(csv_str, 'gpu')
+            fid.write(csv_str)
+        obj = csv_to_json(csv_str)
         out_fn = fn.replace('data/raw', 'data/final') + ext_str + '.json'
         with open(out_fn, 'w') as fid:
             fid.write(json.dumps(obj))

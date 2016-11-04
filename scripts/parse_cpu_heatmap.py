@@ -36,11 +36,11 @@ def main(dstat_fn):
     lines = blob.split('\n')
     line = lines.pop(0)
     cpu_list = [i.strip(' usage",,,,,') for i in line.split(',"')[1:]]
-    header = 'time.sec,' + ','.join(cpu_list) + '\n'
+    csv_str = 'time.sec,' + ','.join(cpu_list) + '\n'
     line = lines.pop(0)  # header row
     # Parse first line and set t0
     (t0, vals) = parse_line(lines.pop(0))
-    csv_str = '0,' + ','.join([str(val) for val in vals]) + '\n'
+    csv_str += '0,' + ','.join([str(val) for val in vals]) + '\n'
 
     while lines:
         (t, vals) = parse_line(lines.pop(0))
@@ -50,10 +50,10 @@ def main(dstat_fn):
     out_fn = dstat_fn.replace('data/raw', 'data/final')
     out_fn += '.csv'
     with open(out_fn, 'w') as fid:
-        fid.write(header + csv_str)
+        fid.write(csv_str)
     
     # Convert and save JSON object
-    obj = csv_to_json(csv_str, 'cpu')
+    obj = csv_to_json(csv_str)
     out_fn = out_fn.replace('.csv', '.json')
     with open(out_fn, 'w') as fid:
         fid.write(json.dumps(obj))

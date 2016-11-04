@@ -14,6 +14,10 @@ from common import csv_to_json
 
 t0 = -1
 def format_line(lines, prev_interrupts):
+    '''
+    Parse and calculate raw interrupt count for each CPU, then return csv string
+    with difference between current and previous count
+    '''
     global t0
     # Read timestamp
     t = datetime.strptime(lines[0], '%Y%m%d-%H%M%S')
@@ -21,7 +25,8 @@ def format_line(lines, prev_interrupts):
     t_sec = (t - t0).total_seconds()
 
     # Read number of cpus
-    num_cpu = len(lines[1].split('CPU')) - 1
+    cpu_list = lines[1].split()
+    num_cpu = len(cpu_list)
     interrupts = False
     irqs = []  # IRQ number in each row
 
@@ -56,10 +61,12 @@ def main(fn):
     '''
     with open(fn, 'r') as fid:
         blob = fid.read()
-    blobs = blob.split('##TIMESTAMP## ')
+    blobs = blob.split('##TIMESTAMP## ')[1:]
+    lines = blobs[0].split('\n')
+    cpu_list = lines[1].split()
+    csv_str = 'time.sec,' + ','.join(cpu_list) + '\n'
     interrupts = False
-    csv_str = ''
-    for blob in blobs[1:]:
+    for blob in blobs:
         try:
            (csv_line, interrupts) = format_line(blob.split('\n'), interrupts)
            csv_str += csv_line
@@ -68,8 +75,14 @@ def main(fn):
             err_str += "Error is %s\nEntry is %s\n" % (str(e), blob[:400])
             sys.stderr.write(err_str)
             sys.exit(1)
-    obj = csv_to_json(csv_str, 'cpu')
-    out_fn = fn.replace('data/raw', 'data/final') + '.json'
+
+    out_fn = fn.replace('data/raw', 'data/final')
+    out_fn += '.csv'
+    with open(out_fn, 'w') as fid:
+        fid.write(csv_str)
+
+    obj = csv_to_json(csv_str)
+    out_fn = out_fn.replace('.csv', '.json')
     with open(out_fn, 'w') as fid:
         fid.write(json.dumps(obj))
 

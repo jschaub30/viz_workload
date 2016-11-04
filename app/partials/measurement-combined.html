@@ -42,18 +42,27 @@
 <div class="container-fluid" id="wrapper">
   <div class="row">
     <div ng-repeat="chart in allCharts" class="col-md-6 text-right">
-      <a href={{measurement[chart][host].finalFilename}}>
-        <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
-      </a>
+      <!-- Single button -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="{{measurement[chart][host].rawFilename}}">Raw data</a></li>
+          <li><a href="{{measurement[chart][host].csvFilename}}">Final data (CSV)</a></li>
+          <li ng-if="measurement[chart].type == 'heatmap'">
+            <a href="{{measurement[chart][host].jsonFilename}}">Final data (JSON)</a></li>
+        </ul>
+      </div>
       <div ng-if="measurement[chart].type == 'timeseries'" class="col-md-12 chart timeseries" id="id_{{chart}}"> 
       </div>
-      <div ng-if="measurement[chart].type == 'heatmap'" class="col-md-12">
+      <div ng-if="measurement[chart].type == 'heatmap'" class="col-md-12 chart">
         <h4 class="text-center">{{measurement[chart].title}}</h4>
         <div class="col-md-1 axis-y">
-            <div class="axis-y1"></div>
-            <div class="axis-y0">{{measurement[chart].y0}}</div>
+          <div class="axis-y1"></div>
+          <div class="axis-y0">{{measurement[chart].y0}}</div>
         </div>
-        <div class="col-md-11">
+        <div class="col-md-11" class="heatmap">
           <canvas class="heatmap" id="id_{{chart}}"></canvas>
           <span class="pull-left">t0</span>
           <span class="pull-right"></span>

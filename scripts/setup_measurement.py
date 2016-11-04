@@ -109,14 +109,6 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'CPU Interrupts [#] Heatmap'
         chart_type = 'heatmap'
 
-    if chart_type == 'timeseries':
-        ext = 'csv'
-    elif chart_type == 'heatmap':
-        ext = 'json'
-    else:
-        sys.stderr.write('Unknown chart type %s\n' % chart_type)
-        sys.exit(1)
-
     obj = {
             'type': chart_type,
             'hosts': hosts,
@@ -126,8 +118,11 @@ def create_chartdata(run_id, meas_type, hosts):
         obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s" % (
                 run_id, host, monitor)
-        obj[host]['finalFilename'] = "../data/final/%s.%s.%s.%s" % (
-                run_id, host, meas_type, ext)
+        obj[host]['csvFilename'] = "../data/final/%s.%s.%s.csv" % (
+                run_id, host, meas_type)
+        if chart_type == 'heatmap':
+            obj[host]['jsonFilename'] = "../data/final/%s.%s.%s.json" % (
+                run_id, host, meas_type)
     return obj
 
 def load_environment():

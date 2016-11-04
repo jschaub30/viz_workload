@@ -6,7 +6,7 @@ var vizWorkloadControllers = angular.module('vizWorkloadControllers', []);
 
 vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeout',
   function($http, $location, $timeout) {
-    // Read the summary file, and redirect to the first measurement
+    // Read the summary file, and redirect to the first measurement on the first host
     $http.get('summary.json').success(function(data){
       var runId = data[0].run_id,
         host = data[0].hosts[0],
@@ -28,13 +28,13 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
           var hr=0,
           min,
           sec,
-          arr,
-          len;
+          arr;
+
           arr = data.match(/([0-9]:)+[0-9]+\.+[0-9]+/)[0].split(':');
-          len = arr.length;
-          if (len === 3) {hr = parseInt(arr[0]);}
-          min = parseInt(arr[len-2]);
-          sec = parseFloat(arr[len-1]);
+          sec = parseFloat(arr.pop());
+          min = parseInt(arr.pop());
+          hr = parseInt(arr.pop());
+          if (!hr) {hr = 0;}
           measurement.time.elapsed_time_sec = (hr*60*60 + min*60 + sec).toString();
           measurement.time.exit_status = data.split('Exit status: ')[1].split('\n')[0];
           measurement.time.exit_clean = measurement.time.exit_status === '0';
@@ -54,7 +54,6 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
       },
       readMetadata = function(measurement, chart){
         measurement.y0 = "cpu0";
-        console.log(chart.indexOf('gpu'));
         if (chart.indexOf('gpu') >= 0){
           measurement.y0 = "gpu0";
         }

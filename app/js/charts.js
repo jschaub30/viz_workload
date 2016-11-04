@@ -7,7 +7,7 @@ var timeseries_chart = function(data, divId, plotOptions) {
   drawTimeseries = function(divId, chartData, host) {
     $.ajax({
       type: "GET",
-      url: chartData[host].finalFilename,
+      url: chartData[host].csvFilename,
       dataType: "text",
       success: function(data) {
         var plotOptions = new TimeseriesPlotOptions;
@@ -23,7 +23,7 @@ var timeseries_chart = function(data, divId, plotOptions) {
   drawHeatmap = function(divId, chartData, host) {
     $.ajax({
       type: "GET",
-      url: chartData[host].finalFilename,
+      url: chartData[host].jsonFilename,
       dataType: "json",
       success: function(data) {
         var ctx = document.getElementById(divId).getContext("2d");

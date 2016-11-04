@@ -1,6 +1,6 @@
 # viz_workload
-Quickly measure, view and share your single- or multi-node linux workload 
-in data-rich, interactive charts
+Easily measure, view and share data-rich, interactive timeseries charts that
+show system performance while running your single- or multi-node linux workload 
 
 Verson 0.92
 
@@ -24,9 +24,19 @@ cp example.sh your_workload.sh
 ./your_workload.sh
 ./webserver.sh  # To view/share this measurement
 ```
-#Different measurement types
-The current list of available measurements are described [here][available].
+#Available measurement groups
 
+Each measurement group enables collection and display of 1 or more charts
+
+- sys-summary   enabled by default. CPU, memory, IO and network
+- cpu-heatmap   heatmap of CPU usage on each thread
+- interrupts    heatmap of interrupts on each CPU
+- gpu           For systems with Nvidia GPU's and [CUDA][cuda] installed
+
+
+More details described [here][available].
+
+[cuda]: https://developer.nvidia.com/cuda-downloads
 [available]: https://github.com/jschaub30/viz_workload/blob/master/scripts/available-measurements.md
 
 #Example scripts

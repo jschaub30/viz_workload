@@ -70,19 +70,19 @@ def create_chartdata(run_id, meas_type, hosts):
 
     if meas_type == 'cpu':
         title = 'System CPU [%]'
-        monitor = 'dstat'  # the program that originally records the data
+        monitor = 'sys-summary'  # the program that originally records the data
         chart_type = 'timeseries'
     elif meas_type == 'mem':
         title = 'Memory [GB]'
-        monitor = 'dstat'
+        monitor = 'sys-summary'
         chart_type = 'timeseries'
     elif meas_type == 'io':
         title = 'IO [GB/sec]'
-        monitor = 'dstat'
+        monitor = 'sys-summary'
         chart_type = 'timeseries'
     elif meas_type == 'net':
         title = 'Network [GB/sec]'
-        monitor = 'dstat'
+        monitor = 'sys-summary'
         chart_type = 'timeseries'
     elif meas_type == 'gpu.avg':
         title = 'Average GPU Utilization [%]'

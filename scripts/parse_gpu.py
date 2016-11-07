@@ -1,12 +1,12 @@
 #!/usr/bin/python
-
 '''
-Input:  raw csv data nvidia-smi
-Output: json timeseries file with total interrupts per cpu thread
+Input:  filename containing raw csv measured using nvidia-smi utility
+Output: timeseries files in both CSV and JSON format
+        1) individual gpu utilization, mem utilization, and power usage
+        2) average GPU and memory utilization
 '''
 
 import sys
-import os
 import json
 import re
 from datetime import datetime
@@ -26,28 +26,37 @@ def validate(csv_str):
     return '\n'.join(lines)
 
 def mean(numbers):
+    ''' Calculate mean of array of numbers '''
     return float(sum(numbers)) / max(len(numbers), 1)
 
 def calc_avg(gpu_str, mem_str):
+    '''
+    Input (example for 4 GPUs):
+        gpu_str = "t1,0,0,100,0\nt2,0,0,40,0\n"
+        mem_str = "t1,0,0,8,0\nt2,0,0,20,0\n"
+    Output (tstamp, gpu_avg, mem_avg):
+        avg_str = "t1,25,2\nt2,10,5"
+    '''
     avg_str = ''
     gpu_lines = gpu_str.split('\n')
     mem_lines = mem_str.split('\n')
     while gpu_lines:
         line = gpu_lines.pop(0)
         fields = line.split(',')
-        avg_str += '%s,%.1f,' % (fields[0], mean(map(float, fields[1:])))
+        avg_str += '%s,%.1f,' % (fields[0], mean([float(i) for i in fields[1:]]))
         line = mem_lines.pop(0)
         fields = line.split(',')
-        avg_str += '%.1f\n' % (mean(map(float, fields[1:])))
+        avg_str += '%.1f\n' % (mean([float(i) for i in fields[1:]]))
     return avg_str
 
 
-def main(fn):
+def main(raw_fn):
     '''
+    Parse each line of input file and construct CSV strings, then convert to JSON
     '''
-    with open(fn, 'r') as fid:
+    with open(raw_fn, 'r') as fid:
         lines = fid.readlines()
-    fields = lines.pop(0)
+    line = lines.pop(0)  # discard header
     t0 = False
     while lines:
         line = lines.pop(0)
@@ -78,7 +87,7 @@ def main(fn):
     pow_str = validate(pow_str)
     ext = ['.gpu', '.mem', '.pow']
     num_gpu = len(gpu_str.split('\n')[0].split(',')) - 1
-    header = 'time_sec,' + ','.join(['gpu' + str(i) for i in range(num_gpu)]) 
+    header = 'time_sec,' + ','.join(['gpu' + str(i) for i in range(num_gpu)])
     header += '\n'
     # Save data for all individual gpu traces
     for csv_str in [gpu_str, mem_str, pow_str]:

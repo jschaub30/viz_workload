@@ -24,6 +24,7 @@ def main(dstat_fn):
     monitors = [
         {'name': 'mem', 'columnNames': ["used", "buff", "cach", "free"], 'scale': scaleGB},
         {'name': 'cpu', 'columnNames': ["usr", "sys", "idl", "wai", "hiq", "siq"], 'scale': 1},
+        {'name': 'system', 'columnNames': ["int", "csw"], 'scale': 1},
         {'name': 'io', 'columnNames': ["read", "writ"], 'scale': scaleGB},
         {'name': 'net', 'columnNames': ["recv", "send"], 'scale': scaleGB}
     ]

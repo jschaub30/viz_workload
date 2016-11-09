@@ -13,7 +13,6 @@ import glob
 import shutil
 import json
 import datetime as dt
-import pprint
 import collections
 
 def setup_directories(summary):
@@ -22,12 +21,11 @@ def setup_directories(summary):
     '''
     # Copy app
     try:
-        shutil.copytree(os.path.join('..', 'app'), 
-                os.path.join(summary['rundir'], 'html'))
-    except OSError as e: # Raised when a directory already exists
-        #sys.stderr.write(str(e) + '\n')
+        shutil.copytree(os.path.join('..', 'app'),
+                        os.path.join(summary['rundir'], 'html'))
+    except OSError: # Raised when a directory already exists
         pass
-    
+
     # Create data directories
     for name in ['data/raw', 'data/final', 'scripts']:
         directory = os.path.join(summary['rundir'], name)
@@ -84,6 +82,10 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'Network [GB/sec]'
         monitor = 'sys-summary'
         chart_type = 'timeseries'
+    elif meas_type == 'system':
+        title = 'System [#]'
+        monitor = 'sys-summary'
+        chart_type = 'timeseries'
     elif meas_type == 'gpu.avg':
         title = 'Average GPU Utilization [%]'
         monitor = 'gpu'
@@ -110,16 +112,16 @@ def create_chartdata(run_id, meas_type, hosts):
         chart_type = 'heatmap'
 
     obj = {
-            'type': chart_type,
-            'hosts': hosts,
-            'title': title
-            }
+        'type': chart_type,
+        'hosts': hosts,
+        'title': title
+        }
     for host in hosts:
         obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s" % (
-                run_id, host, monitor)
+            run_id, host, monitor)
         obj[host]['csvFilename'] = "../data/final/%s.%s.%s.csv" % (
-                run_id, host, meas_type)
+            run_id, host, meas_type)
         if chart_type == 'heatmap':
             obj[host]['jsonFilename'] = "../data/final/%s.%s.%s.json" % (
                 run_id, host, meas_type)
@@ -175,6 +177,7 @@ def load_environment():
 
 def main():
     '''
+    Create all directories, save summary object
     '''
     summary = load_environment()
     # Create directories and copy app
@@ -205,18 +208,22 @@ def main():
     for meas_type in summary['all_monitors']:
         if meas_type == 'sys-summary':
             for meas_type in ['cpu', 'io', 'mem', 'net']:
-                details[meas_type] = create_chartdata(summary['run_id'], 
-                        meas_type, summary['hosts'])
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
         elif meas_type == 'gpu':
             for meas_type in ['gpu.avg', 'gpu.pow', 'gpu.gpu', 'gpu.mem']:
-                details[meas_type] = create_chartdata(summary['run_id'], 
-                        meas_type, summary['hosts'])
-        else:
-            details[meas_type] = create_chartdata(summary['run_id'], meas_type,
-                summary['hosts'])
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
+        elif meas_type == "interrupts":
+            for meas_type in ['system', 'interrupts']:
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
 
-    detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id'] 
-            + '.json')
+    detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id']
+                             + '.json')
     with open(detail_fn, 'w') as fid:
         fid.write(json.dumps(details, indent=4))
 

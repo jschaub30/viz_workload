@@ -13,9 +13,6 @@
 </head>
 
 <body>
-  <a href="https://github.com/jschaub30/linux_summary.git" target="_blank">
-    <img style="position: absolute; top: 0; right: 0; border: 0;"
-    src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
   <h2>System snapshot for TAG_HOSTNAME (TAG_IPADDR) on TAG_DATETIME</h2>
   <div><button id="button_lscpu">CPU summary (lscpu)</button></div>
   <div><button id="button_cpuinfo">CPU info (/proc/cpuinfo)</button></div>
@@ -26,7 +23,6 @@
   <div><button id="button_ifconfig">Ethernet summary (ifconfig -a)</button></div>
   <div><button id="button_lspci">PCI devices (lspci)</button></div>
   <div><button id="button_df">Disk usage (df -h)</button></div>
-  <div><button id="button_gpu">GPU (nvidia-smi)</button></div>
   <div><button id="button_lstopo">NUMA topology (lstopo)</button></div>
 
   <script src="jquery.min.js"></script>
@@ -74,10 +70,6 @@
         html: '<pre>TAG_DF</pre>',
         class: 'info',
       }).insertAfter('#button_df').toggle(),
-      gpu = $('<p></p>', {
-        html: '<pre>TAG_GPU</pre>',
-        class: 'info',
-      }).insertAfter('#button_gpu').toggle(),
       lstopo = $('<p></p>', {
         html: '<pre>TAG_LSTOPO</pre>',
         class: 'info',
@@ -106,9 +98,6 @@
       });
       $('#button_df').on('click', function() {
         df.toggle();
-      });
-      $('#button_gpu').on('click', function() {
-        gpu.toggle();
       });
       $('#button_lstopo').on('click', function() {
         lstopo.toggle();

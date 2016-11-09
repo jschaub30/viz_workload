@@ -204,7 +204,7 @@ def main():
 
     for meas_type in summary['all_monitors']:
         if meas_type == 'sys-summary':
-            for meas_type in ['cpu', 'mem', 'io', 'net']:
+            for meas_type in ['cpu', 'io', 'mem', 'net']:
                 details[meas_type] = create_chartdata(summary['run_id'], 
                         meas_type, summary['hosts'])
         elif meas_type == 'gpu':

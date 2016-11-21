@@ -82,16 +82,18 @@
   </div>
 </div>
 <div class="footer">
-  <div id="run_id_buttons">
+  <div id="run-id-div">
     <a ng-repeat="measurement in measurements" 
        href="#/measurement/{{measurement.run_id}}/{{host}}"
-       class="btn btn-xs" ng-class="measurement.run_id == runId && 'btn-primary'">
+      class="btn btn-xs btn-default footer-buttons"
+      ng-class="measurement.run_id == runId && 'btn-primary'">
       {{measurement.run_id}}</a>
   </div>
-  <div id="cluster_buttons">
+  <div id="hosts-div">
     <a ng-repeat="thisHost in hosts" 
        href=#/measurement/{{runId}}/{{thisHost}}
-       class="btn btn-xs" ng-class="host == thisHost && 'btn-primary'">
+       class="btn btn-xs btn-default footer-buttons"
+       ng-class="host == thisHost && 'btn-primary'">
       {{thisHost}}</a>
   </div>
   <div id="sum_buttons"></div>

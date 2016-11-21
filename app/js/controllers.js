@@ -22,6 +22,15 @@ vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeou
 vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', 
     '$http', '$location',
     function($scope, $routeParams, $http, $location) {
+      $scope.runId = $routeParams.runId;
+      $scope.host = $routeParams.host;
+      $scope.measurement = $routeParams.measurement;
+    }
+])
+
+vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams', 
+    '$http', '$location',
+    function($scope, $routeParams, $http, $location) {
       var counter = 0,
       parseTimeFile = function(measurement){
         $http.get(measurement.time.filename).success(function(data){
@@ -63,6 +72,7 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
         $http.get(runId + '.json').success(function(chartdata){
           $scope.measurement = chartdata;
           $scope.allCharts = Object.keys($scope.measurement);
+
           $scope.allTimeCharts = Object.keys($scope.measurement).filter(
               function(key){
                 return $scope.measurement[key].type == "timeseries";

@@ -52,14 +52,14 @@
 <div class="container-fluid" id="wrapper">
   <div class="row">
     <div ng-repeat="chart in allCharts" class="col-md-6 text-right">
-      <!-- Single button -->
       <div class="btn-group">
+        <!-- Download button -->
         <button type="button" class="btn btn-default dropdown-toggle btn-xs" 
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
         </button>
-        <button type="button" class="btn btn-default dropdown-toggle btn-xs" 
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- Full screen button -->
+        <button type="button" class="btn btn-default btn-xs">
           <a href="#measurement/{{runId}}/{{host}}/{{chart}}">
             <span class="glyphicon glyphicon-fullscreen" aria-label="data" aria-hidden="true"></span>
           </a>

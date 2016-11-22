@@ -55,22 +55,21 @@
       <div class="btn-group">
         <!-- Download button -->
         <button type="button" class="btn btn-default dropdown-toggle btn-xs" 
+          id="downloadMenu"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
         </button>
-        <!-- Full screen button -->
-        <button type="button" class="btn btn-default btn-xs">
-          <a href="#measurement/{{runId}}/{{host}}/{{chart}}">
-            <span class="glyphicon glyphicon-fullscreen" aria-label="data" aria-hidden="true"></span>
-          </a>
-        </button>
-        </a>
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu pull-right" aria-labelledby="downloadMenu">
           <li><a href="{{measurement[chart][host].rawFilename}}">Raw data</a></li>
           <li><a href="{{measurement[chart][host].csvFilename}}">Final data (CSV)</a></li>
           <li ng-if="measurement[chart].type == 'heatmap'">
             <a href="{{measurement[chart][host].jsonFilename}}">Final data (JSON)</a></li>
         </ul>
+        <!-- Full screen button -->
+        <button type="button" class="btn btn-default btn-xs">
+          <a href="#measurement/{{runId}}/{{host}}/{{chart}}">
+            <span class="glyphicon glyphicon-fullscreen" aria-label="data" aria-hidden="true"></span></a>
+        </button>
       </div>
       <div ng-if="measurement[chart].type == 'timeseries'" class="col-md-12 chart timeseries" id="id_{{chart}}"> 
       </div>

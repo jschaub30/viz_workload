@@ -8,6 +8,10 @@ body {
   margin-bottom: 2em;
 }
 
+.full-screen {
+  height: 800px;
+}
+
 .heatmap{
   height: 380px;
   margin-left: 0em;

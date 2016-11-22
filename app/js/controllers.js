@@ -22,9 +22,25 @@ vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeou
 vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', 
     '$http', '$location',
     function($scope, $routeParams, $http, $location) {
+      var drawChart = function(runId, host, measurement){
+        $http.get(runId + '.json').success(function(chartdata){
+          console.log(chartdata[measurement]);
+          if (chartdata[measurement].type == "timeseries"){
+            $scope.chartType = "timeseries";
+            drawTimeseries('id_chart', chartdata[measurement], host);
+          }
+          if (chartdata[measurement].type == "heatmap"){
+            $scope.chartType = "heatmap";
+            drawHeatmap('id_chart', chartdata[measurement], host);
+          }
+          $scope.chartdata = chartdata[measurement][host];
+        });
+      };
+
       $scope.runId = $routeParams.runId;
       $scope.host = $routeParams.host;
       $scope.measurement = $routeParams.measurement;
+      drawChart($scope.runId, $scope.host, $scope.measurement)
     }
 ])
 

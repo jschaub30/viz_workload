@@ -1,4 +1,37 @@
 <div class="container-fluid">
   <h1> {{measurement}}</h1>
-
+  <div class="row">
+    <div class="col-md-12">
+      <div class="btn-group">
+        <!-- Download button -->
+        <button type="button" class="btn btn-default dropdown-toggle btn-xs" 
+                              id="downloadMenu"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-download" aria-label="data" aria-hidden="true"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="downloadMenu">
+          <li><a href="{{chartdata.rawFilename}}">Raw data</a></li>
+          <li><a href="{{chartdata.csvFilename}}">Final data (CSV)</a></li>
+          <li ng-if="chartType == 'heatmap'">
+            <a href="{{chartdata.jsonFilename}}">Final data (JSON)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div ng-if="chartType == 'timeseries'" class="col-md-12 full-screen timeseries" 
+      id="id_chart"> 
+    </div>
+    <div ng-if="chatType == 'heatmap'" class="col-md-12 chart">
+      <h4 class="text-center">{{measurement[chart].title}}</h4>
+      <div class="col-md-1 axis-y">
+        <div class="axis-y1"></div>
+        <div class="axis-y0">{{measurement[chart].y0}}</div>
+      </div>
+      <div class="col-md-11" class="heatmap">
+        <canvas class="heatmap" id="id_chart"></canvas>
+        <span class="pull-left">t0</span>
+        <span class="pull-right"></span>
+      </div>
+    </div>
+  </div>
 </div>
+

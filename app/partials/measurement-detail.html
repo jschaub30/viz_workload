@@ -1,16 +1,16 @@
 <div class="container-fluid">
   <a href="#/measurement/{{runId}}/{{host}}">Back</a>
-    <div ng-if="chartType == 'timeseries'" class="col-md-12 full-screen timeseries" 
+    <div ng-if="chartType == 'timeseries'" class="col-md-12 timeseries" 
       id="id_chart"> 
     </div>
-    <div ng-if="chatType == 'heatmap'" class="col-md-12 full-screen">
-      <h4 class="text-center">{{measurement[chart].title}}</h4>
-      <div class="col-md-1 axis-y">
+    <div ng-if="chartType == 'heatmap'" class="col-md-12 full-screen">
+      <h4 class="text-center">{{title}}</h4>
+      <div class="col-md-1 axis-y full-screen">
         <div class="axis-y1"></div>
-        <div class="axis-y0">{{measurement[chart].y0}}</div>
+        <div class="axis-y0">{{y0}}</div>
       </div>
-      <div class="col-md-11" class="heatmap">
-        <canvas class="heatmap" id="id_chart"></canvas>
+      <div class="col-md-11 full-screen" class="heatmap">
+        <canvas class="heatmap full-screen" id="id_chart"></canvas>
         <span class="pull-left">t0</span>
         <span class="pull-right"></span>
       </div>

@@ -8,10 +8,6 @@ body {
   margin-bottom: 2em;
 }
 
-.full-screen {
-  height: 90vh;
-}
-
 .heatmap{
   height: 380px;
   margin-left: 0em;
@@ -31,6 +27,10 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.full-screen {
+  height: 90vh;
 }
 
 td {

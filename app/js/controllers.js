@@ -24,7 +24,7 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
     function($scope, $routeParams, $http, $location) {
       var drawChart = function(runId, host, measurement){
         $http.get(runId + '.json').success(function(chartdata){
-          console.log(chartdata[measurement]);
+          //console.log(chartdata[measurement]);
           if (chartdata[measurement].type == "timeseries"){
             $scope.chartType = "timeseries";
             drawTimeseries('id_chart', chartdata[measurement], host);
@@ -32,6 +32,11 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
           if (chartdata[measurement].type == "heatmap"){
             $scope.chartType = "heatmap";
             drawHeatmap('id_chart', chartdata[measurement], host);
+            $scope.y0 = "cpu0";
+            if (chartdata[measurement].title.indexOf('GPU') >= 0){
+              $scope.y0 = "gpu0";
+            }
+            $scope.title = chartdata[measurement].title;
           }
           $scope.chartdata = chartdata[measurement][host];
         });

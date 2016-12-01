@@ -221,6 +221,10 @@ def main():
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,
                                                       summary['hosts'])
+        else:
+            details[meas_type] = create_chartdata(summary['run_id'],
+                                                  meas_type, summary['hosts'])
+
 
     detail_fn = os.path.join(summary['rundir'], 'html', summary['run_id']
                              + '.json')

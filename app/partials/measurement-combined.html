@@ -71,18 +71,29 @@
             <span class="glyphicon glyphicon-fullscreen" aria-label="data" aria-hidden="true"></span></a>
         </button>
       </div>
-      <div ng-if="measurement[chart].type == 'timeseries'" class="col-md-12 chart timeseries" id="id_{{chart}}"> 
+      <div ng-if="measurement[chart].type == 'timeseries'" class="col-md-12 chart" id="id_{{chart}}"> 
       </div>
       <div ng-if="measurement[chart].type == 'heatmap'" class="col-md-12 chart">
-        <h4 class="text-center">{{measurement[chart].title}}</h4>
+        <div class="col-md-12 axis-title">
+          {{measurement[chart].title}}
+        </div>
         <div class="col-md-1 axis-y">
           <div class="axis-y1"></div>
           <div class="axis-y0">{{measurement[chart].y0}}</div>
         </div>
-        <div class="col-md-11" class="heatmap">
+        <div class="col-md-11" class="">
           <canvas class="heatmap" id="id_{{chart}}"></canvas>
-          <span class="pull-left">t0</span>
-          <span class="pull-right"></span>
+        </div>
+        <div class="axis-x">
+          <div class="col-md-1 axis-label">
+          </div>
+          <div class="col-md-11 axis-label">
+            <span class="pull-left">t0</span>
+            <span class="pull-right"></span>
+          </div>
+          <div class="col-md-12 axis-xlabel">
+            Elapsed time [ sec ]
+          </div>
         </div>
       </div>
     </div>

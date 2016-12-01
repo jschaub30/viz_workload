@@ -4,29 +4,49 @@ body {
 }
 
 .chart {
-  height: 380px;
+  height: 45vh;
   margin-bottom: 2em;
 }
 
 .heatmap{
-  height: 380px;
-  margin-left: 0em;
-  margin-bottom: 0em;
+  height: 36vh;
 }
 
-.axis-y{
-  height: 405px;
+.axis-title {
+  height: 4vh;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
 }
-.axis-y1{
+
+.axis-label {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+.axis-xlabel {
+  font-size: 16px;
+  text-align: center;
+}
+
+.axis-y {
+  height: 37vh;
+}
+
+.axis-y1 {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.axis-y0{
+.axis-y0 {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.axis-x {
+  height: 5vh;
 }
 
 .full-screen {

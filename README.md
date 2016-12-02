@@ -2,7 +2,7 @@
 Easily measure, view and share data-rich, interactive timeseries charts that
 show system performance while running a single- or multi-node linux workload 
 
-Verson 0.92
+Verson 0.93
 
 #Setup
 These scripts use ssh to start/stop monitors and run the workload, even when

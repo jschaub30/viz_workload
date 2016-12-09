@@ -13,6 +13,10 @@ ssh-keygen -t rsa  # Press enter at the prompts
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 ```
+To copy public key to another server, use the following command:
+```
+ssh-copy-id <user_name>@<server_name>
+```
 
 #Try it out
 ```

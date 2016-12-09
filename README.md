@@ -20,7 +20,7 @@ ssh-copy-id <user_name>@<server_name>
 
 #Try it out
 ```
-sudo apt-get install -y dstat time
+sudo apt-get install -y dstat time git
 git clone https://github.com/jschaub30/viz_workload
 cd viz_monitor/scripts
 cp example.sh your_workload.sh

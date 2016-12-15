@@ -68,4 +68,7 @@ def main(dstat_fn):
             fid.write(out_string[monitor['name']])
 
 if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.stderr.write("USAGE: ./parse_sys_summary.py [dstat_filename]\n")
+        sys.exit(1)
     main(sys.argv[1])

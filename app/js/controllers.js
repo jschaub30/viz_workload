@@ -1,4 +1,4 @@
-'use strict';
+' use strict';
 
 /* Controllers */
 
@@ -60,7 +60,7 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
           sec,
           arr;
 
-          arr = data.match(/([0-9]:)+[0-9]+\.+[0-9]+/)[0].split(':');
+          arr = data.match(/([0-9]+:)+[0-9]+\.+[0-9]+/)[0].split(':');
           sec = parseFloat(arr.pop());
           min = parseInt(arr.pop());
           hr = parseInt(arr.pop());

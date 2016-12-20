@@ -27,7 +27,16 @@ export HOSTS="localhost $(hostname)"    # space delimited
 # or use this script to create one automatically (recommended)
 export RUNDIR=`./create-rundir.sh`
 
+## optional: run a preprocessor to avoid measurements being skewed.
+##   a good example is to clear the cache
+##   the process is run out of the main measurement step
+## enable this function by setting up an env. var. w/ name = PREP_SCRIPT
+##export PREP_SCRIPT="./example-prep.sh"
+
 for CPU in 1 2 4; do
+  # determine whether we need to run preprocessorg    
+  [ ! -z "$PREP_SCRIPT" ] && ./pre_processor.sh
+  
   export WORKLOAD_CMD="./load-cpu.sh $CPU"   # The workload to run
   export RUN_ID="NUM_CPU=$CPU"               # Unique for this run
   # A description of this particular workload

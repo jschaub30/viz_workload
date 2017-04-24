@@ -21,5 +21,5 @@ rm -f $TARGET_FN
 
 nvidia-smi \
     --query-gpu=timestamp,index,name,utilization.gpu,utilization.memory,power.draw \
-    --format=csv --filename=$TARGET_FN --loop=$DELAY_SEC
+    --format=csv --loop=$DELAY_SEC > $TARGET_FN
 

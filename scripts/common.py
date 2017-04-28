@@ -10,6 +10,21 @@ import json
 import re
 from datetime import datetime
 
+
+def mean_int(numbers):
+    '''
+    Take mean of array, rounded to the nearest int
+    '''
+    return int(round(sum(numbers) / max(len(numbers), 1)))
+
+
+def slice_array(arr, step=2):
+    '''
+    reduce the length of array by step, taking the mean of each block of data
+    '''
+    return [mean_int(arr[idx:idx + step]) for idx in range(0, len(arr), step)]
+
+
 def csv_to_json(csv_str):
     '''
     Parses a csv string into json object formatted for heatmap cart
@@ -37,12 +52,12 @@ def csv_to_json(csv_str):
     num_cols = len(lines[0].split(',')) - 1  # Subtract first column (time data)
     line = lines.pop(0).split(',')
     # Initialize lists
-    times = [float(line.pop(0))]
+    times = [int(line.pop(0))]
     # Create a list of lists for datasets
     datasets = [[int(float(i))] for i in line]
     for line in lines:
         fields = line.split(',')
-        times.append(float(fields.pop(0)))
+        times.append(int(fields.pop(0)))
         for col in range(num_cols):
             datasets[col].append(int(float(fields[col])))
     datasets.reverse()  # Start cpu0 at bottom of heatmap
@@ -50,6 +65,14 @@ def csv_to_json(csv_str):
     # Now construct json object
     idx = num_cols - 1
     all_datasets = []
+    matrix_size = len(datasets) * len(times)
+    while matrix_size > 3000:
+        print('Matrix size ({}) larger than threshold. Reducing by 2'.format(matrix_size))
+        times = slice_array(times)
+	for col, dataset in enumerate(datasets):
+            datasets[col] = slice_array(dataset)
+        matrix_size = len(datasets) * len(times)
+    print('Final matrix is ' + str(matrix_size))
     for dataset in datasets:
         all_datasets.append({"label": labels[idx],
                 "data": dataset})

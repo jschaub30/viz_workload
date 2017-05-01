@@ -110,6 +110,10 @@ def create_chartdata(run_id, meas_type, hosts):
         monitor = meas_type
         title = 'CPU Interrupts [#] Heatmap'
         chart_type = 'heatmap'
+    elif meas_type == 'pcie':
+        monitor = meas_type
+        title = 'PCIE'
+        chart_type = 'timeseries'
 
     obj = {
         'type': chart_type,

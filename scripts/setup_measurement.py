@@ -102,6 +102,14 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'GPU Memory Utilization [%]'
         monitor = 'gpu'
         chart_type = 'heatmap'
+    elif meas_type == 'pcie.util':
+        monitor = 'pcie'
+        title = 'PCIE Average Utilization [%]'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.size':
+        monitor = 'pcie'
+        title = 'PCIE total data size'
+        chart_type = 'timeseries'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         title = 'CPU Usage [%] Heatmap'
@@ -110,10 +118,6 @@ def create_chartdata(run_id, meas_type, hosts):
         monitor = meas_type
         title = 'CPU Interrupts [#] Heatmap'
         chart_type = 'heatmap'
-    elif meas_type == 'pcie':
-        monitor = meas_type
-        title = 'PCIE'
-        chart_type = 'timeseries'
 
     obj = {
         'type': chart_type,
@@ -222,6 +226,11 @@ def main():
                                                       summary['hosts'])
         elif meas_type == "interrupts":
             for meas_type in ['system', 'interrupts']:
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
+        elif meas_type == "pcie":
+            for meas_type in ['pcie.util', 'pcie.size']:
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,
                                                       summary['hosts'])

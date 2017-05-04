@@ -34,6 +34,8 @@
 
 # 1.9 5/03/2017: touch fw_success when the first line is successfully generated and remove the file when generating data lines
 
+# 2.0 5/04/2017: change output format
+
 #
 
 # mhchen
@@ -324,15 +326,15 @@ if len(sys.argv) > 1: # print out the lists only
 
  
 
- for h in range(len(hostlist)):
+ for d in range(len(devlist)):
 
-   for d in range(len(devlist)):
+   for h in range(len(hostlist)):
 
      if devlist[d][0] in idmap[hostlist[h][0]]:
 
-       out=out + "," + hostlist[h][1] + "_" + devlist[d][1] + "_util," + devlist[d][1] + "_" + hostlist[h][1] + "_util"
+       out=out + "," + devlist[d][1] + "(" + hostlist[h][1] + ")_ing_util," + devlist[d][1] + "(" + hostlist[h][1] + ")_egr_util"
 
-       out2=out2 + "," + hostlist[h][1] + "_" + devlist[d][1] + "_size," + devlist[d][1] + "_" + hostlist[h][1] + "_size"
+       out2=out2 + "," + devlist[d][1] + "(" + hostlist[h][1] + ")_ing_size," + devlist[d][1] + "(" + hostlist[h][1] + ")_egr_size"
 
  open("fw_success",'a').close()
 

@@ -103,19 +103,35 @@ def create_chartdata(run_id, meas_type, hosts):
         chart_type = 'heatmap'
     elif meas_type == 'pcie.ing_util':
         monitor = 'pcie'
-        title = 'PCIE Utilization In [%]'
+        title = 'PCIE Host Utilization In [%]'
         chart_type = 'timeseries'
     elif meas_type == 'pcie.egr_util':
         monitor = 'pcie'
-        title = 'PCIE Utilization Out [%]'
+        title = 'PCIE Host Utilization Out [%]'
         chart_type = 'timeseries'
     elif meas_type == 'pcie.ing_size':
         monitor = 'pcie'
-        title = 'PCIE Data Size In'
+        title = 'PCIE Host Data Size In'
         chart_type = 'timeseries'
     elif meas_type == 'pcie.egr_size':
         monitor = 'pcie'
-        title = 'PCIE Data Size Out'
+        title = 'PCIE Host Data Size Out'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.d_ing_util':
+        monitor = 'pcie'
+        title = 'PCIE Device Utilization In [%]'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.d_egr_util':
+        monitor = 'pcie'
+        title = 'PCIE Device Utilization Out [%]'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.d_ing_size':
+        monitor = 'pcie'
+        title = 'PCIE Device Data Size In'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.d_egr_size':
+        monitor = 'pcie'
+        title = 'PCIE Device Data Size Out'
         chart_type = 'timeseries'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
@@ -237,7 +253,9 @@ def main():
                                                       meas_type,
                                                       summary['hosts'])
         elif meas_type == "pcie":
-            for suffix in ['ing_util', 'egr_util', 'ing_size', 'egr_size']:
+            for suffix in ['ing_util', 'egr_util', 'ing_size', 'egr_size',
+                           'd_ing_util', 'd_egr_util', 'd_ing_size',
+                           'd_egr_size']:
                 meas_type = 'pcie.' + suffix
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,

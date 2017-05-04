@@ -172,7 +172,6 @@ stop_all() {
 
 #################### END OF FUNCTIONS ####################
 trap 'stop_all' SIGTERM SIGINT # Kill process monitors if killed early
-
 RUNDIR=`./setup_measurement.py`
 [ $? -ne 0 ] && debug_message -1 "Problem setting up measurement. Exiting..." && exit 1
 debug_message 0 "All data will be saved in $RUNDIR"

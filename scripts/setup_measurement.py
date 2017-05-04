@@ -65,7 +65,6 @@ def create_chartdata(run_id, meas_type, hosts):
     data from each host
     '''
     obj = {}
-
     if meas_type == 'cpu':
         title = 'System CPU [%]'
         monitor = 'sys-summary'  # the program that originally records the data
@@ -102,13 +101,21 @@ def create_chartdata(run_id, meas_type, hosts):
         title = 'GPU Memory Utilization [%]'
         monitor = 'gpu'
         chart_type = 'heatmap'
-    elif meas_type == 'pcie.util':
+    elif meas_type == 'pcie.ing_util':
         monitor = 'pcie'
-        title = 'PCIE Average Utilization [%]'
+        title = 'PCIE Utilization In [%]'
         chart_type = 'timeseries'
-    elif meas_type == 'pcie.size':
+    elif meas_type == 'pcie.egr_util':
         monitor = 'pcie'
-        title = 'PCIE total data size'
+        title = 'PCIE Utilization Out [%]'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.ing_size':
+        monitor = 'pcie'
+        title = 'PCIE Data Size In'
+        chart_type = 'timeseries'
+    elif meas_type == 'pcie.egr_size':
+        monitor = 'pcie'
+        title = 'PCIE Data Size Out'
         chart_type = 'timeseries'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
@@ -230,7 +237,8 @@ def main():
                                                       meas_type,
                                                       summary['hosts'])
         elif meas_type == "pcie":
-            for meas_type in ['pcie.util', 'pcie.size']:
+            for suffix in ['ing_util', 'egr_util', 'ing_size', 'egr_size']:
+                meas_type = 'pcie.' + suffix
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,
                                                       summary['hosts'])

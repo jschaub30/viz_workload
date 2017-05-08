@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 '''
 Common functions
@@ -57,7 +57,7 @@ def csv_to_json(csv_str):
     datasets = [[int(float(i))] for i in line]
     for line in lines:
         fields = line.split(',')
-        times.append(int(fields.pop(0)))
+        times.append(int(round(float(fields.pop(0)))))
         for col in range(num_cols):
             datasets[col].append(int(float(fields[col])))
     datasets.reverse()  # Start cpu0 at bottom of heatmap

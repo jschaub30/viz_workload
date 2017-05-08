@@ -48,8 +48,12 @@ check_pids() {
     if [ $RC -ne 0 ]
     then 
       debug_message -1 "$CURRENT_MSG did not complete successfully."
-      debug_message -1 "Return code=$RC   Exiting..."
-      exit 1
+      if [ -z "$CONTINUE_ON_ERROR" ]; then
+        debug_message -1 "Return code=$RC   Exiting..."
+        exit 1
+      else
+        debug_message -1 "Continuing despite error"
+      fi
     fi
   done
 }

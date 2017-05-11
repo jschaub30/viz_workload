@@ -9,7 +9,7 @@
 
 # Required variables are WORKLOAD_NAME, DESCRIPTION, & WORKLOAD_CMD
 export WORKLOAD_NAME=EXAMPLES
-export DESCRIPTION="CPU load using $CPU CPUs on 2 hosts"
+export DESCRIPTION="Example PCIE measurement"
 export WORKLOAD_CMD="sleep 10"
 
 # Optional variables (defaults shown here)

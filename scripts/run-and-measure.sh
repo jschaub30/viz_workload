@@ -104,6 +104,7 @@ stop_monitors() {
       CURRPID=$!
       MSG_ARRAY[$CURRPID]="$MSG"
       PIDS="$PIDS $CURRPID"
+      sleep 0.2
     done
   done
   check_pids ${PIDS}

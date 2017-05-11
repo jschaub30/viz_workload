@@ -40,8 +40,8 @@ def parse_raw_interrupts(raw_fn):
 
 def parse_blob(lines):
     '''
-    Parse and calculate raw interrupt count for each CPU, then return csv string
-    with difference between current and previous count
+    Parse and calculate raw interrupt count for each CPU, summed over all
+    interrupts
     '''
     # Read timestamp
     time = datetime.strptime(lines[0], '%Y%m%d-%H%M%S')
@@ -50,18 +50,18 @@ def parse_blob(lines):
     cpu_list = lines[1].split()
     num_cpu = len(cpu_list)
     interrupts = False
-    irqs = []  # IRQ number in each row
 
     # Parse raw interrupt count for each IRQ. Sum all together for each core
     for line in lines[2:]:
-        regex_str = r'\s*(\w+):\s+(.*)'
-        match = re.match(regex_str, line)
-        if match:
+        if ':' in line:
+            line = line.split(':')[1].split()
             # Raw interrupt count for this IRQ at this time
-            vals = [int(i) for i in match.groups()[1].split()[:num_cpu]]
+            try:
+                vals = [int(line[i]) for i in range(num_cpu)]
+            except:
+                continue
             if not interrupts:
                 # First line
-                irqs.append(match.groups()[0])
                 interrupts = vals
             else:
                 # Sum interrupts generated on each core

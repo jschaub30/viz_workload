@@ -41,6 +41,7 @@ def main(raw_fn):
     
     with open(routefile, 'w') as fid:
         fid.write(blobs.pop(0))
+        fid.flush()
     header = subprocess.getoutput('python parse_pcie_init.py 1')
     header = 'datetime,' + header
     lines = [header]
@@ -52,12 +53,14 @@ def main(raw_fn):
 
         with open(loadingfile, 'w') as fid:
             fid.write(blob[idx:].strip())
+            fid.flush()
         blob = subprocess.getoutput('python parse_pcie_init.py')
         # now write line after prepending timestamp
         line = '{},{}'.format(timestamp, blob)
         lines.append(line)
     with open(intermediate_fn, 'w') as fid:
         fid.write('\n'.join(lines))
+        fid.flush()
     print('Collected data written to {}'.format(intermediate_fn))
     header = lines.pop(0).strip().split(',')
     suffixes = ['ing_util', 'egr_util', 'ing_size', 'egr_size',
@@ -85,6 +88,7 @@ def main(raw_fn):
             lines_str += ','.join(line) + '\n'
         with open(fn, 'w') as fid:
             fid.write(lines_str)
+            fid.flush()
         # print('Data written to {}'.format(fn))
 
 

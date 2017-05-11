@@ -5,11 +5,11 @@
 TARGET_FN=$1
 DELAY_SEC=$2
 
-A=`which fal_app`
-[ "$?" -ne 0 ] && echo "ERROR: fal_app not found on $HOSTNAME" && exit 1
+# A=`which fal_app`
+# [ "$?" -ne 0 ] && echo "ERROR: fal_app not found on $HOSTNAME" && exit 1
 
 # Record route data at the top of file
-fal_app show 9797 route > $TARGET_FN
+/usr/sbin/fal_app show 9797 route > $TARGET_FN
 
 STOP_FN=/tmp/${USER}/viz_workload/stop-pcie
 
@@ -22,7 +22,7 @@ do
   fi
   TS=`date +%Y%m%d-%H%M%S`
   echo "TIMESTAMP=${TS}" >> $TARGET_FN
-  fal_app show 9797 loading >> $TARGET_FN
+  /usr/sbin/fal_app show 9797 loading >> $TARGET_FN
   sleep $DELAY_SEC
 done
 

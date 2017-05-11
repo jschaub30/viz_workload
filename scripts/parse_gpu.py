@@ -119,6 +119,6 @@ def main(raw_fn):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.stderr.write("USAGE: ./parse_interrupts.py <raw_fn>\n")
+        sys.stderr.write("USAGE: {} <raw_fn>\n".format(sys.argv[0]))
         sys.exit(1)
     main(sys.argv[1])

@@ -85,7 +85,7 @@ def main(raw_fn):
             lines_str += ','.join(line) + '\n'
         with open(fn, 'w') as fid:
             fid.write(lines_str)
-        print('Data written to {}'.format(fn))
+        # print('Data written to {}'.format(fn))
 
 
 if __name__ == '__main__':

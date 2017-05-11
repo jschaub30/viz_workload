@@ -72,7 +72,6 @@ def csv_to_json(csv_str):
 	for col, dataset in enumerate(datasets):
             datasets[col] = slice_array(dataset)
         matrix_size = len(datasets) * len(times)
-    print('Final matrix is ' + str(matrix_size))
     for dataset in datasets:
         all_datasets.append({"label": labels[idx],
                 "data": dataset})

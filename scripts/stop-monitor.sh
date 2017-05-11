@@ -13,11 +13,11 @@ HOST=$2
 PREFIX=""
 SCRIPT=start-${MONITOR}.sh
 
-# Write semaphore to directory, then wait 1 second for monitor to stop
+# Write semaphore to directory, then wait for monitor to stop
 DIR=/tmp/${USER}/viz_workload
 CMD="mkdir -p ${DIR} && touch ${DIR}/stop-${MONITOR}"
 ssh $HOST "$CMD"
-sleep 1
+sleep 2
 
 # Copy the file from remote host to local target directory
 if [ $# -eq 4 ]; then

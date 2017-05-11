@@ -8,7 +8,7 @@ DELAY_SEC=$2
 
 # Check if CUDA is installed
 A=`which nvidia-smi`
-[ "$?" -ne 0 ] && echo ERROR: nvprof not found on $HOSTNAME. Exiting... && exit 1
+[ "$?" -ne 0 ] && echo ERROR: nvidia-smi not found on $HOSTNAME. Exiting... && exit 1
 
 # Check if a copy of this script is already running
 NUM=`ps -efa | grep $0 | grep -v "vim\|grep\|ssh" | wc -l`

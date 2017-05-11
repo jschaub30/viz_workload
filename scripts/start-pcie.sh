@@ -6,7 +6,7 @@ TARGET_FN=$1
 DELAY_SEC=$2
 
 # A=`which fal_app`
-# [ "$?" -ne 0 ] && echo "ERROR: fal_app not found on $HOSTNAME" && exit 1
+[ ! -e /usr/sbin/fal_app ] && echo "ERROR: /usr/sbin/fal_app not found on $HOSTNAME" && exit 1
 
 # Record route data at the top of file
 /usr/sbin/fal_app show 9797 route > $TARGET_FN

@@ -30,6 +30,7 @@
 # 1.3 6/01/2017: result compressing
 # 1.4 6/01/2017: output result with specific linecount
 # 1.5 6/15/2017: fix output error when not doing result compression
+# 1.6 6/16/2017: fix output error: extra comma when output head line
 #
 # mhchen
 
@@ -151,7 +152,7 @@ if printTitle ==1: # printTitle, handle 13 for name, type is fixed to h2d d2h d2
 		#out = out + ",GPU" + devid + "_name,GPU" + devid + "_HtoD_size,GPU" + devid + "_HtoD_rate,GPU" + devid + "_DtoH_size,GPU" +  devid + "_DtoH_rate,GPU" + devid + "_DtoD_size,GPU" + devid + "_DtoD_rate,GPU" + devid + "_PtoP_size,GPU"  + devid + "_PtoP_rate"
 		out = out + ",GPU" + devid + "_HtoD_size(MB),GPU" + devid + "_DtoH_size(MB),GPU" + devid + "_DtoD_size(MB),GPU" + devid + "_PtoP_size(MB)"
 		out2 = out2 + ",GPU" + devid + "_HtoD_rate(GB/s),GPU" +  devid + "_DtoH_rate(GB/s),GPU" + devid + "_DtoD_rate(GB/s),GPU" + devid + "_PtoP_rate(GB/s)"
-	print (out + "," + out2)
+	print (out + out2)
 	rf.close()
 
 	#write cache data

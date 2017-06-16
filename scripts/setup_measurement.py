@@ -133,6 +133,10 @@ def create_chartdata(run_id, meas_type, hosts):
         monitor = 'pcie'
         title = 'PCIE Device Data Size Out'
         chart_type = 'timeseries'
+    elif meas_type == 'nvprof.size':
+        monitor = 'nvprof'
+        title = 'nvprof data size [MB]'
+        chart_type = 'timeseries'
     elif meas_type == 'cpu-heatmap':
         monitor = meas_type
         title = 'CPU Usage [%] Heatmap'
@@ -257,6 +261,12 @@ def main():
                            'd_ing_util', 'd_egr_util', 'd_ing_size',
                            'd_egr_size']:
                 meas_type = 'pcie.' + suffix
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
+        elif meas_type == "nvprof":
+            for suffix in ['size']:
+                meas_type = 'nvprof.' + suffix
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,
                                                       summary['hosts'])

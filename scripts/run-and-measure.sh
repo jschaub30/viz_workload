@@ -81,12 +81,16 @@ start_monitors() {
   MSG_ARRAY=()
   for HOST in $HOSTS; do
     for MONITOR in $MEASUREMENTS; do
-      MSG="Starting $MONITOR on host $HOST"
-      debug_message 1 $MSG
-      ./start-monitor.sh $MONITOR $HOST $RUN_ID $MEAS_DELAY_SEC &
-      CURRPID=$!
-      MSG_ARRAY[$CURRPID]="$MSG"
-      PIDS="$PIDS $CURRPID"
+      if [ $MONITOR == "nvprof" ]; then
+        export NVPROF=1
+      else
+        MSG="Starting $MONITOR on host $HOST"
+        debug_message 1 $MSG
+        ./start-monitor.sh $MONITOR $HOST $RUN_ID $MEAS_DELAY_SEC &
+        CURRPID=$!
+        MSG_ARRAY[$CURRPID]="$MSG"
+        PIDS="$PIDS $CURRPID"
+      fi
     done
   done
   check_pids ${PIDS}
@@ -98,13 +102,15 @@ stop_monitors() {
   MSG_ARRAY=()
   for HOST in $HOSTS; do
     for MONITOR in $MEASUREMENTS; do
-      MSG="Starting $MONITOR on host $HOST"
-      debug_message 1 $MSG
-      ./stop-monitor.sh $MONITOR $HOST $RUN_ID ${RUNDIR}/data/raw &
-      CURRPID=$!
-      MSG_ARRAY[$CURRPID]="$MSG"
-      PIDS="$PIDS $CURRPID"
-      sleep 0.2
+      if [ $MONITOR != "nvprof" ]; then
+        MSG="Starting $MONITOR on host $HOST"
+        debug_message 1 $MSG
+        ./stop-monitor.sh $MONITOR $HOST $RUN_ID ${RUNDIR}/data/raw &
+        CURRPID=$!
+        MSG_ARRAY[$CURRPID]="$MSG"
+        PIDS="$PIDS $CURRPID"
+        sleep 0.2
+      fi
     done
   done
   check_pids ${PIDS}
@@ -129,6 +135,16 @@ parse_results() {
 }
 
 run_workload(){
+  if [ "$NVPROF" == 1 ]; then
+    NVBIN="/usr/local/cuda-8.0/bin/nvprof"
+    if [ ! -e $NVBIN ]; then
+      NVBIN=`which nvprof`
+      [ $? -ne 0 ] && debug_message -1 "Didn't find nvprof binary" && exit 1
+    fi
+    HOST=`echo $HOSTS | cut -d " " -f 1`
+    NVLOG=$RUNDIR/data/raw/${RUN_ID}.${HOST}.nvprof.'%p'
+    WORKLOAD_CMD="$NVBIN --csv --print-gpu-trace --log-file $NVLOG $WORKLOAD_CMD"
+  fi
   debug_message 0 "Working directory: $WORKLOAD_DIR"
   debug_message 0 "Running this command: $WORKLOAD_CMD"
   cd "$WORKLOAD_DIR"

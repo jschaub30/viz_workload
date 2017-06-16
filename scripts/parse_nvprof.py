@@ -6,6 +6,7 @@ second, then save tidy CSV files for both 'size' and 'rate' columns
 '''
 
 import sys
+import os
 import subprocess
 import re
 
@@ -81,14 +82,21 @@ def main(raw_fn):
     Tidy the data by taking sum across all columns for each second
     Then split into 'size' and 'rate' files
     '''
-    blob = subprocess.getoutput('python parse_nvprof_init.py -t ' + raw_fn) + '\n'
-    blob += subprocess.getoutput('python parse_nvprof_init.py ' + raw_fn)
+    actual_fn = raw_fn
+    if not os.path.isfile(raw_fn):
+        import glob
+        files = glob.glob(raw_fn + '*')
+        if len(files) > 1:
+            sys.stderr.write('WARNING: more than 1 nvprof file found + \n')
+        actual_fn = files[0]
+    blob = subprocess.getoutput('python parse_nvprof_init.py -t ' + actual_fn) + '\n'
+    blob += subprocess.getoutput('python parse_nvprof_init.py ' + actual_fn)
     all_data = sum_columns(blob)
     header = all_data[0]
     base_fn = raw_fn.replace('data/raw', 'data/final').split('.csv')[0]
     suffixes = ['size', 'rate']
     for suffix in suffixes:
-        fn = '{}.nvprof.{}.csv'.format(base_fn, suffix)
+        fn = '{}.{}.csv'.format(base_fn, suffix)
         pattern = 'GPU.*{}.*'.format(suffix)
         columns, labels = parse_header(header, pattern)
         max_col = max(columns)

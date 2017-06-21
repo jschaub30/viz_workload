@@ -13,8 +13,7 @@ def scale(val, factor):
 
 def main(raw_fn):
     '''
-    Read raw csv file and write individual csv files for cpu, io, memory and
-    network.  Use timestamp normalized to the first measured timestamp.
+    Read raw csv file, convert to elapsed time and data in GB
     '''
     with open(raw_fn, 'r') as fid:
         blob = fid.read()

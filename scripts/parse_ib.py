@@ -39,6 +39,7 @@ def main(raw_fn):
     out_fn = raw_fn.replace('data/raw', 'data/final') + '.csv'
     with open(out_fn, 'w') as fid:
         fid.write(out_string)
+    print('Data written to {}'.format(out_fn))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

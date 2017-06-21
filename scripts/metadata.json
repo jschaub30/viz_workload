@@ -1,0 +1,107 @@
+{
+  "cpu":{
+    "title": "System CPU [%]",
+    "monitor": "sys-summary",
+    "type": "timeseries"
+  },
+  "mem":{
+    "title": "Memory [GB]",
+    "monitor": "sys-summary",
+    "type": "timeseries"
+  },
+  "io":{
+    "title": "IO [GB/sec]",
+    "monitor": "sys-summary",
+    "type": "timeseries"
+  },
+  "net":{
+    "title": "Network [GB/sec]",
+    "monitor": "sys-summary",
+    "type": "timeseries"
+  },
+  "system":{
+    "title": "System [#]",
+    "monitor": "sys-summary",
+    "type": "timeseries"
+  },
+  "gpu.avg":{
+    "title": "Average GPU Utilization [%]",
+    "monitor": "gpu",
+    "type": "timeseries"
+  },
+  "gpu.pow":{
+    "title": "GPU Power [W]",
+    "monitor": "gpu",
+    "type": "timeseries"
+  },
+  "gpu.gpu":{
+    "title": "GPU Utilization [%]",
+    "monitor": "gpu",
+    "type": "heatmap"
+  },
+  "gpu.mem":{
+    "title": "GPU Memory Utilization [%]",
+    "monitor": "gpu",
+    "type": "heatmap"
+  },
+  "pcie.ing_util":{
+    "monitor": "pcie",
+    "title": "PCIE Host Utilization In [%]",
+    "type": "timeseries"
+  },
+  "pcie.egr_util":{
+    "monitor": "pcie",
+    "title": "PCIE Host Utilization Out [%]",
+    "type": "timeseries"
+  },
+  "pcie.ing_size":{
+    "monitor": "pcie",
+    "title": "PCIE Host Data Size In",
+    "type": "timeseries"
+  },
+  "pcie.egr_size":{
+    "monitor": "pcie",
+    "title": "PCIE Host Data Size Out",
+    "type": "timeseries"
+  },
+  "pcie.d_ing_util":{
+    "monitor": "pcie",
+    "title": "PCIE Device Utilization In [%]",
+    "type": "timeseries"
+  },
+  "pcie.d_egr_util":{
+    "monitor": "pcie",
+    "title": "PCIE Device Utilization Out [%]",
+    "type": "timeseries"
+  },
+  "pcie.d_ing_size":{
+    "monitor": "pcie",
+    "title": "PCIE Device Data Size In",
+    "type": "timeseries"
+  },
+  "pcie.d_egr_size":{
+    "monitor": "pcie",
+    "title": "PCIE Device Data Size Out",
+    "type": "timeseries"
+  },
+  "nvprof.size":{
+    "monitor": "nvprof",
+    "title": "nvprof data size [MB]",
+    "type": "timeseries"
+  },
+  "cpu-heatmap":{
+    "monitor": "cpu-heatmap",
+    "title": "CPU Usage [%] Heatmap",
+    "type": "heatmap"
+  },
+  "interrupts":{
+    "monitor": "interrupts",
+    "title": "CPU Interrupts [#] Heatmap",
+    "type": "heatmap"
+  },
+  "ib":{
+    "monitor": "ib",
+    "title": "Mellanox Infiniband traffic [ GB ]",
+    "type": "timeseries"
+  }
+}

@@ -2,7 +2,7 @@
 Easily measure, view and share data-rich, interactive timeseries charts that
 show system performance while running a single- or multi-node linux workload 
 
-Verson 0.93
+Verson 1.0.0
 
 #Setup
 These scripts use ssh to start/stop monitors and run the workload, even when
@@ -38,7 +38,6 @@ Each measurement group enables collection and display of 1 or more charts
 | cpu-heatmap  | heatmap of CPU usage on each thread                      |
 | interrupts   | heatmap of interrupts on each CPU                        |
 | gpu          | for systems with Nvidia GPU's and [CUDA][cuda] installed |
-| pcie         | pcie bandwidth (IBM internal only)                       |
 
 
 More details described [here][available].
@@ -52,7 +51,6 @@ More details described [here][available].
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
 - [example-cpu-heatmap-interrupt.sh][example-cpu-heatmap-interrupt] CPU and interrupt heatmaps
 - [example-gpu.sh][example-gpu] Collect data from Nvidia GPU with CUDA installed
-- [example-pcie.sh][example-pcie] Collect PCIE host and device utilization and bandwidth
 
 [example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
 [example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
@@ -70,5 +68,3 @@ cd /var/www/html
 sudo ln -sf [full path to viz_workload/scripts/rundir directory]
 ```
 
-
-Copyright IBM 2016

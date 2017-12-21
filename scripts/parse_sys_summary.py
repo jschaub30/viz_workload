@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 '''
 Input:  dstat file (data/raw directory)
@@ -47,7 +47,7 @@ def main(dstat_fn):
                 cols = columns[monitor['name']]
                 data = [str((timestamp - timestamp_0).total_seconds())]
                 for i in range(1, len(cols)):
-                    data.append(str(round(float(line[cols[i]])*monitor['scale'], 1)))
+                    data.append(str(round(float(line[cols[i]])*monitor['scale'], 3)))
                 out_string[monitor['name']] += ','.join(data) + '\n'
         if '"new","used"' in line:
             start = True

@@ -59,13 +59,13 @@ def parse_raw_gpu(raw_fn):
         lines = fid.readlines()
     line = lines.pop(0)  # discard header
     time0 = False
-    regex_str = r'([\d/ :.]+),\s+(\d+),[\s\w]+,\s*(\d+.*\d*)\s%,'
-    regex_str += r'\s*(\d+.*\d*)\s%,\s*(\d+.*\d*)\sW'
     while lines:
         line = lines.pop(0)
         try:
-            (time, idx, util_gpu, util_mem, power_gpu) = re.match(regex_str,
-                                                                  line).groups()
+            (time, idx, _, util_gpu, util_mem, power_gpu) = line.split(',')
+            util_gpu = util_gpu.strip().split()[0]
+            util_mem = util_mem.strip().split()[0]
+            power_gpu = power_gpu.strip().split()[0]
             time = datetime.strptime(time, '%Y/%m/%d %H:%M:%S.%f')
             if not time0:
                 time0 = time
@@ -80,7 +80,9 @@ def parse_raw_gpu(raw_fn):
             gpu_str += ',' + util_gpu
             mem_str += ',' + util_mem
             pow_str += ',' + power_gpu
-        except Exception:
+        except Exception as err:
+            print(str(err))
+            print(line)
             pass
     return (gpu_str, mem_str, pow_str)
 
@@ -117,6 +119,6 @@ def main(raw_fn):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.stderr.write("USAGE: ./parse_interrupts.py <raw_fn>\n")
+        sys.stderr.write("USAGE: {} <raw_fn>\n".format(sys.argv[0]))
         sys.exit(1)
     main(sys.argv[1])

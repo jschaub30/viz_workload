@@ -38,6 +38,7 @@ Each measurement group enables collection and display of 1 or more charts
 | cpu-heatmap  | heatmap of CPU usage on each thread                      |
 | interrupts   | heatmap of interrupts on each CPU                        |
 | gpu          | for systems with Nvidia GPU's and [CUDA][cuda] installed |
+| pcie         | pcie bandwidth (IBM internal only)                       |
 
 
 More details described [here][available].
@@ -51,12 +52,14 @@ More details described [here][available].
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts
 - [example-cpu-heatmap-interrupt.sh][example-cpu-heatmap-interrupt] CPU and interrupt heatmaps
 - [example-gpu.sh][example-gpu] Collect data from Nvidia GPU with CUDA installed
+- [example-pcie.sh][example-pcie] Collect PCIE host and device utilization and bandwidth
 
 [example]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example.sh
 [example-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-sweep.sh
 [example-cpu-heatmap-interrupt]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cpu-heatmap-interrupt.sh
 [example-cluster-sweep]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-cluster-sweep.sh
 [example-gpu]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-gpu.sh
+[example-pcie]: https://github.com/jschaub30/viz_workload/blob/master/scripts/example-pcie.sh
 
 ## Optional.  Setup your webserver
 To permanently share all measurements, enable a web server.

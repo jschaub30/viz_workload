@@ -14,9 +14,9 @@ DELAY_SEC=$4
 SCRIPT=start-${MONITOR}.sh
 [ ! -e $SCRIPT ] && echo "File $SCRIPT does not exist. Exiting..." && exit 1
 
-# Create remote directory
+# Create remote directory and remove previous semaphore
 DIR=/tmp/${USER}/viz_workload
-ssh $HOST "mkdir -p $DIR"
+ssh $HOST "mkdir -p $DIR && rm -f ${DIR}/stop-${MONITOR}"
 [ $? -ne 0 ] && echo "ERROR: Problem creating remote directory. Exiting..." \
   && exit 1
 

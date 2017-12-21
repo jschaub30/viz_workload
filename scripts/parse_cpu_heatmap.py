@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 '''
 Input:  dstat cpu csv data (e.g. "dstat -t --cpu -C 0,1 --output dstat_fn 1"

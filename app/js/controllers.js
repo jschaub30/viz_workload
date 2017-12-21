@@ -60,15 +60,23 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
           sec,
           arr;
 
-          arr = data.match(/([0-9]+:)+[0-9]+.+[0-9]+/)[0].split(':');
-          sec = parseFloat(arr.pop());
-          min = parseInt(arr.pop());
-          hr = parseInt(arr.pop());
-          if (!hr) {hr = 0;}
-          measurement.time.elapsed_time_sec = (hr*60*60 + min*60 + sec).toString();
-          measurement.time.exit_status = data.split('Exit status: ')[1].split('\n')[0];
-          measurement.time.exit_clean = measurement.time.exit_status === '0';
-          counter += 1;
+          try {
+            arr = data.match(/([0-9]+:)+[0-9]+.+[0-9]+/)[0].split(':');
+            sec = parseFloat(arr.pop());
+            min = parseInt(arr.pop());
+            hr = parseInt(arr.pop());
+            if (!hr) {hr = 0;}
+            measurement.time.elapsed_time_sec = (hr*60*60 + min*60 + sec).toString();
+            measurement.time.exit_status = data.split('Exit status: ')[1].split('\n')[0];
+            measurement.time.exit_clean = measurement.time.exit_status === '0';
+          }
+          catch(err) {
+            console.log(err.message);
+            measurement.time.elapsed_time_sec = '-1';
+            measurement.time.exit_status = '-1';
+            measurement.time.exit_clean = '-1';
+          }
+	      counter += 1;
           updatePage();
         })
       },
@@ -129,7 +137,6 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
           updateDescription();
           if (checkURL()){
             summaryChart($scope.measurements);
-            drawCharts($scope.runId);
           }
         }
       };
@@ -141,6 +148,7 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
       $http.get('summary.json').success(function(data){
         $scope.measurements = data;
         $scope.measurements.forEach(parseTimeFile);
+	drawCharts($scope.runId);
       });
     }
 ]);

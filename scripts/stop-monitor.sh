@@ -12,13 +12,12 @@ HOST=$2
 # Kill the ssh process attached to the start script on $HOST
 PREFIX=""
 SCRIPT=start-${MONITOR}.sh
+
+# Write semaphore to directory, then wait for monitor to stop
 DIR=/tmp/${USER}/viz_workload
-# Could also grep for RUN_ID here
-PID=`ps -efa | grep ${DIR}/${SCRIPT} | grep ".*ssh.*$HOST" | awk '{print $2}'`
-kill $PID 2>/dev/null
-RC=$?
-[ $RC -ne 0 ] && echo Problem killing $SCRIPT on ${HOST}. RC=$RC. Exiting... \
-  && exit 1
+CMD="mkdir -p ${DIR} && touch ${DIR}/stop-${MONITOR}"
+ssh $HOST "$CMD"
+sleep 2
 
 # Copy the file from remote host to local target directory
 if [ $# -eq 4 ]; then

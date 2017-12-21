@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 '''
 Input:  environmental variables
@@ -61,65 +61,22 @@ def create_simple(meas_type, run_id):
 
 def create_chartdata(run_id, meas_type, hosts):
     '''
-    Create timeseries measurement object with properties for 'hosts' and filenames for
-    data from each host
+    Populate an object with chart metadata (e.g. title, filenames,
+    monitor type, chart type)
     '''
-    obj = {}
+    with open('metadata.json', 'r') as fid:
+        metadata = json.load(fid)
 
-    if meas_type == 'cpu':
-        title = 'System CPU [%]'
-        monitor = 'sys-summary'  # the program that originally records the data
-        chart_type = 'timeseries'
-    elif meas_type == 'mem':
-        title = 'Memory [GB]'
-        monitor = 'sys-summary'
-        chart_type = 'timeseries'
-    elif meas_type == 'io':
-        title = 'IO [GB/sec]'
-        monitor = 'sys-summary'
-        chart_type = 'timeseries'
-    elif meas_type == 'net':
-        title = 'Network [GB/sec]'
-        monitor = 'sys-summary'
-        chart_type = 'timeseries'
-    elif meas_type == 'system':
-        title = 'System [#]'
-        monitor = 'sys-summary'
-        chart_type = 'timeseries'
-    elif meas_type == 'gpu.avg':
-        title = 'Average GPU Utilization [%]'
-        monitor = 'gpu'
-        chart_type = 'timeseries'
-    elif meas_type == 'gpu.pow':
-        title = 'GPU Power [W]'
-        monitor = 'gpu'
-        chart_type = 'timeseries'
-    elif meas_type == 'gpu.gpu':
-        title = 'GPU Utilization [%]'
-        monitor = 'gpu'
-        chart_type = 'heatmap'
-    elif meas_type == 'gpu.mem':
-        title = 'GPU Memory Utilization [%]'
-        monitor = 'gpu'
-        chart_type = 'heatmap'
-    elif meas_type == 'cpu-heatmap':
-        monitor = meas_type
-        title = 'CPU Usage [%] Heatmap'
-        chart_type = 'heatmap'
-    elif meas_type == 'interrupts':
-        monitor = meas_type
-        title = 'CPU Interrupts [#] Heatmap'
-        chart_type = 'heatmap'
+    obj = metadata[meas_type]
+    obj['hosts'] = hosts
 
-    obj = {
-        'type': chart_type,
-        'hosts': hosts,
-        'title': title
-        }
+    title = obj['title']
+    chart_type = obj['type']
+
     for host in hosts:
         obj[host] = {}
         obj[host]['rawFilename'] = "../data/raw/%s.%s.%s" % (
-            run_id, host, monitor)
+            run_id, host, obj['monitor'])
         obj[host]['csvFilename'] = "../data/final/%s.%s.%s.csv" % (
             run_id, host, meas_type)
         if chart_type == 'heatmap':
@@ -218,6 +175,20 @@ def main():
                                                       summary['hosts'])
         elif meas_type == "interrupts":
             for meas_type in ['system', 'interrupts']:
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
+        elif meas_type == "pcie":
+            for suffix in ['ing_util', 'egr_util', 'ing_size', 'egr_size',
+                           'd_ing_util', 'd_egr_util', 'd_ing_size',
+                           'd_egr_size']:
+                meas_type = 'pcie.' + suffix
+                details[meas_type] = create_chartdata(summary['run_id'],
+                                                      meas_type,
+                                                      summary['hosts'])
+        elif meas_type == "nvprof":
+            for suffix in ['size']:
+                meas_type = 'nvprof.' + suffix
                 details[meas_type] = create_chartdata(summary['run_id'],
                                                       meas_type,
                                                       summary['hosts'])

@@ -61,10 +61,17 @@ More details described [here][available].
 
 ## Optional.  Setup your webserver
 To permanently share all measurements, enable a web server.
-On Ubuntu, this is as simple as
+
+Ubuntu
 ```
 sudo apt-get install apache2
 cd /var/www/html
 sudo ln -sf [full path to viz_workload/scripts/rundir directory]
 ```
-
+CentOS
+```
+sudo yum install httpd
+sudo systemctl start httpd
+cd /var/www/html
+sudo ln -sf [full path to viz_workload/scripts/rundir directory]
+```

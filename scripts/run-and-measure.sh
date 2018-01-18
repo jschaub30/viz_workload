@@ -180,7 +180,8 @@ setup_webserver() {
   IP=$(hostname -I | cut -d' ' -f1)
   echo
   debug_message 0 "All data saved to $RUNDIR"
-  debug_message 0 "View the html output using the following command:"
+  debug_message 0 "View the html output using the following commands:"
+  debug_message 0 "cd $CWD"
   debug_message 0 "$ ./webserver.sh"
   debug_message 0 "Then navigate to http://${IP}:12121"
   echo

@@ -4,7 +4,7 @@ show system performance while running a single- or multi-node linux workload
 
 Verson 1.0.0
 
-#Setup
+## Setup
 These scripts use ssh to start/stop monitors and run the workload, even when
 only running on 1 host.  To avoid having to type a password each time, setup
 password-less ssh.  Here are simple instructions for 1 host:
@@ -18,7 +18,7 @@ To copy public key to another server, use the following command:
 ssh-copy-id <user_name>@<server_name>
 ```
 
-#Try it out
+## Try it out
 ```
 sudo apt-get install -y dstat time git
 git clone https://github.com/jschaub30/viz_workload
@@ -28,7 +28,7 @@ cp example.sh your_workload.sh
 ./your_workload.sh
 ./webserver.sh  # To view/share this measurement
 ```
-#Available measurement groups
+## Available measurement groups
 
 Each measurement group enables collection and display of 1 or more charts
 
@@ -45,7 +45,7 @@ More details described [here][available].
 [cuda]: https://developer.nvidia.com/cuda-downloads
 [available]: https://github.com/jschaub30/viz_workload/blob/master/scripts/available-measurements.md
 
-#Example scripts
+## Example scripts
 - [example.sh][example] Simple CPU load example
 - [example-sweep.sh][example-sweep] Sweeping a parameter
 - [example-cluster-sweep.sh][example-cluster-sweep] Sweep a parameter on 2 hosts

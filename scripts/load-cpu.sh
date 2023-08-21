@@ -10,7 +10,7 @@
 [ $# -eq 0 ] && echo "USAGE: ./load-cpu.sh NUM_COPIES [HOSTS]" && exit 1
 NUM_COPIES=$1
 if [ $# -eq 1 ]; then 
-  HOSTS="localhost"
+  HOSTS="$(hostname)"
 else
   HOSTS=`echo $@ | cut -d' ' -f2-`
 fi

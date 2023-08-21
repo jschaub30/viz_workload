@@ -2,29 +2,57 @@
 Easily measure, view and share data-rich, interactive timeseries charts that
 show system performance while running a single- or multi-node linux workload 
 
-Verson 1.0.0
+Verson 1.1.0
 
 ## Setup
 These scripts use ssh to start/stop monitors and run the workload, even when
 only running on 1 host.  To avoid having to type a password each time, setup
 password-less ssh.  Here are simple instructions for 1 host:
-```
-ssh-keygen -t rsa  # Press enter at the prompts
+```sh
+ssh-keygen -t rsa  # Press enter at the prompts (no passphrase!)
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 ```
-To copy public key to another server, use the following command:
-```
+To copy the public key to another server, use the following command:
+```sh
 ssh-copy-id <user_name>@<server_name>
+```
+Now verify that you don't need to type a password:
+```sh
+ssh localhost
+ssh $(hostname)
 ```
 
 ## Try it out
+If you are running a multi-node/cluster workload, follow the installation instructions below on
+every host in the cluster.
+
+### Install prerequisites
+Ubuntu / Debian
+```sh
+sudo apt-get install -y time git python3 hwloc
 ```
-sudo apt-get install -y dstat time git
+
+### Install `dool`
+The `viz_workload` tool was originally develeped by gathering data via the
+[`dstat`](https://github.com/dstat-real/dstat) utility, which stopped development due to a
+conflict with Redhat.
+
+The current project is has been renamed to [`dool`](https://github.com/scottchiefbaker/dool).
+
+Here's how to install `dool` as the root user.
+```sh
+git clone git@github.com:scottchiefbaker/dool.git --branch v1.2.0 /tmp/doolinstall
+
+sudo /tmp/doolinstall/install.py
+```
+
+### Install `viz_workload`
+```sh
 git clone https://github.com/jschaub30/viz_workload
 cd viz_monitor/scripts
 cp example.sh your_workload.sh
-[ Edit your_workload.sh ]
+## Now edit your_workload.sh
 ./your_workload.sh
 ./webserver.sh  # To view/share this measurement
 ```

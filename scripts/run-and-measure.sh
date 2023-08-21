@@ -169,7 +169,7 @@ run_workload(){
 }
 
 setup_webserver() {
-  echo "cd $RUNDIR/html; python -m SimpleHTTPServer 12121" > webserver.sh
+  echo "cd $RUNDIR/html; python3 -m http.server 12121" > webserver.sh
   chmod u+x webserver.sh
 
   # For python simple webserver to work, need soft link to data directory

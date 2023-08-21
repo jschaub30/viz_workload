@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-Input:  dstat file (data/raw directory)
+Input:  dool file (data/raw directory)
 Output: cpu, mem, io, net csv files (data/final directory)
 '''
 
@@ -11,18 +11,18 @@ from datetime import datetime
 def scale(val, factor):
     return str(round(float(val) / factor))
 
-def main(dstat_fn):
+def main(dool_fn):
     '''
-    Read dstat file and write individual csv files for cpu, io, memory and
+    Read dool file and write individual csv files for cpu, io, memory and
     network.  Use timestamp normalized to the first measured timestamp.
     '''
-    with open(dstat_fn, 'r') as fid:
+    with open(dool_fn, 'r') as fid:
         blob = fid.read()
     lines = blob.split('\n')
     scaleGB = 1.0/1024/1024/1024
 
     monitors = [
-        {'name': 'mem', 'columnNames': ["used", "buff", "cach", "free"], 'scale': scaleGB},
+        {'name': 'mem', 'columnNames': ["used", "avai", "cach", "free"], 'scale': scaleGB},
         {'name': 'cpu', 'columnNames': ["usr", "sys", "idl", "wai"], 'scale': 1},
         {'name': 'system', 'columnNames': ["int", "csw"], 'scale': 1},
         {'name': 'io', 'columnNames': ["read", "writ"], 'scale': scaleGB},
@@ -38,7 +38,7 @@ def main(dstat_fn):
     for line in lines:
         if start and len(line) > 10:
             line = line.split(',')
-            timestamp = datetime.strptime(line[0], "%d-%m %H:%M:%S")
+            timestamp = datetime.strptime(line[0], "%b-%d %H:%M:%S")
 
             # First normalize timestamp
             if timestamp_0 == -1:
@@ -49,7 +49,7 @@ def main(dstat_fn):
                 for i in range(1, len(cols)):
                     data.append(str(round(float(line[cols[i]])*monitor['scale'], 3)))
                 out_string[monitor['name']] += ','.join(data) + '\n'
-        if '"new","used"' in line:
+        if "new" in line and "cach" in line:
             start = True
             fields = line.replace('"', '').split(',')
             for monitor in monitors:
@@ -60,7 +60,7 @@ def main(dstat_fn):
 
     # Now write output csv files
     for monitor in monitors:
-        out_fn = dstat_fn.replace('sys-summary', monitor['name'])
+        out_fn = dool_fn.replace('sys-summary', monitor['name'])
         # write data to data/final directory
         out_fn = out_fn.replace('data/raw', 'data/final') + '.csv'
         #print 'writing ' + out_fn
@@ -69,6 +69,6 @@ def main(dstat_fn):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.stderr.write("USAGE: ./parse_sys_summary.py [dstat_filename]\n")
+        sys.stderr.write("USAGE: ./parse_sys_summary.py [dool_filename]\n")
         sys.exit(1)
     main(sys.argv[1])

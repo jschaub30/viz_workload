@@ -203,7 +203,7 @@ def main():
         fid.write(json.dumps(details, indent=4))
 
 
-    print summary['rundir']  # Used by the calling shell script
+    print(summary['rundir'])  # Used by the calling shell script
 
 if __name__ == '__main__':
     main()

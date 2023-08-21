@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-Input:  dstat cpu csv data (e.g. "dstat -t --cpu -C 0,1 --output dstat_fn 1"
+Input:  dool cpu csv data (e.g. "dool -t --cpu -C 0,1 --output dool_fn 1"
 Output: json file
 '''
 
@@ -25,11 +25,11 @@ def parse_line(line):
         fields = fields[6:]
     return (t, vals)
 
-def main(dstat_fn):
+def main(dool_fn):
     '''
     First parse into CSV string, then convert to JSON
     '''
-    with open(dstat_fn, 'r') as fid:
+    with open(dool_fn, 'r') as fid:
         blob = fid.read()
     fid.close()
     blob = "system" + blob.split('"system"')[1].strip()
@@ -47,7 +47,7 @@ def main(dstat_fn):
         csv_str += str(round((t - t0).total_seconds(), 1)) + ',' 
         csv_str += ','.join([str(val) for val in vals]) + '\n'
 
-    out_fn = dstat_fn.replace('data/raw', 'data/final')
+    out_fn = dool_fn.replace('data/raw', 'data/final')
     out_fn += '.csv'
     with open(out_fn, 'w') as fid:
         fid.write(csv_str)

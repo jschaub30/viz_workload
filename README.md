@@ -1,10 +1,13 @@
 # viz_workload
-Easily measure, view and share data-rich, interactive timeseries charts that
-show system performance while running a single- or multi-node linux workload 
+Measure, view and share data-rich, interactive timeseries charts of
+system performance while running a single- or multi-node linux workload.
+
+This tool is useful for identifying performance bottlenecks for, say,
+[setting the sort benchmark record](https://sortbenchmark.org/).
 
 Verson 1.1.0
 
-## Setup
+## Setup password-less SSH
 These scripts use ssh to start/stop monitors and run the workload, even when
 only running on 1 host.  To avoid having to type a password each time, setup
 password-less ssh.  Here are simple instructions for 1 host:

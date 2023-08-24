@@ -6,14 +6,13 @@ Output: json file
 '''
 
 import sys
-import os
 import json
 from datetime import datetime
 from common import csv_to_json
 
 def parse_line(line):
     fields = line.split(',')
-    t = datetime.strptime(fields.pop(0), '%d-%m %H:%M:%S')
+    t = datetime.strptime(fields.pop(0), '%b-%d %H:%M:%S')
     vals = []
     # for each CPU, fields are:
     # "usr","sys","idl","wai","hiq","siq"
@@ -21,7 +20,7 @@ def parse_line(line):
         cpu_usr = float(fields[0])
         cpu_sys = float(fields[1])
         val = cpu_usr + cpu_sys
-        vals.append(val)
+        vals.append(round(val, 2))
         fields = fields[6:]
     return (t, vals)
 
@@ -44,14 +43,14 @@ def main(dool_fn):
 
     while lines:
         (t, vals) = parse_line(lines.pop(0))
-        csv_str += str(round((t - t0).total_seconds(), 1)) + ',' 
+        csv_str += str(round((t - t0).total_seconds(), 1)) + ','
         csv_str += ','.join([str(val) for val in vals]) + '\n'
 
     out_fn = dool_fn.replace('data/raw', 'data/final')
     out_fn += '.csv'
     with open(out_fn, 'w') as fid:
         fid.write(csv_str)
-    
+
     # Convert and save JSON object
     obj = csv_to_json(csv_str)
     out_fn = out_fn.replace('.csv', '.json')

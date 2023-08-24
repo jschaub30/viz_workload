@@ -7,7 +7,7 @@
 
 
 # Required variables are WORKLOAD_NAME, DESCRIPTION, & WORKLOAD_CMD
-export WORKLOAD_NAME=EXAMPLES                   # A short name for this type of workload
+export WORKLOAD_NAME=CLUSTER-SWEEP  # A short name for this type of workload
 
 # Optional variables (defaults shown here)
 export WORKLOAD_DIR="."             # The workload working directory
@@ -17,15 +17,17 @@ export VERBOSE=0                    # Verbosity level 0|1|2  Higher==more messag
 export MEASUREMENTS="sys-summary"   # cpu, memory, io and network vs time
 
 # To run on hosts other than the local node, export the "HOSTS" variable
-# We will simulate this by running on "localhost" and the string returned by 
+# We will simulate this by running on "localhost" and the string returned by
 # the "hostname" command
-export HOSTS="localhost $(hostname)"    # space delimited
+HOSTS="localhost $(hostname)"    # space delimited
+export HOSTS
 
 # For sweeps, create a run directory where all files will be saved
 # Specify it directly, like this:
 #export RUNDIR=path/to/your/directory
 # or use this script to create one automatically (recommended)
-export RUNDIR=`./create-rundir.sh`
+RUNDIR=$(./create-rundir.sh)
+export RUNDIR
 
 ## optional: run a preprocessor to avoid measurements being skewed.
 ##   a good example is to clear the cache
@@ -34,9 +36,9 @@ export RUNDIR=`./create-rundir.sh`
 ##export PREP_SCRIPT="./example-prep.sh"
 
 for CPU in 1 2 4; do
-  # determine whether we need to run preprocessorg    
-  [ ! -z "$PREP_SCRIPT" ] && ./pre_processor.sh
-  
+  # determine whether we need to run preprocessorg
+  [ -n "$PREP_SCRIPT" ] && ./pre_processor.sh
+
   export WORKLOAD_CMD="./load-cpu.sh $CPU"   # The workload to run
   export RUN_ID="NUM_CPU=$CPU"               # Unique for this run
   # A description of this particular workload

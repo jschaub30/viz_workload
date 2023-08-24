@@ -8,9 +8,6 @@ Output: cpu, mem, io, net csv files (data/final directory)
 import sys
 from datetime import datetime
 
-def scale(val, factor):
-    return str(round(float(val) / factor))
-
 def main(dool_fn):
     '''
     Read dool file and write individual csv files for cpu, io, memory and

@@ -45,7 +45,7 @@ The current project is has been renamed to [`dool`](https://github.com/scottchie
 
 Here's how to install `dool` as the root user.
 ```sh
-git clone git@github.com:scottchiefbaker/dool.git --branch v1.2.0 /tmp/doolinstall
+git clone git@github.com:scottchiefbaker/dool.git --branch v1.3.1 /tmp/doolinstall
 
 sudo /tmp/doolinstall/install.py
 ```

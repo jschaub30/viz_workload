@@ -19,7 +19,7 @@ export MEASUREMENTS="sys-summary"   # cpu, memory, io and network vs time
 export RUNDIR=`./create-rundir.sh`
 
 for CPU in 1 2 4; do
-  export WORKLOAD_CMD="./load-cpu.sh $CPU"   # The workload to run
+  export WORKLOAD_CMD="./load-cpu.sh -t $CPU"   # The workload to run
   export RUN_ID="NUM_CPU=$CPU"               # Unique for this run
   export DESCRIPTION="CPU load using $CPU CPUs"  # A description of this particular workload
   ./run-and-measure.sh

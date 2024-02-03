@@ -1,34 +1,60 @@
 #!/bin/bash
-# Create artificial CPU load for 10 seconds
-# 1 copy takes 100% of 1 thread (typically)
-#
-# USAGE: ./load-cpu.sh NUM_COPIES [HOSTS]
-# Examples:
-# ./load-cpu.sh 2 # load 2 threads on localhost
-# ./load-cpu.sh 1 host1 host2  # load 1 thread each on host1 and host2
 
-[ $# -eq 0 ] && echo "USAGE: ./load-cpu.sh NUM_COPIES [HOSTS]" && exit 1
-NUM_COPIES=$1
-if [ $# -eq 1 ]; then
-    HOSTS="$(hostname)"
-else
-    HOSTS=`echo $@ | cut -d' ' -f2-`
-fi
+# Default values
+threads=2
+duration=10
+hostnames="localhost"
 
-kill_pids(){
-    echo Stopping CPU loading
-    kill ${PIDS[@]}
+# Usage information
+usage() {
+    echo "Simulate a high CPU workload across multiple nodes"
+    echo "Usage: $0 [options]"
+    echo "Options:"
+    echo "  -t <num>    Number of threads (default: 2)"
+    echo "  -d <seconds> Duration in seconds (default: 10)"
+    echo "  -h          Display this help and exit"
+    echo "  -H <hosts>  Hostnames, separated by commas (default: localhost)"
+    echo "              ***configure password-less ssh when invoking multiple nodes***"
+    exit 1
 }
-PIDS=()
-trap "kill_pids" SIGTERM SIGINT # Kill loads if stopped early
 
-for N in `seq $NUM_COPIES`; do
-    for HOST in $HOSTS; do
-        echo Loading CPU for 10 seconds on $HOST
-        ssh -t -t $HOST "while true; do true; done" &
-        PIDS+=( $! )
+# Parse options
+while getopts ":t:d:H:h" opt; do
+    case ${opt} in
+        t )
+            threads=$OPTARG
+            ;;
+        d )
+            duration=$OPTARG
+            ;;
+        H )
+            hostnames=$OPTARG
+            ;;
+        h )
+            usage
+            ;;
+        \? )
+            echo "Invalid Option: -$OPTARG" 1>&2
+            usage
+            ;;
+        : )
+            echo "Invalid Option: -$OPTARG requires an argument" 1>&2
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+
+# Split hostnames into an array
+IFS=',' read -r -a hostname_array <<< "$hostnames"
+
+# shellcheck disable=SC2029
+for thread in $(seq "$threads"); do
+    for HOST in "${hostname_array[@]}"; do
+        echo "Loading CPU for $duration seconds on $HOST"
+        CMD="taskset -c $(( thread - 1 )) bash -c 'while true; do true; done'"
+        ssh "$HOST" "timeout $duration $CMD" &
     done
 done
 
-sleep 10
-kill_pids
+wait

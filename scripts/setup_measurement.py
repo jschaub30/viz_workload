@@ -118,7 +118,7 @@ def load_environment():
     summary['rundir'] = rundir
 
     try:
-        hosts = os.environ['HOSTS'].split(' ')
+        hosts = os.environ['HOSTS'].split(',')
         hosts = [h.strip('"').strip("'") for h in hosts]
     except KeyError:
         hosts.append(os.uname()[1].split('.')[0])   # short hostname

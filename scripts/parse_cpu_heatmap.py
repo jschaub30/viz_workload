@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
 Input:  dool cpu csv data (e.g. "dool -t --cpu -C 0,1 --output dool_fn 1"
 Output: json file
@@ -15,13 +14,14 @@ def parse_line(line):
     t = datetime.strptime(fields.pop(0), '%b-%d %H:%M:%S')
     vals = []
     # for each CPU, fields are:
-    # "usr","sys","idl","wai","hiq","siq"
+    # "usr","sys","idl","wai","hiq","siq"  <-- DSTAT
+    # usr sys idl wai stl  <-- DOOL
     while fields:
         cpu_usr = float(fields[0])
         cpu_sys = float(fields[1])
         val = cpu_usr + cpu_sys
         vals.append(round(val, 2))
-        fields = fields[6:]
+        fields = fields[5:]
     return (t, vals)
 
 def main(dool_fn):

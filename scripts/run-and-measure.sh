@@ -39,14 +39,14 @@ debug_message(){
   fi
 }
 
-check_pids() { 
+check_pids() {
   for PID2CHECK in "$@"
   do
     CURRENT_MSG=${MSG_ARRAY[$PID2CHECK]}
     wait $PID2CHECK
     RC=$?
     if [ $RC -ne 0 ]
-    then 
+    then
       debug_message -1 "$CURRENT_MSG did not complete successfully."
       if [ -z "$CONTINUE_ON_ERROR" ]; then
         debug_message -1 "Return code=$RC   Exiting..."
@@ -58,18 +58,21 @@ check_pids() {
   done
 }
 
+# $HOSTS is a comma-delimited string
+IFS=',' read -r -a hostname_array <<< "$HOSTS"
+
 system_snapshot() {
   debug_message 0 "Collecting system snapshot of $HOSTS"
   PIDS=()
   MSG_ARRAY=()
-  for HOST in $HOSTS; do
-    if [ ! -z $RUNDIR/html/${HOST}.html ]; then
+  for HOST in "${hostname_array[@]}"; do
+    if [ ! -e "$RUNDIR/html/${HOST}.html" ]; then
       MSG="Collecting system snapshot of $HOST"
-      debug_message 1 $MSG
-      ./start-snapshot.sh $HOST $RUNDIR/html &
+      debug_message 1 "$MSG"
+      ./start-snapshot.sh "$HOST" "$RUNDIR/html" &
       CURRPID=$!
       MSG_ARRAY[$CURRPID]="$MSG"
-      PIDS="$PIDS $CURRPID"
+      PIDS+=("$CURRPID")
     fi
   done
   check_pids ${PIDS}
@@ -79,7 +82,7 @@ start_monitors() {
   debug_message 0 "Starting monitors on $HOSTS"
   PIDS=()
   MSG_ARRAY=()
-  for HOST in $HOSTS; do
+  for HOST in "${hostname_array[@]}"; do
     for MONITOR in $MEASUREMENTS; do
       if [ $MONITOR == "nvprof" ]; then
         export NVPROF=1
@@ -89,7 +92,8 @@ start_monitors() {
         ./start-monitor.sh $MONITOR $HOST $RUN_ID $MEAS_DELAY_SEC &
         CURRPID=$!
         MSG_ARRAY[$CURRPID]="$MSG"
-        PIDS="$PIDS $CURRPID"
+        # PIDS="$PIDS $CURRPID"
+        PIDS+=("$CURRPID")
       fi
     done
   done
@@ -100,7 +104,7 @@ stop_monitors() {
   debug_message 0 "Stopping monitors on $HOSTS"
   PIDS=()
   MSG_ARRAY=()
-  for HOST in $HOSTS; do
+  for HOST in "${hostname_array[@]}"; do
     for MONITOR in $MEASUREMENTS; do
       if [ $MONITOR != "nvprof" ]; then
         MSG="Starting $MONITOR on host $HOST"
@@ -121,7 +125,7 @@ parse_results() {
   debug_message 0 "Parsing results on $HOSTS"
   PIDS=()
   MSG_ARRAY=()
-  for HOST in $HOSTS; do
+  for HOST in "${hostname_array[@]}"; do
     for MONITOR in $MEASUREMENTS; do
       MSG="Parsing $MONITOR on host $HOST"
       debug_message 1 $MSG
@@ -174,7 +178,7 @@ setup_webserver() {
 
   # For python simple webserver to work, need soft link to data directory
   cd $RUNDIR
-  [ ! -e data ] && ln -sf ../data 
+  [ ! -e data ] && ln -sf ../data
   cd $CWD
 
   IP=$(hostname -I | cut -d' ' -f1)

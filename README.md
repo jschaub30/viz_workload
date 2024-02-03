@@ -2,6 +2,10 @@
 Measure, view and share data-rich, interactive timeseries charts of
 system performance while running a single- or multi-node linux workload.
 
+[Here's an example](https://jeremyschaub.us/demos/viz_workload/cluster_cpu_sweep/html/)
+of a page created with this repo for a high CPU workload across 2 nodes.  I added 
+the CPU heatmap option for this measurement.
+
 This tool is useful for identifying performance bottlenecks for, say,
 [setting the sort benchmark record](https://sortbenchmark.org/).
 
@@ -37,7 +41,7 @@ sudo apt-get install -y time git python3 hwloc
 ```
 
 ### Install `dool`
-The `viz_workload` tool was originally develeped by gathering data via the
+The `viz_workload` tool was originally developed by gathering data via the
 [`dstat`](https://github.com/dstat-real/dstat) utility, which stopped development due to a
 conflict with Redhat.
 

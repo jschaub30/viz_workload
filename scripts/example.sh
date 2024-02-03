@@ -3,7 +3,8 @@
 # Required variables
 export WORKLOAD_NAME=EXAMPLES             # A short name for this type of workload
 export DESCRIPTION="Artificial CPU load"  # A description of this particular workload
-export WORKLOAD_CMD="./load-cpu.sh 1"     # The workload to run
+THREADS=$(nproc)
+export WORKLOAD_CMD="./load-cpu.sh -t $THREADS -d 5"     # The workload to run
 
 # Optional variables (defaults shown here)
 export WORKLOAD_DIR="."             # The workload working directory

@@ -19,7 +19,7 @@ export MEASUREMENTS="sys-summary"   # cpu, memory, io and network vs time
 # To run on hosts other than the local node, export the "HOSTS" variable
 # We will simulate this by running on "localhost" and the string returned by
 # the "hostname" command
-HOSTS="localhost $(hostname)"    # space delimited
+HOSTS="localhost,$(hostname)"    # comma delimited
 export HOSTS
 
 # For sweeps, create a run directory where all files will be saved
@@ -36,10 +36,10 @@ export RUNDIR
 ##export PREP_SCRIPT="./example-prep.sh"
 
 for CPU in 1 2 4; do
-  # determine whether we need to run preprocessorg
+  # determine whether we need to run preprocessor
   [ -n "$PREP_SCRIPT" ] && ./pre_processor.sh
 
-  export WORKLOAD_CMD="./load-cpu.sh $CPU"   # The workload to run
+  export WORKLOAD_CMD="./load-cpu.sh -t $CPU"   # The workload to run
   export RUN_ID="NUM_CPU=$CPU"               # Unique for this run
   # A description of this particular workload
   export DESCRIPTION="CPU load using $CPU CPUs on 2 hosts"

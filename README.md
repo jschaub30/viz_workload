@@ -16,9 +16,7 @@ the pages created in step 5 will include the parameter sweep.
 - 2 nodes, each with 4 threads and 14-16GB RAM
 - high CPU workload
 - sweeping a parameter (number of threads 1/2/4)
-
-of a page created with this repo for a high CPU workload across 2 nodes.  I added 
-the CPU heatmap option for this measurement.
+- CPU heatmap measurement enabled
 
 This tool is useful for identifying performance bottlenecks for, say,
 [setting the sort benchmark record](https://sortbenchmark.org/).

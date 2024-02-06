@@ -1,15 +1,29 @@
 # viz_workload
 Measure, view and share data-rich, interactive timeseries charts of
-system performance while running a single- or multi-node linux workload.
+system performance metrics while running single- or multi-node linux workloads.
 
-[Here's an example](https://jeremyschaub.us/demos/viz_workload/cluster_cpu_sweep/html/)
+This tool:
+1. gathers system information from each node
+2. starts up system monitors (cpu, mem, etc.)
+3. executes a given workload
+4. stops the system monitors
+5. gathers data and creates interactive web pages displaying system performance while the workload was running.
+
+Steps 2-4 above can also be repeated while sweeping a workload parameter, and
+the pages created in step 5 will include the parameter sweep.
+
+[Here's an example output](https://jeremyschaub.us/demos/viz_workload/cluster_cpu_sweep/html/) with:
+- 2 nodes, each with 4 threads and 14-16GB RAM
+- high CPU workload
+- sweeping a parameter (number of threads 1/2/4)
+
 of a page created with this repo for a high CPU workload across 2 nodes.  I added 
 the CPU heatmap option for this measurement.
 
 This tool is useful for identifying performance bottlenecks for, say,
 [setting the sort benchmark record](https://sortbenchmark.org/).
 
-Verson 1.1.0
+Verson 1.1.1
 
 ## Setup password-less SSH
 These scripts use ssh to start/stop monitors and run the workload, even when
@@ -37,7 +51,8 @@ every host in the cluster.
 ### Install prerequisites
 Ubuntu / Debian
 ```sh
-sudo apt-get install -y time git python3 hwloc
+sudo apt-get install -y time python3  # required
+sudo apt-get install -y hwloc         # optional--uses the `lstopo` tool in system summaries
 ```
 
 ### Install `dool`
@@ -47,11 +62,12 @@ conflict with Redhat.
 
 The current project is has been renamed to [`dool`](https://github.com/scottchiefbaker/dool).
 
-Here's how to install `dool` as the root user.
+Installing `dool`
 ```sh
 git clone git@github.com:scottchiefbaker/dool.git --branch v1.3.1 /tmp/doolinstall
 
-sudo /tmp/doolinstall/install.py
+sudo /tmp/doolinstall/install.py  # to install as root
+/tmp/doolinstall/install.py       # install as user--make sure the `dool` script is in your PATH variable
 ```
 
 ### Install `viz_workload`

@@ -7,7 +7,7 @@ usage() {
   echo 'export WORKLOAD_NAME=EXAMPLE'
   echo 'export DESCRIPTION="Example 10sec sleep command"'
   echo 'export WORKLOAD_CMD="sleep 10"'
-  echo $0
+  echo "$0"
   echo
   echo See example*.sh
   exit 1
@@ -34,8 +34,9 @@ debug_message(){
   LEVEL=$1
   MESSAGE=`echo "$@" | cut -d' ' -f2-`
   if [ $LEVEL -le $VERBOSE ]; then
-    [ $LEVEL -ne -1 ] && echo "#### VIZ_WORKLOAD ####: $MESSAGE"
-    [ $LEVEL -eq -1 ] && echo "#### VIZ_WORKLOAD ERROR! ####: $MESSAGE"
+    datetime="$(date +'%Y-%m-%d %H:%M:%S')"  # Get current date and time
+    [ $LEVEL -ne -1 ] && echo "#### VIZ_WORKLOAD [$datetime] ####: $MESSAGE"
+    [ $LEVEL -eq -1 ] && echo "#### VIZ_WORKLOAD ERROR! [$datetime] ####: $MESSAGE"
   fi
 }
 

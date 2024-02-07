@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#################### FUNCTION DEFINITIONS ####################
-
 usage() {
   echo 'Requires var. PREP_SCRIPT to be defined/1'
   echo "$0"
@@ -9,9 +7,7 @@ usage() {
   exit 1
 }
 
-#################### END OF FUNCTIONS ####################
-
-[ -z "$PREP_SCRIPT" ] && usage                 ## required!
+[ -z "$PREP_SCRIPT" ] && usag
 [ -z "$HOSTS" ] && HOSTS=$(hostname -s) && export HOSTS ## can be localhost only
 
 ## simple functionality

@@ -7,7 +7,8 @@ var vizWorkloadControllers = angular.module('vizWorkloadControllers', []);
 vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeout',
   function($http, $location, $timeout) {
     // Read the summary file, and redirect to the first measurement on the first host
-    $http.get('summary.json').success(function(data){
+    var url = 'summary.json?timestamp=' + new Date().getTime();
+    $http.get(url).success(function(data){
       var runId = data[0].run_id,
         host = data[0].hosts[0],
         url = '/measurement/' + runId + '/' + host;
@@ -19,11 +20,12 @@ vizWorkloadControllers.controller('summaryCtrl', ['$http', '$location', '$timeou
   }
 ])
 
-vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams', 
+vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
     '$http', '$location',
     function($scope, $routeParams, $http, $location) {
       var drawChart = function(runId, host, measurement){
-        $http.get(runId + '.json').success(function(chartdata){
+        var url = runId + '.json?timestamp=' + new Date().getTime();
+        $http.get(url).success(function(chartdata){
           //console.log(chartdata[measurement]);
           if (chartdata[measurement].type == "timeseries"){
             $scope.chartType = "timeseries";
@@ -49,12 +51,13 @@ vizWorkloadControllers.controller('detailCtrl', ['$scope', '$routeParams',
     }
 ])
 
-vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams', 
+vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
     '$http', '$location',
     function($scope, $routeParams, $http, $location) {
       var counter = 0,
       parseTimeFile = function(measurement){
-        $http.get(measurement.time.filename).success(function(data){
+        var url = measurement.time.filename + '?timestamp=' + new Date().getTime();
+        $http.get(url).success(function(data){
           var hr=0,
           min,
           sec,
@@ -98,7 +101,8 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
         measurement.x0 = 'x0';
       },
       drawCharts = function(runId){
-        $http.get(runId + '.json').success(function(chartdata){
+        var url = runId + '.json?timestamp=' + new Date().getTime();
+        $http.get(url).success(function(chartdata){
           $scope.measurement = chartdata;
           $scope.allCharts = Object.keys($scope.measurement);
 
@@ -145,7 +149,8 @@ vizWorkloadControllers.controller('combinedCtrl', ['$scope', '$routeParams',
       $scope.host = $routeParams.host;
 
       // Add summary measurements to scope
-      $http.get('summary.json').success(function(data){
+      var url = 'summary.json?timestamp=' + new Date().getTime();
+      $http.get(url).success(function(data){
         $scope.measurements = data;
         $scope.measurements.forEach(parseTimeFile);
 	drawCharts($scope.runId);

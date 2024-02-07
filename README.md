@@ -92,7 +92,7 @@ Each measurement group enables collection and display of 1 or more charts
 More details described [here][available].
 
 [cuda]: https://developer.nvidia.com/cuda-downloads
-[available]: https://github.com/jschaub30/viz_workload/blob/master/scripts/available-measurements.md
+[available]: blob/master/doc/available-measurements.md
 
 ## Example scripts
 - [example.sh][example] Simple CPU load example

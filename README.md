@@ -12,7 +12,11 @@ This tool:
 Steps 2-4 above can also be repeated while sweeping a workload parameter, and
 the pages created in step 5 will include the parameter sweep.
 
-[Here's an example output](https://jeremyschaub.us/demos/viz_workload/cluster_cpu_sweep/html/) with:
+[Here's a blog post](https://jeremyschaub.us/demos/mixed-workload/) describing a mixed workload
+that featured a high IO and CPU.
+
+[Here's an example page](https://jeremyschaub.us/demos/viz_workload/cluster_cpu_sweep/html/)
+created by this tool.  This workload featured:
 - 2 nodes, each with 4 threads and 14-16GB RAM
 - high CPU workload
 - sweeping a parameter (number of threads 1/2/4)
